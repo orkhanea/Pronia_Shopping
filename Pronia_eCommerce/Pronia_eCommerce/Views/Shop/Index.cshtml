@@ -1,0 +1,633 @@
+﻿@{
+    ViewData["Title"] = "Shopping Page";
+}
+
+<!-- #region Shop -->
+<section id="shop">
+    <div class="shop-page-full pb-100 pt-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-lg-4 order-2 order-lg-1 pt-5 pt-lg-0">
+                    <div class="sidebar-wrapper">
+                        <div class="searchbox-tool">
+                            <form id="searchbox-tool">
+                                <input class="input-field" type="text" value="Search..." onblur="if(this.value==''){this.value='Search...'}" onfocus="if(this.value=='Search...'){this.value=''}" autocomplete="off">
+                                <button class="searchbox-tool-btn" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <div class="widgets-area">
+                            <div class="widgets-item pt-0">
+                                <h2 class="widgets-title mb-4">Categories</h2>
+                                <ul class="widgets-category">
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-chevron-right"></i>
+                                            All <span>(65)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-chevron-right"></i>
+                                            Bansai <span>(12)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-chevron-right"></i>
+                                            House Plants <span>(22)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-chevron-right"></i>
+                                            Indoor Living <span>(19)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-chevron-right"></i>
+                                            Perennnials <span>(17)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-chevron-right"></i>
+                                            Plant For Gift <span>(01)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-chevron-right"></i>
+                                            Garden Tools <span>(12)</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="widgets-item">
+                                <h2 class="widgets-title mb-4">Color</h2>
+                                <ul class="widgets-category widgets-color">
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-chevron-right"></i>
+                                            All <span>(65)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-chevron-right"></i>
+                                            Gold <span>(12)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-chevron-right"></i>
+
+                                            Green <span>(22)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-chevron-right"></i>
+                                            white <span>(13)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-chevron-right"></i>
+                                            Black <span>(10)</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="widgets-item widgets-filter">
+                                <h2 class="widgets-title mb-4">Price Filter</h2>
+                                <div class="price-filter">
+                                    <form action="">
+                                        <input type="text" class="js-range-slider" name="my_range" value="" />
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="widgets-item">
+                                <h2 class="widgets-title mb-4">Populer Tags</h2>
+                                <ul class="widgets-tag">
+                                    <li>
+                                        <a href="#">Fashion</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Organic</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Old Fashion</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Men</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Fashion</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Dress</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="collection-area pt-40">
+                            <div class="collection-item collection-item-hover">
+                                <div class="collection-img">
+                                    <img src="~/img/collection/collection-item-2.png" alt="Banner Image">
+                                </div>
+                                <div class="collection-content collection-content-center">
+                                    <span class="collection">New Collection</span>
+                                    <h3 class="title">Plant Port</h3>
+                                    <div class="btn-wrapper">
+                                        <a class="btn btn-custom" href="#">
+                                            Shop
+                                            Now
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xl-9 col-lg-8 order-1 order-lg-2">
+                    <div class="product-header pb-50">
+                        <ul class="product-action">
+                            <li class="product-count">
+                                <span>12</span> Product Found of <span>30</span>
+                            </li>
+                            <li class="product-sort">
+                                <select class="type-select nice-select">
+                                    <option selected>Sort by Default</option>
+                                    <option value="2">Sort by Popularity</option>
+                                    <option value="3">Sort by Rated</option>
+                                    <option value="4">Sort by Latest</option>
+                                    <option value="5">Sort by High Price</option>
+                                    <option value="6">Sort by Low Price</option>
+                                </select>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6">
+                            <div class="product-full">
+                                <div class="product-item">
+                                    <div class="product-item-img">
+                                        <a href="single-product-variable.html">
+                                            <img class="primary-img" src="~/img/products/product-6.png" alt="Product Images">
+                                            <img class="secondary-img" src="~/img/products/product-6.png" alt="Product Images">
+                                        </a>
+                                        <div class="product-add-action">
+                                            <ul>
+                                                <li>
+                                                    <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-heart"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
+                                                    <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-eye"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-shopping-cart"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <a class="product-name" href="single-product-variable.html">
+                                            American
+                                            Marigold
+                                        </a>
+                                        <div class="price-box pb-1">
+                                            <span class="new-price">$23.45</span>
+                                        </div>
+                                        <div class="rating-box">
+                                            <ul>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="product-full">
+                                <div class="product-item">
+                                    <div class="product-item-img">
+                                        <a href="single-product-variable.html">
+                                            <img class="primary-img" src="~/img/products/product-14.png" alt="Product Images">
+                                            <img class="secondary-img" src="~/img/products/product-3.png" alt="Product Images">
+                                        </a>
+                                        <div class="product-add-action">
+                                            <ul>
+                                                <li>
+                                                    <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-heart"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
+                                                    <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-eye"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-shopping-cart"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <a class="product-name" href="single-product-variable.html">
+                                            American
+                                            Marigold
+                                        </a>
+                                        <div class="price-box pb-1">
+                                            <span class="new-price">$23.45</span>
+                                        </div>
+                                        <div class="rating-box">
+                                            <ul>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="product-full">
+                                <div class="product-item">
+                                    <div class="product-item-img">
+                                        <a href="single-product-variable.html">
+                                            <img class="primary-img" src="~/img/products/product-4.png" alt="Product Images">
+                                            <img class="secondary-img" src="~/img/products/product-5.png" alt="Product Images">
+                                        </a>
+                                        <div class="product-add-action">
+                                            <ul>
+                                                <li>
+                                                    <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-heart"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
+                                                    <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-eye"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-shopping-cart"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <a class="product-name" href="single-product-variable.html">
+                                            American
+                                            Marigold
+                                        </a>
+                                        <div class="price-box pb-1">
+                                            <span class="new-price">$23.45</span>
+                                        </div>
+                                        <div class="rating-box">
+                                            <ul>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="product-full">
+                                <div class="product-item">
+                                    <div class="product-item-img">
+                                        <a href="single-product-variable.html">
+                                            <img class="primary-img" src="~/img/products/product-8.png" alt="Product Images">
+                                            <img class="secondary-img" src="~/img/products/product-9.png" alt="Product Images">
+                                        </a>
+                                        <div class="product-add-action">
+                                            <ul>
+                                                <li>
+                                                    <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-heart"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
+                                                    <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-eye"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-shopping-cart"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <a class="product-name" href="single-product-variable.html">
+                                            American
+                                            Marigold
+                                        </a>
+                                        <div class="price-box pb-1">
+                                            <span class="new-price">$23.45</span>
+                                        </div>
+                                        <div class="rating-box">
+                                            <ul>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="product-full">
+                                <div class="product-item">
+                                    <div class="product-item-img">
+                                        <a href="single-product-variable.html">
+                                            <img class="primary-img" src="~/img/products/product-10.png" alt="Product Images">
+                                            <img class="secondary-img" src="~/img/products/product-11.png" alt="Product Images">
+                                        </a>
+                                        <div class="product-add-action">
+                                            <ul>
+                                                <li>
+                                                    <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-heart"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
+                                                    <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-eye"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-shopping-cart"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <a class="product-name" href="single-product-variable.html">
+                                            American
+                                            Marigold
+                                        </a>
+                                        <div class="price-box pb-1">
+                                            <span class="new-price">$23.45</span>
+                                        </div>
+                                        <div class="rating-box">
+                                            <ul>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="product-full">
+                                <div class="product-item">
+                                    <div class="product-item-img">
+                                        <a href="single-product-variable.html">
+                                            <img class="primary-img" src="~/img/products/product-12.png" alt="Product Images">
+                                            <img class="secondary-img" src="~/img/products/product-13.png" alt="Product Images">
+                                        </a>
+                                        <div class="product-add-action">
+                                            <ul>
+                                                <li>
+                                                    <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-heart"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
+                                                    <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-eye"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <i class="fal fa-shopping-cart"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <a class="product-name" href="single-product-variable.html">
+                                            American
+                                            Marigold
+                                        </a>
+                                        <div class="price-box pb-1">
+                                            <span class="new-price">$23.45</span>
+                                        </div>
+                                        <div class="rating-box">
+                                            <ul>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pagination-full pt-50">
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#" aria-label="Next">&raquo;</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<!-- #endregion Shop End -->
+<!-- #region Begin Modal -->
+<div class="modal product-modal-full fade" id="quickModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="quickModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-tippy="Close" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-wrap row">
+                    <div class="col-lg-6">
+                        <div class="modal-img">
+                            <div class="swiper-container modal-slider">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide">
+                                        <a href="#" class="single-img">
+                                            <img src="~/img/products/product-13.png" alt="Image">
+                                        </a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a href="#" class="single-img">
+                                            <img src="~/img/products/product-14.png" alt="Image">
+                                        </a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a href="#" class="single-img">
+                                            <img src="~/img/products/product-15.png" alt="Image">
+                                        </a>
+                                    </div>
+                                    <div class="swiper-slide">
+                                        <a href="#" class="single-img">
+                                            <img src="~/img/products/product-16.png" alt="Image">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 pt-5 pt-lg-0">
+                        <div class="product-info">
+                            <h2 class="title">American Marigold</h2>
+                            <div class="price">
+                                <span class="new-price">$23.45</span>
+                            </div>
+                            <div class="rating-wrap">
+                                <div class="rating">
+                                    <ul>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                    </ul>
+                                </div>
+                                <div class="review">
+                                    <a href="#">( 1 Review )</a>
+                                </div>
+                            </div>
+                            <div class="selector-full">
+                                <span class="selector-title border-bottom-0">Color</span>
+                                <select class="nice-select wide border-bottom-0 rounded-0">
+                                    <option value="default">Black & White</option>
+                                    <option value="blue">Blue</option>
+                                    <option value="green">Green</option>
+                                    <option value="red">Red</option>
+                                </select>
+                            </div>
+                            <div class="selector-full pb-30">
+                                <span class="selector-title">Size</span>
+                                <select class="nice-select wide rounded-0">
+                                    <option value="medium">Medium Size & Poot</option>
+                                    <option value="large">Large Size With Poot</option>
+                                    <option value="small">Small Size With Poot</option>
+                                </select>
+                            </div>
+                            <p class="product-desc">
+                                Lorem ipsum dolor sit amet, consectetur adipisic elit, sed do eiusmod
+                                tempo incid ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                                dolor
+                                in reprehenderit in voluptate
+                            </p>
+                            <ul class="single-product-action">
+                                <li class="quantity">
+                                    <div class="cart-action">
+                                        <form action="#">
+                                            <input class="cart-action-box" value="1" type="text">
+                                        </form>
+                                        <div class="minus quantity-btn">
+                                            <i class="fal fa-minus"></i>
+                                        </div>
+                                        <div class="plus quantity-btn">
+                                            <i class="fal fa-plus"></i>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="add-to-cart">
+                                    <a class="btn" href="cart.html">
+                                        Add to
+                                        cart
+                                    </a>
+                                </li>
+                                <li class="favourite fc">
+                                    <a class="btn-fc" href="wishlist.html">
+                                        <i class="fal fa-heart"></i>
+                                    </a>
+                                </li>
+                                <li class="product-compare fc">
+                                    <a class="custom-circle-btn" href="compare.html">
+                                        <i class="fal fa-sync-alt"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="service-item-wrap pb-0">
+                                <li class="service-item">
+                                    <div class="service-img">
+                                        <img src="~/img/shipping/shipping-1.png" alt="Shipping Icon">
+                                    </div>
+                                    <div class="service-content">
+                                        <span>Free <br> Shipping</span>
+                                    </div>
+                                </li>
+                                <li class="service-item">
+                                    <div class="service-img">
+                                        <img src="~/img/shipping/shipping-2.png" alt="Shipping Icon">
+                                    </div>
+                                    <div class="service-content">
+                                        <span>Safe <br> Payment</span>
+                                    </div>
+                                </li>
+                                <li class="service-item">
+                                    <div class="service-img">
+                                        <img src="~/img/shipping/shipping-3.png" alt="Shipping Icon">
+                                    </div>
+                                    <div class="service-content">
+                                        <span>Safe <br> Payment</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion Modal End -->

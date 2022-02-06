@@ -1,0 +1,101 @@
+﻿@model VmContact
+<!-- #region Breadcrump Area -->
+<section id="breadcrump">
+    <div class="breadcrumb-wrapper" style="background-image: url('/img/bg-image/@Model.Banner.BgImage');">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content">
+                        <h2 class="breadcrumb-page">@Model.Banner.Page</h2>
+                        <ul>
+                            <li>
+                                <a asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li>@Model.Banner.Title</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- #endregion Breadcrump Area End -->
+<!-- #region Contact -->
+<div class="contact-full pt-100 pb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                @{
+                    if (TempData["MessageError"] != null)
+                    {
+                        <p style="font-size: 20px !important;" class="alert alert-danger text-danger text-center">@TempData["MessageError"]</p>
+                        TempData["MessageError"] = null;
+                    }
+                    if (TempData["MessageSuccess"] != null)
+                    {
+                        <p style="font-size: 20px !important; background-color: #abd47459 !important;" class="alert alert-success text-success text-center">@TempData["MessageSuccess"]</p>
+                        TempData["MessageSuccess"] = null;
+                    }
+                }
+                <div class="contact-wrapper">
+                    <div class="contact-info" style="background-image: url('/img/bg-image/@Model.ContactUs.BgImage');">
+                        <h2 class="contact-title">Contact Info:</h2>
+                        <p class="contact-desc">
+                            Fill the form amd our teaam will get to back
+                            to you within 24 hours.
+                        </p>
+                        <ul class="contact-list">
+                            <li>
+                                <i class="fal fa-phone-alt"></i>
+                                <a href="tel://@Model.ContactUs.Phone">@Model.ContactUs.Phone</a>
+                            </li>
+                            <li>
+                                <i class="fal fa-envelope"></i>
+                                <a href="mailto://@Model.ContactUs.Email">@Model.ContactUs.Email</a>
+                            </li>
+                            <li>
+                                <i class="fal fa-map-marker-alt"></i>
+                                <span>@Model.ContactUs.Address</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <form id="contact-form" class="contact-form" method="post" asp-controller="Contact" asp-action="Message">
+
+                        <div class="group-input">
+                            <div class="form-field mb-30 mr-35 mb-lg-0">
+                                <input asp-for="@Model.Message.FirstName" placeholder="First Name*" class="input-field">
+                            </div>
+                            <div class="form-field mb-30">
+                                <input asp-for="@Model.Message.LastName" placeholder="Last Name*" class="input-field">
+                            </div>
+                        </div>
+                        <div class="group-input mb-30">
+                            <div class="form-field mb-30 mr-35 mb-lg-0">
+                                <input asp-for="@Model.Message.Phone" placeholder="Phone*" class="input-field">
+                            </div>
+                            <div class="form-field">
+                                <input type="email" asp-for="@Model.Message.Email" placeholder="Email*" class="input-field">
+                            </div>
+                        </div>
+                        <div class="form-field mb-5">
+                            <textarea asp-for="@Model.Message.Content" placeholder="Message" class="textarea-field"></textarea>
+                        </div>
+                        <div class="contact-button-wrap">
+                            <button type="submit" class="btn">
+                                Post Comment
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion Contact End -->
+<div class="contact-with-map">
+    <div class="contact-map">
+        <iframe class="contact-map-size" src="@Model.ContactUs.MapLink" allowfullscreen="" loading="lazy">
+        </iframe>
+    </div>
+</div>

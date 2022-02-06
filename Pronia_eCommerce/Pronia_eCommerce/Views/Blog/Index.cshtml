@@ -1,0 +1,236 @@
+﻿@{
+    ViewData["Title"] = "Blog Page";
+}
+@model VmBlog
+    <!-- #region Breadcrump Area -->
+    <section id="breadcrump">
+        <div class="breadcrumb-wrapper" style="background-image: url('/img/bg-image/@Model.Banner.BgImage');">
+            <div class="container h-100">
+                <div class="row h-100">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-content">
+                            <h2 class="breadcrumb-page">@Model.Banner.Page</h2>
+                            <ul>
+                                <li>
+                                    <a asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                                <li>@Model.Banner.Title</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- #endregion Breadcrump Area End -->
+    <!-- #region Blog List -->
+    <section id="blog-list" class="pb-100 pt-100">
+        <div class="blog-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-9 col-lg-8">
+                        <div class="row @(Model.Blogs.Count<1?"d-none":"")">
+                            @{
+                                foreach (var item in Model.Blogs)
+                                {
+                                    if (item.Image != null)
+                                    {
+                                        <div class="col-md-6 mt-30">
+                                            <div class="latest-blog-item h-100">
+                                                <div class="latest-blog-content">
+                                                    <div class="name-date">
+                                                        <ul>
+                                                            <li class="author">By: Admin</li>
+                                                            <li class="date">@item.CreatedDate.ToString("dd MMMM yyyy")</li>
+                                                        </ul>
+                                                    </div>
+                                                    <h2 class="title">
+                                                        <a asp-route-Id="@item.Id" asp-controller="Blog" asp-action="SingleBlog">@item.Title</a>
+                                                    </h2>
+                                                    <p class="text mb-7">
+                                                        @{
+                                                            if (item.Content.Length > 200)
+                                                            {
+                                                                for (int i = 200; ; i++)
+                                                                {
+                                                                    if (item.Content[i] == '.')
+                                                                    {
+                                                                        @item.Content.Substring(0, i + 1);
+                                                                        break;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    </p>
+                                                </div>
+                                                <div class="latest-blog-img">
+                                                    <a asp-route-Id="@item.Id" asp-controller="Blog" asp-action="SingleBlog">
+                                                        <img class="img-full" src="~/img/blog/@item.Image" alt="Image">
+                                                    </a>
+                                                    <div class="icon-wrapper">
+                                                        <i class="fal fa-link"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="col-md-6 mt-30">
+                                            <div class="latest-blog-item h-100">
+                                                <div class="latest-blog-content">
+                                                    <div class="name-date">
+                                                        <ul>
+                                                            <li class="author">By: Admin</li>
+                                                            <li class="date">@item.CreatedDate.ToString("dd MMMM yyyy")</li>
+                                                        </ul>
+                                                    </div>
+                                                    <h2 class="title">
+                                                        <a asp-route-Id="@item.Id" asp-controller="Blog" asp-action="SingleBlog">@item.Title</a>
+                                                    </h2>
+                                                    <p class="text mb-7">
+                                                        @{
+                                                            if (item.Content.Length > 200)
+                                                            {
+                                                                for (int i = 200; ; i++)
+                                                                {
+                                                                    if (item.Content[i] == '.')
+                                                                    {
+                                                                        @item.Content.Substring(0, i + 1);
+                                                                        break;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    </p>
+                                                </div>
+                                                <div class="ratio ratio-16x9">
+                                                    <iframe src="@item.VideoLink" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                        @if (Model.Blogs.Count > 0)
+                        {
+                            <div class="pagination-full pt-50">
+                                <nav>
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item @(ViewBag.Page==1?"disabled":"")">
+                                            <a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-Page="@(ViewBag.Page-1)" asp-route-SearchTag="@Model.Search.SearchTag" asp-route-SearchCategory="@Model.Search.SearchCategory" asp-route-SearchData="@Model.Search.SearchData" aria-label="Next">&laquo;</a>
+                                        </li>
+                                        @for (int i = 0; i < ViewBag.PageCount; i++)
+                                        {
+                                            <li class="page-item @(ViewBag.Page==(i+1)?"active":"")"><a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-Page="@(i+1)" asp-route-SearchTag="@Model.Search.SearchTag" asp-route-SearchCategory="@Model.Search.SearchCategory" asp-route-SearchData="@Model.Search.SearchData">@(i+1)</a></li>
+                                        }
+                                        <li class="page-item @(ViewBag.Page==ViewBag.PageCount?"disabled":"")">
+                                            <a class="page-link" asp-controller="Blog" asp-action="Index" asp-route-Page="@(ViewBag.Page+1)" asp-route-SearchTag="@Model.Search.SearchTag" asp-route-SearchCategory="@Model.Search.SearchCategory" asp-route-SearchData="@Model.Search.SearchData" aria-label="Next">&raquo;</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <img class="w-100 h-100" src="~/img/uncategorized/NoResult.png" alt="Alternate Text" />
+                            </div>
+                        }
+                    </div>
+                    <div class="col-xl-3 col-lg-4 pt-5 pt-lg-0 mt-30">
+                        <div class="sidebar-wrapper">
+                            <div class="searchbox-tool">
+                                <form id="searchbox-tool" asp-controller="Blog" asp-action="Index" method="post">
+                                    <input class="input-field" asp-for="@Model.Search.SearchData" type="text" placeholder="@(Model.Search.SearchData==null?"Search...":Model.Search.SearchData)" autocomplete="off">
+                                    <button class="searchbox-tool-btn" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="widgets-area">
+                                <div class="widgets-item pt-0">
+                                    <h2 class="widgets-title mb-4">Categories</h2>
+                                    <ul class="widgets-category">
+                                        @{
+                                            foreach (var item in Model.BlogCategories)
+                                            {
+                                                <li>
+                                                    <a asp-route-SearchCategory="@item.Id" asp-controller="Blog" asp-action="Index" class="@(Model.Search.SearchCategory==item.Id?"active":"")">
+                                                        <i class="fa fa-chevron-right"></i>
+                                                        @item.CategoryName <span>(65)</span>
+                                                    </a>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="widgets-item">
+                                    <h2 class="widgets-title mb-4">Recent Post</h2>
+                                    @{
+                                        foreach (var item in Model.LatestBlogs)
+                                        {
+                                            <div class="widgets-list-item">
+                                                <div class="widgets-list-img">
+                                                    <a asp-route-Id="@item.Id" asp-controller="Blog" asp-action="SingleBlog">
+                                                        <img src="~/img/blog/@item.Image" alt="Blog Images">
+                                                    </a>
+                                                </div>
+                                                <div class="widgets-list-content">
+                                                    <div class="widgets-meta">
+                                                        <ul>
+                                                            <li class="date">
+                                                                @item.CreatedDate.ToString("dd MMMM yyyy")
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <h2 class="mb-0">
+                                                        <a asp-route-Id="@item.Id" asp-controller="Blog" asp-action="SingleBlog">
+                                                            @item.Title
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <div class="widgets-item">
+                                    <h2 class="widgets-title mb-4">Populer Tags</h2>
+                                    <ul class="widgets-tag">
+                                        @{
+                                            foreach (var item in Model.BlogTags)
+                                            {
+                                                <li>
+                                                    <a class="@(Model.Search.SearchTag==item.Id?"active":"")" asp-route-SearchTag="@item.Id" asp-controller="Blog" asp-action="Index">@item.TagName</a>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="collection-area pt-40">
+                                <div class="collection-item collection-item-hover">
+                                    <div class="collection-img">
+                                        <img src="~/img/collection/@Model.CollectionS.Image" alt="Banner Image">
+                                    </div>
+                                    <div class="collection-content collection-content-center">
+                                        <span class="collection">@Model.CollectionS.SubTitle</span>
+                                        <h3 class="title">@Model.CollectionS.Title</h3>
+                                        <div class="btn-wrapper">
+                                            <a class="btn btn-custom" href="#">
+                                                Shop
+                                                Now
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- #endregion Blog List End -->

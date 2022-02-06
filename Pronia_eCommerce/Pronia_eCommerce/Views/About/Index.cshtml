@@ -1,0 +1,350 @@
+﻿@model VmAbout
+<!-- #region Breadcrump Area -->
+<section id="breadcrump">
+    <div class="breadcrumb-wrapper" style="background-image: url('/img/bg-image/@Model.Banner.BgImage');">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content">
+                        <h2 class="breadcrumb-page">@Model.Banner.Title</h2>
+                        <ul>
+                            <li>
+                                <a asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li>@Model.Banner.Page</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- #endregion Breadcrump Area End -->
+<!-- #region Single Blog List -->
+<div class="about-full pt-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="about-wrapper">
+                    <h2>Our <span>Story</span></h2>
+                    <p>
+                        @Model.About.Desc
+                    </p>
+                    <div class="signature">
+                        <img src="~/img/uncategorized/@Model.About.Signature" alt="Signature">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion Single Blog List End -->
+<!-- #region Shipping Information -->
+<section id="shipping" class="pt-100 pb-100">
+    <div class="shipping-full">
+        <div class="container">
+            <div class="items">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="item">
+                            <div class="item-img">
+                                <img src="~/img/shipping/shipping-1.png" alt="Car">
+                            </div>
+                            <div class="content">
+                                <h2 class="title">Free Shipping</h2>
+                                <p class="desc mb-0">Capped at $319 per order</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mt-4 mt-md-0">
+                        <div class="item">
+                            <div class="item-img">
+                                <img src="~/img/shipping/shipping-2.png" alt="Card">
+                            </div>
+                            <div class="content">
+                                <h2 class="title">Safe Payment</h2>
+                                <p class="desc mb-0">With our payment gateway</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mt-4 mt-lg-0">
+                        <div class="item">
+                            <div class="item-img">
+                                <img src="~/img/shipping/shipping-3.png" alt="Service">
+                            </div>
+                            <div class="content">
+                                <h2 class="title">Best Services</h2>
+                                <p class="desc mb-0">Friendly & Supper Services</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- #endregion Shipping Information End -->
+<!-- #region About Video&Odometr -->
+<div class="about-video-odo-full">
+    <div class="about-video">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="video-effect">
+                        <div class="video-bg" style="background-image: url('/img/bg-image/bg-img-5.jpg');">
+                            <div class="popup-btn">
+                                <a class="youtube-link popup-youtube" href="@Model.About.VideoLink">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <div class="play-icon">
+                                        <i class="fal fa-play"></i>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="about-counter">
+        <div class="container">
+            <h2>
+                Lorem ipsum dolor sit amet, consectetur adipisicing <br> elit, sed do
+                <span>eiusmod tempor</span> incididunt.
+            </h2>
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="counter-item">
+                        <div class="counter-wrapper">
+                            <h3 class="counter mb-0" data-counterup-time="500">@Model.Counters.Project</h3>
+                            <span>+</span>
+                        </div>
+                        <h4 class="count-title mb-0">Projects</h4>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="counter-item">
+                        <div class="counter-wrapper">
+                            <h3 class="counter mb-0" data-counterup-time="1000">@Model.Counters.Client</h3>
+                            <span>+</span>
+                        </div>
+                        <h4 class="count-title mb-0">Clients</h4>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6 pt-4 pt-md-0">
+                    <div class="counter-item">
+                        <div class="counter-wrapper">
+                            <h3 class="counter mb-0" data-counterup-time="1500">@Model.Counters.Rating</h3>
+                            <span>+</span>
+                        </div>
+                        <h4 class="count-title mb-0">Rating</h4>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6 pt-4 pt-lg-0">
+                    <div class="counter-item">
+                        <div class="counter-wrapper">
+                            <h3 class="counter mb-0" data-counterup-time="2000">@Model.Counters.Award</h3>
+                            <span>+</span>
+                        </div>
+                        <h4 class="count-title mb-0">Award</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion About Video&Odometr End-->
+<!-- #region Our Team -->
+<div class="team-full pt-100">
+    <div class="container">
+        <div class="section-title-full">
+            <h2 class="section-title">Our Team</h2>
+            <p class="section-desc">
+                Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots
+                in a piece of classical Latin literature
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-lg-3 col-sm-6 pt-sm-5">
+                <div class="team-item">
+                    <div class="team-img">
+                        <img src="~/img/our-team/team-1.png" alt="Team Member">
+                        <div class="inner-content">
+                            <h2 class="team-member-name">Micheal Murphy</h2>
+                            <span>Sales man</span>
+                            <div class="team-social-link">
+                                <ul>
+                                    <li>
+                                        <a href="#" data-tippy="Facebook" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-tippy="Twitter" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-tippy="Pinterest" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                            <i class="fab fa-pinterest"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-content">
+                        <h2 class="team-member-name mb-0">Micheal Murphy</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 pt-5 pt-sm-0">
+                <div class="team-item">
+                    <div class="team-img">
+                        <img src="~/img/our-team/team-2.png" alt="Team Member">
+                        <div class="inner-content">
+                            <h2 class="team-member-name">Kari Rasmus</h2>
+                            <span class="occupation">Sales man</span>
+                            <div class="team-social-link">
+                                <ul>
+                                    <li>
+                                        <a href="#" data-tippy="Facebook" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-tippy="Twitter" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-tippy="Pinterest" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                            <i class="fab fa-pinterest"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-content">
+                        <h2 class="team-member-name mb-0">Kari Rasmus</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 pt-5">
+                <div class="team-item">
+                    <div class="team-img">
+                        <img src="~/img/our-team/team-3.png" alt="Team Member">
+                        <div class="inner-content">
+                            <h2 class="team-member-name">Britney Cooper</h2>
+                            <span class="occupation">Sales man</span>
+                            <div class="team-social-link">
+                                <ul>
+                                    <li>
+                                        <a href="#" data-tippy="Facebook" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-tippy="Twitter" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-tippy="Pinterest" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                            <i class="fab fa-pinterest"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-content">
+                        <h2 class="team-member-name mb-0">Britney Cooper</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6 pt-5 pt-sm-0">
+                <div class="team-item">
+                    <div class="team-img">
+                        <img src="~/img/our-team/team-4.png" alt="Team Member">
+                        <div class="inner-content">
+                            <h2 class="team-member-name">Marissa Swan</h2>
+                            <span class="occupation">Sales man</span>
+                            <div class="team-social-link">
+                                <ul>
+                                    <li>
+                                        <a href="#" data-tippy="Facebook" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-tippy="Twitter" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                            <i class="fab fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-tippy="Pinterest" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                            <i class="fab fa-pinterest"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-content">
+                        <h2 class="team-member-name mb-0">Marissa Swan</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion Our Team End-->
+<!-- #region Our Brand -->
+<div class="our-brand-wrapper pb-100 pt-100">
+    <div class="container">
+        <div class="our-brand-bg" style="background-image: url('/img/bg-image/bg-img-2.jpg');">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="swiper-container our-brand-slider">
+                        <div class="swiper-wrapper">
+                            @foreach (var item in Model.OurBrands)
+                            {
+                                <div class="swiper-slide">
+                                    <div class="our-brand-item">
+                                        <img src="~/img/brand/@item.BrandLogo" alt="Image">
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion Our Brand End-->
+<!-- #region Newsletter -->
+<div class="newsletter-full pb-100 pt-100" style="background-image: url('/img/bg-image/bg-img-7.jpg');">
+    <div class="container h-100">
+        <div class="row h-100">
+            <div class="col-12 align-self-center">
+                <div class="newsletter-content">
+                    <h2 class="newsletter-title">Subscribe Our Newsletter & Get Update Everytime</h2>
+                    <form class="newsletter-form" action="#">
+                        <input class="input-field" type="email" autocomplete="on" name="Enter Your Email" value="Enter Your Email" onblur="if(this.value==''){this.value='Enter Your Email'}" onfocus="if(this.value=='Enter Your Email'){this.value=''}">
+                        <div class="btn-wrapper">
+                            <button class="btn btn-submit" id="mc-submit">
+                                <i class="fal fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion Newsletter End -->
