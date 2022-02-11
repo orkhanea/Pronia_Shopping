@@ -2,7 +2,7 @@
 
 namespace Pronia_eCommerce.Migrations
 {
-    public partial class added_CommentIdAndBlogIdNotMappedToCommentPost : Migration
+    public partial class Added : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Shopping Page";
 }
-
+@model VmProduct
 <!-- #region Shop -->
 <section id="shop">
     <div class="shop-page-full pb-100 pt-100">
@@ -10,8 +10,8 @@
                 <div class="col-xl-3 col-lg-4 order-2 order-lg-1 pt-5 pt-lg-0">
                     <div class="sidebar-wrapper">
                         <div class="searchbox-tool">
-                            <form id="searchbox-tool">
-                                <input class="input-field" type="text" value="Search..." onblur="if(this.value==''){this.value='Search...'}" onfocus="if(this.value=='Search...'){this.value=''}" autocomplete="off">
+                            <form id="searchbox-tool" asp-controller="Shop" asp-action="Index" method="post">
+                                <input class="input-field" type="text" asp-for="@Model.Search.SearchData" value="@(Model.Search.SearchData==null?"Search...":Model.Search.SearchData)" autocomplete="off">
                                 <button class="searchbox-tool-btn" type="submit">
                                     <i class="fa fa-search"></i>
                                 </button>
@@ -21,115 +21,55 @@
                             <div class="widgets-item pt-0">
                                 <h2 class="widgets-title mb-4">Categories</h2>
                                 <ul class="widgets-category">
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-chevron-right"></i>
-                                            All <span>(65)</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-chevron-right"></i>
-                                            Bansai <span>(12)</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-chevron-right"></i>
-                                            House Plants <span>(22)</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-chevron-right"></i>
-                                            Indoor Living <span>(19)</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-chevron-right"></i>
-                                            Perennnials <span>(17)</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-chevron-right"></i>
-                                            Plant For Gift <span>(01)</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-chevron-right"></i>
-                                            Garden Tools <span>(12)</span>
-                                        </a>
-                                    </li>
+                                    @foreach (var item in Model.ProductCats)
+                                    {
+                                        <li>
+                                            <a asp-controller="Shop" asp-action="Index" asp-route-SearchCategory="@item.Id" class="@(Model.Search.SearchCategory==item.Id?"active":"")">
+                                                <i class="fa fa-chevron-right"></i>
+                                                @item.CategoryName
+                                            </a>
+                                        </li>
+                                    }
+
                                 </ul>
                             </div>
                             <div class="widgets-item">
-                                <h2 class="widgets-title mb-4">Color</h2>
+                                <h2 class="widgets-title mb-4">Size</h2>
                                 <ul class="widgets-category widgets-color">
+                                    @foreach (var item in Model.ProductSizes)
+                                    {
                                     <li>
-                                        <a href="#">
+                                        <a asp-controller="Shop" asp-action="Index" asp-route-SearchSize="@item.Id" class="@(Model.Search.SearchSize==item.Id?"active":"")">
                                             <i class="fa fa-chevron-right"></i>
-                                            All <span>(65)</span>
+                                            @item.Size
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-chevron-right"></i>
-                                            Gold <span>(12)</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-chevron-right"></i>
-
-                                            Green <span>(22)</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-chevron-right"></i>
-                                            white <span>(13)</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-chevron-right"></i>
-                                            Black <span>(10)</span>
-                                        </a>
-                                    </li>
+                                    }
                                 </ul>
                             </div>
                             <div class="widgets-item widgets-filter">
                                 <h2 class="widgets-title mb-4">Price Filter</h2>
                                 <div class="price-filter">
-                                    <form action="">
-                                        <input type="text" class="js-range-slider" name="my_range" value="" />
+                                    <form asp-controller="Shop" asp-action="Index" method="post" class="text-center">
+                                        <input id="Tester2" type="text" class="js-range-slider" name="my_range" value="" />
+                                        <input id="min-value" type="hidden" asp-for="@Model.Search.minValue" />
+                                        <input id="max-value" type="hidden" asp-for="@Model.Search.maxValue" />
+                                        <button id="tester3" type="submit" class="btn btn-sm btn-success filterBtn" >
+                                            Filter
+                                        </button>
                                     </form>
                                 </div>
                             </div>
                             <div class="widgets-item">
                                 <h2 class="widgets-title mb-4">Populer Tags</h2>
                                 <ul class="widgets-tag">
-                                    <li>
-                                        <a href="#">Fashion</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Organic</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Old Fashion</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Men</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Fashion</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Dress</a>
-                                    </li>
+                                    @foreach (var item in Model.ProductTags)
+                                    {
+                                        <li>
+                                            <a asp-controller="Shop" asp-action="Index" asp-route-SearchTag="@item.Id" class="@(Model.Search.SearchTag==item.Id?"active":"")">@item.TagName</a>
+                                        </li>
+                                    }
+
                                 </ul>
                             </div>
                         </div>
@@ -157,14 +97,14 @@
                     <div class="product-header pb-50">
                         <ul class="product-action">
                             <li class="product-count">
-                                <span>12</span> Product Found of <span>30</span>
+                                <span>@Model.Products.Count</span> Product Found of <span>@ViewBag.ProductCount</span>
                             </li>
                             <li class="product-sort">
                                 <select class="type-select nice-select">
                                     <option selected>Sort by Default</option>
                                     <option value="2">Sort by Popularity</option>
                                     <option value="3">Sort by Rated</option>
-                                    <option value="4">Sort by Latest</option>
+                                    <option value="True">Sort by Latest</option>
                                     <option value="5">Sort by High Price</option>
                                     <option value="6">Sort by Low Price</option>
                                 </select>
@@ -172,311 +112,101 @@
                         </ul>
                     </div>
                     <div class="row">
-                        <div class="col-md-4 col-sm-6">
-                            <div class="product-full">
-                                <div class="product-item">
-                                    <div class="product-item-img">
-                                        <a href="single-product-variable.html">
-                                            <img class="primary-img" src="~/img/products/product-6.png" alt="Product Images">
-                                            <img class="secondary-img" src="~/img/products/product-6.png" alt="Product Images">
-                                        </a>
-                                        <div class="product-add-action">
-                                            <ul>
-                                                <li>
-                                                    <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-heart"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
-                                                    <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-eye"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-shopping-cart"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
+                        @foreach (var item in Model.Products)
+                        {
+                            <div class="col-md-4 col-sm-6">
+                                <div class="product-full">
+                                    <div class="product-item">
+                                        <div class="product-item-img">
+                                            <a asp-controller="Shop" asp-action="SingleProduct" asp-route-Id="@item.Id">
+                                                @{
+                                                    for (int i = 0; i < item.ProductImages.Count; i++)
+                                                    {
+                                                        if (i == 0)
+                                                        {
+                                                            <img class="primary-img" src="~/img/products/@item.ProductImages[i].Image" alt="Product Images">
+                                                        }
+                                                        else if (i == 1)
+                                                        {
+                                                            <img class="secondary-img" src="~/img/products/@item.ProductImages[i].Image" alt="Product Images">
+                                                        }
+                                                    }
+                                                }
+
+
+                                            </a>
+                                            <div class="product-add-action">
+                                                <ul>
+                                                    <li>
+                                                        <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                            <input class="add-to-wishlist-product-id" type="hidden" value="@item.Id" />
+                                                            <i class="fal fa-heart @(Model.Favourite==null? "": Model.Favourite.Any(f=>f==item.Id.ToString())? "added-to-wishlist":"")"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
+                                                        <a class="productFullDetail" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                            <input type="hidden" value="@item.Id" />
+                                                            <i class="fal fa-eye"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                            <i class="fal fa-shopping-cart"></i>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <a class="product-name" href="single-product-variable.html">
-                                            American
-                                            Marigold
-                                        </a>
-                                        <div class="price-box pb-1">
-                                            <span class="new-price">$23.45</span>
-                                        </div>
-                                        <div class="rating-box">
-                                            <ul>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <div class="product-full">
-                                <div class="product-item">
-                                    <div class="product-item-img">
-                                        <a href="single-product-variable.html">
-                                            <img class="primary-img" src="~/img/products/product-14.png" alt="Product Images">
-                                            <img class="secondary-img" src="~/img/products/product-3.png" alt="Product Images">
-                                        </a>
-                                        <div class="product-add-action">
-                                            <ul>
-                                                <li>
-                                                    <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-heart"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
-                                                    <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-eye"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-shopping-cart"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <a class="product-name" href="single-product-variable.html">
-                                            American
-                                            Marigold
-                                        </a>
-                                        <div class="price-box pb-1">
-                                            <span class="new-price">$23.45</span>
-                                        </div>
-                                        <div class="rating-box">
-                                            <ul>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                            </ul>
+                                        <div class="product-content">
+                                            <a class="product-name" href="single-product-variable.html">
+                                                @item.Name
+                                            </a>
+                                            <div class="price-box pb-1">
+                                                <span class="new-price" style="@(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? "": "font-size: 15px !important; color: #da4949 !important;")">
+                                                    @(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? item.ProductSizeToProducts.FirstOrDefault(pp => pp.Quantity > 0).Price: "OUT OF STOCK")
+                                                </span>
+                                            </div>
+                                            <div class="rating-box">
+                                                <ul>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <div class="product-full">
-                                <div class="product-item">
-                                    <div class="product-item-img">
-                                        <a href="single-product-variable.html">
-                                            <img class="primary-img" src="~/img/products/product-4.png" alt="Product Images">
-                                            <img class="secondary-img" src="~/img/products/product-5.png" alt="Product Images">
-                                        </a>
-                                        <div class="product-add-action">
-                                            <ul>
-                                                <li>
-                                                    <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-heart"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
-                                                    <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-eye"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-shopping-cart"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <a class="product-name" href="single-product-variable.html">
-                                            American
-                                            Marigold
-                                        </a>
-                                        <div class="price-box pb-1">
-                                            <span class="new-price">$23.45</span>
-                                        </div>
-                                        <div class="rating-box">
-                                            <ul>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <div class="product-full">
-                                <div class="product-item">
-                                    <div class="product-item-img">
-                                        <a href="single-product-variable.html">
-                                            <img class="primary-img" src="~/img/products/product-8.png" alt="Product Images">
-                                            <img class="secondary-img" src="~/img/products/product-9.png" alt="Product Images">
-                                        </a>
-                                        <div class="product-add-action">
-                                            <ul>
-                                                <li>
-                                                    <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-heart"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
-                                                    <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-eye"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-shopping-cart"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <a class="product-name" href="single-product-variable.html">
-                                            American
-                                            Marigold
-                                        </a>
-                                        <div class="price-box pb-1">
-                                            <span class="new-price">$23.45</span>
-                                        </div>
-                                        <div class="rating-box">
-                                            <ul>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <div class="product-full">
-                                <div class="product-item">
-                                    <div class="product-item-img">
-                                        <a href="single-product-variable.html">
-                                            <img class="primary-img" src="~/img/products/product-10.png" alt="Product Images">
-                                            <img class="secondary-img" src="~/img/products/product-11.png" alt="Product Images">
-                                        </a>
-                                        <div class="product-add-action">
-                                            <ul>
-                                                <li>
-                                                    <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-heart"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
-                                                    <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-eye"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-shopping-cart"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <a class="product-name" href="single-product-variable.html">
-                                            American
-                                            Marigold
-                                        </a>
-                                        <div class="price-box pb-1">
-                                            <span class="new-price">$23.45</span>
-                                        </div>
-                                        <div class="rating-box">
-                                            <ul>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <div class="product-full">
-                                <div class="product-item">
-                                    <div class="product-item-img">
-                                        <a href="single-product-variable.html">
-                                            <img class="primary-img" src="~/img/products/product-12.png" alt="Product Images">
-                                            <img class="secondary-img" src="~/img/products/product-13.png" alt="Product Images">
-                                        </a>
-                                        <div class="product-add-action">
-                                            <ul>
-                                                <li>
-                                                    <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-heart"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
-                                                    <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-eye"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                        <i class="fal fa-shopping-cart"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <a class="product-name" href="single-product-variable.html">
-                                            American
-                                            Marigold
-                                        </a>
-                                        <div class="price-box pb-1">
-                                            <span class="new-price">$23.45</span>
-                                        </div>
-                                        <div class="rating-box">
-                                            <ul>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        }
+
                     </div>
-                    <div class="pagination-full pt-50">
-                        <nav>
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#" aria-label="Next">&raquo;</a></li>
-                            </ul>
-                        </nav>
-                    </div>
+                    @if (Model.Products.Count > 0)
+                    {
+                        <div class="pagination-full pt-50">
+                            <nav>
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item @(ViewBag.Page==1?"disabled":"")">
+                                        <a class="page-link" asp-controller="Shop" asp-action="Index" asp-route-Page="@(ViewBag.Page-1)" asp-route-minValue="@Model.Search.minValue" asp-route-maxValue="@Model.Search.maxValue"  asp-route-SearchTag="@Model.Search.SearchTag" asp-route-SearchCategory="@Model.Search.SearchCategory" asp-route-SearchData="@Model.Search.SearchData" asp-route-SearchSize="@Model.Search.SearchSize" aria-label="Prev">&laquo;</a>
+                                    </li>
+                                    @for (int i = 0; i < ViewBag.PageCount; i++)
+                                    {
+                                        <li class="page-item @(ViewBag.Page==(i+1)?"active":"")"><a class="page-link" asp-controller="Shop" asp-action="Index" asp-route-Page="@(i+1)" asp-route-minValue="@Model.Search.minValue" asp-route-maxValue="@Model.Search.maxValue" asp-route-SearchTag="@Model.Search.SearchTag" asp-route-SearchCategory="@Model.Search.SearchCategory" asp-route-SearchData="@Model.Search.SearchData" asp-route-SearchSize="@Model.Search.SearchSize">@(i+1)</a></li>
+                                    }
+                                    <li class="page-item @(ViewBag.Page==ViewBag.PageCount?"disabled":"")">
+                                        <a class="page-link" asp-controller="Shop" asp-action="Index" asp-route-Page="@(ViewBag.Page+1)" asp-route-SearchTag="@Model.Search.SearchTag" asp-route-minValue="@Model.Search.minValue" asp-route-maxValue="@Model.Search.maxValue" asp-route-SearchCategory="@Model.Search.SearchCategory" asp-route-SearchData="@Model.Search.SearchData" asp-route-SearchSize="@Model.Search.SearchSize" aria-label="Next">&raquo;</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <img class="w-100 h-100" src="~/img/uncategorized/NoResult.png" alt="Alternate Text" />
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -485,48 +215,31 @@
 </section>
 <!-- #endregion Shop End -->
 <!-- #region Begin Modal -->
-<div class="modal product-modal-full fade" id="quickModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="quickModal" aria-hidden="true">
+<div class="modal product-modal-full fade product-detail-modal-ajax" id="quickModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="quickModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
+            <div id="noResult" style="position: absolute !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; z-index: 10 !important; ">
+                <img class="w-100 h-100" src="~/img/uncategorized/NoResult.png" alt="Alternate Text" />
+            </div>
+            <div class="modal-header" style="z-index: 20 !important">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-tippy="Close" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="productmodalbody">
                 <div class="modal-wrap row">
                     <div class="col-lg-6">
                         <div class="modal-img">
                             <div class="swiper-container modal-slider">
                                 <div class="swiper-wrapper">
-                                    <div class="swiper-slide">
-                                        <a href="#" class="single-img">
-                                            <img src="~/img/products/product-13.png" alt="Image">
-                                        </a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a href="#" class="single-img">
-                                            <img src="~/img/products/product-14.png" alt="Image">
-                                        </a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a href="#" class="single-img">
-                                            <img src="~/img/products/product-15.png" alt="Image">
-                                        </a>
-                                    </div>
-                                    <div class="swiper-slide">
-                                        <a href="#" class="single-img">
-                                            <img src="~/img/products/product-16.png" alt="Image">
-                                        </a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-6 pt-5 pt-lg-0">
                         <div class="product-info">
-                            <h2 class="title">American Marigold</h2>
-                            <div class="price">
-                                <span class="new-price">$23.45</span>
+                            <h2 class="title" id="product-name">American Marigold</h2>
+                            <div class="price" style="padding-bottom: 15px !important;">
+                                <span class="new-price" id="modalPrice" style="font-size: 30px !important; color: #abd373 !important;">$23.45</span>
                             </div>
                             <div class="rating-wrap">
                                 <div class="rating">
@@ -551,26 +264,24 @@
                                     <option value="red">Red</option>
                                 </select>
                             </div>
-                            <div class="selector-full pb-30">
+                            <div class="selector-full pb-30" id="selector-size">
                                 <span class="selector-title">Size</span>
-                                <select class="nice-select wide rounded-0">
-                                    <option value="medium">Medium Size & Poot</option>
-                                    <option value="large">Large Size With Poot</option>
-                                    <option value="small">Small Size With Poot</option>
+                                <select class="nice-select2 wide rounded-0" id="modalSize">
                                 </select>
                             </div>
-                            <p class="product-desc">
+                            <p class="product-desc" id="modal-product-desc">
                                 Lorem ipsum dolor sit amet, consectetur adipisic elit, sed do eiusmod
                                 tempo incid ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru
                                 exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
                                 dolor
                                 in reprehenderit in voluptate
                             </p>
+                            <p id="quantity-left" class="d-none alert-danger text-danger" style="text-align: center !important; font-size: 20px !important; padding: 5px !important; border-radius: 5px !important; margin-bottom: 10px !important;">Only 4 left</p>
                             <ul class="single-product-action">
                                 <li class="quantity">
                                     <div class="cart-action">
                                         <form action="#">
-                                            <input class="cart-action-box" value="1" type="text">
+                                            <input id="cart-action-box-value" class="cart-action-box" value="1" type="text">
                                         </form>
                                         <div class="minus quantity-btn">
                                             <i class="fal fa-minus"></i>
@@ -581,7 +292,7 @@
                                     </div>
                                 </li>
                                 <li class="add-to-cart">
-                                    <a class="btn" href="cart.html">
+                                    <a id="add-to-cart-btn" class="btn">
                                         Add to
                                         cart
                                     </a>

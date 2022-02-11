@@ -29,6 +29,9 @@ namespace Pronia_eCommerce.Models
         public int BlogId { get; set; }
 
         [NotMapped]
+        public int ProductId { get; set; }
+
+        [NotMapped]
         public int CommentId { get; set; }
 
         public DateTime CreatedDate { get; set; }

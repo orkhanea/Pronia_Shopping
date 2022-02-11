@@ -143,7 +143,7 @@
                         <div class="sidebar-wrapper">
                             <div class="searchbox-tool">
                                 <form id="searchbox-tool" asp-controller="Blog" asp-action="Index" method="post">
-                                    <input class="input-field" asp-for="@Model.Search.SearchData" type="text" placeholder="@(Model.Search.SearchData==null?"Search...":Model.Search.SearchData)" autocomplete="off">
+                                    <input class="input-field" asp-for="@Model.Search.SearchData" type="text" value="@(Model.Search.SearchData==null?"Search...":Model.Search.SearchData)" autocomplete="off">
                                     <button class="searchbox-tool-btn" type="submit">
                                         <i class="fa fa-search"></i>
                                     </button>

@@ -4,7 +4,6 @@
 @model VmHome
 
 
-
 <!-- #region Home Page Slider -->
 <section id="main-slider">
     <div class="slider-area">
@@ -1280,39 +1279,39 @@
 
 
                 @*<div class="col-lg-4 col-md-6">
-            <div class="collection-item collection-item-hover">
-                <div class="collection-img">
-                    <img src="~/img/collection/collection-item-3.png" alt="Image">
-                </div>
-                <div class="collection-content collection-content-center">
-                    <span class="collection">New Collection</span>
-                    <h3 class="title">Plant Port</h3>
-                    <div class="btn-wrapper">
-                        <a class="btn btn-custom" href="shop.html">
-                            Shop
-                            Now
-                        </a>
+                        <div class="collection-item collection-item-hover">
+                            <div class="collection-img">
+                                <img src="~/img/collection/collection-item-3.png" alt="Image">
+                            </div>
+                            <div class="collection-content collection-content-center">
+                                <span class="collection">New Collection</span>
+                                <h3 class="title">Plant Port</h3>
+                                <div class="btn-wrapper">
+                                    <a class="btn btn-custom" href="shop.html">
+                                        Shop
+                                        Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-8">
-            <div class="collection-item collection-item-hover">
-                <div class="collection-img">
-                    <img src="~/img/collection/collection-item-4.png" alt="Image">
-                </div>
-                <div class="collection-content collection-content-left">
-                    <span class="collection">Collection Of Cactus</span>
-                    <h3 class="title">Hanging Pots & <br> Plant</h3>
-                    <div class="btn-wrapper">
-                        <a class="btn btn-custom" href="shop.html">
-                            Shop
-                            Now
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>*@
+                    <div class="col-lg-8">
+                        <div class="collection-item collection-item-hover">
+                            <div class="collection-img">
+                                <img src="~/img/collection/collection-item-4.png" alt="Image">
+                            </div>
+                            <div class="collection-content collection-content-left">
+                                <span class="collection">Collection Of Cactus</span>
+                                <h3 class="title">Hanging Pots & <br> Plant</h3>
+                                <div class="btn-wrapper">
+                                    <a class="btn btn-custom" href="shop.html">
+                                        Shop
+                                        Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
             </div>
         </div>
     </div>
@@ -1635,87 +1634,57 @@
                 <div class="col-lg-12">
                     <div class="swiper-container latest-blog-slider">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <div class="latest-blog-item">
-                                    <div class="latest-blog-content">
-                                        <div class="name-date">
-                                            <ul>
-                                                <li class="author">By: Admin</li>
-                                                <li class="date">24 April 2021</li>
-                                            </ul>
+                            @foreach (var item in Model.LatestBlogs)
+                            {
+                                <div class="swiper-slide">
+                                    <div class="latest-blog-item" style=" height: 668.01px !important;">
+                                        <div class="latest-blog-content">
+                                            <div class="name-date">
+                                                <ul>
+                                                    <li class="author">By: Admin</li>
+                                                    <li class="date">@item.CreatedDate.ToString("dd MMMM yyyy")</li>
+                                                </ul>
+                                            </div>
+                                            <h2 class="title">
+                                                <a asp-controller="Blog" asp-action="SingleBlog" asp-route-Id="@item.Id">@item.Title</a>
+                                            </h2>
+                                            <p class="text mb-7">
+                                                @{
+                                                    if (item.Content.Length > 200)
+                                                    {
+                                                        for (int i = 200; ; i++)
+                                                        {
+                                                            if (item.Content[i] == '.')
+                                                            {
+                                                                @item.Content.Substring(0, i + 1);
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </p>
                                         </div>
-                                        <h2 class="title">
-                                            <a href="blog.html">There Many Variations</a>
-                                        </h2>
-                                        <p class="text mb-7">
-                                            Lorem ipsum dolor sit amet, consecteturl adipisl elit,
-                                            sed do eiusmod tempor incidio ut labore et dolore magna aliqua.
-                                        </p>
-                                    </div>
-                                    <div class="latest-blog-img">
-                                        <a href="blog.html">
-                                            <img class="img-full" src="~/img/blog/blog-1.jpg" alt="Image">
-                                        </a>
-                                        <div class="icon-wrapper">
-                                            <i class="fal fa-link"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="latest-blog-item">
-                                    <div class="latest-blog-content">
-                                        <div class="name-date">
-                                            <ul>
-                                                <li class="author">By: Admin</li>
-                                                <li class="date">24 April 2021</li>
-                                            </ul>
-                                        </div>
-                                        <h2 class="title">
-                                            <a href="blog.html">There Many Variations</a>
-                                        </h2>
-                                        <p class="text mb-7">
-                                            Lorem ipsum dolor sit amet, consecteturl adipisl elit,
-                                            sed do eiusmod tempor incidio ut labore et dolore magna aliqua.
-                                        </p>
-                                    </div>
-                                    <div class="latest-blog-img">
-                                        <a href="blog.html">
-                                            <img class="img-full" src="~/img/blog/blog-2.jpg" alt="Image">
-                                        </a>
-                                        <div class="icon-wrapper">
-                                            <i class="fal fa-link"></i>
-                                        </div>
+                                        @if (item.Image != null)
+                                        {
+                                            <div class="latest-blog-img">
+                                                <a href="blog.html">
+                                                    <img class="img-full" src="~/img/blog/@item.Image" alt="Image">
+                                                </a>
+                                                <div class="icon-wrapper">
+                                                    <i class="fal fa-link"></i>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="ratio ratio-16x9">
+                                                <iframe src="@item.VideoLink" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                            </div>
+                                        }
+
                                     </div>
                                 </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="latest-blog-item">
-                                    <div class="latest-blog-content">
-                                        <div class="name-date">
-                                            <ul>
-                                                <li class="author">By: Admin</li>
-                                                <li class="date">24 April 2021</li>
-                                            </ul>
-                                        </div>
-                                        <h2 class="title">
-                                            <a href="blog.html">There Many Variations</a>
-                                        </h2>
-                                        <p class="text mb-7">
-                                            Lorem ipsum dolor sit amet, consecteturl adipisl elit,
-                                            sed do eiusmod tempor incidio ut labore et dolore magna aliqua.
-                                        </p>
-                                    </div>
-                                    <div class="latest-blog-img">
-                                        <a href="blog.html">
-                                            <img class="img-full" src="~/img/blog/blog-3.jpg" alt="Image">
-                                        </a>
-                                        <div class="icon-wrapper">
-                                            <i class="fal fa-link"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>

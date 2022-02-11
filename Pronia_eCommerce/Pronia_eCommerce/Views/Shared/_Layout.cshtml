@@ -1,5 +1,13 @@
-﻿@{
+﻿@inject IHttpContextAccessor _httpContextAccessor
+@{
     var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+
+    string oldData = _httpContextAccessor.HttpContext.Request.Cookies["cart"];
+    int favourites = 0;
+    if (!string.IsNullOrEmpty(oldData))
+    {
+        favourites = oldData.Split("-").Length;
+    }
 }
 @model VmLayout
 
@@ -252,8 +260,8 @@
             </div>
         </div>
         <div class="cart-menu-wrapper" id="cart-menu">
-            <div class="cart-menu-full">
-                <div class="cart-menu-content">
+            <div class="cart-menu-full" id="cart-menu-full">
+                <div class="cart-menu-content" id="cart-menu-content">
                     <div class="cart-menu-heading">
                         <h4 class="mb-0">Shopping Cart</h4>
                         <a href="#" class="btn-close-custom">
@@ -262,112 +270,16 @@
                                data-tippy-theme="sharpborder"></i>
                         </a>
                     </div>
-                    <ul class="cart-menu-list">
-                        <li class="cart-menu-products">
-                            <a class="product-item-delete" href="#">
-                                <i class="fal fa-times" data-tippy="Remove"
-                                   data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50"
-                                   data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
-                            </a>
-                            <div class="product-item-img-wrapper">
-                                <a href="single-product-variable.html" class="product-item-img">
-                                    <img src="~/img/products/product-5.png" alt="Image">
-                                </a>
-                            </div>
-                            <div class="product-item-content">
-                                <a class="product-item-title" href="single-product-variable.html">American Marigold</a>
-                                <span class="product-item-qty">1 x $23.45</span>
-                            </div>
-                        </li>
-                        <li class="cart-menu-products">
-                            <a class="product-item-delete" href="#">
-                                <i class="fal fa-times" data-tippy="Remove"
-                                   data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50"
-                                   data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
-                            </a>
-                            <div class="product-item-img-wrapper">
-                                <a href="single-product-variable.html" class="product-item-img">
-                                    <img src="~/img/products/product-5.png" alt="Image">
-                                </a>
-                            </div>
-                            <div class="product-item-content">
-                                <a class="product-item-title" href="single-product-variable.html">American Marigold</a>
-                                <span class="product-item-qty">1 x $23.45</span>
-                            </div>
-                        </li>
-                        <li class="cart-menu-products">
-                            <a class="product-item-delete" href="#">
-                                <i class="fal fa-times" data-tippy="Remove"
-                                   data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50"
-                                   data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
-                            </a>
-                            <div class="product-item-img-wrapper">
-                                <a href="single-product-variable.html" class="product-item-img">
-                                    <img src="~/img/products/product-5.png" alt="Image">
-                                </a>
-                            </div>
-                            <div class="product-item-content">
-                                <a class="product-item-title" href="single-product-variable.html">American Marigold</a>
-                                <span class="product-item-qty">1 x $23.45</span>
-                            </div>
-                        </li>
-                        <li class="cart-menu-products">
-                            <a class="product-item-delete" href="#">
-                                <i class="fal fa-times" data-tippy="Remove"
-                                   data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50"
-                                   data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
-                            </a>
-                            <div class="product-item-img-wrapper">
-                                <a href="single-product-variable.html" class="product-item-img">
-                                    <img src="~/img/products/product-5.png" alt="Image">
-                                </a>
-                            </div>
-                            <div class="product-item-content">
-                                <a class="product-item-title" href="single-product-variable.html">American Marigold</a>
-                                <span class="product-item-qty">1 x $23.45</span>
-                            </div>
-                        </li>
-                        <li class="cart-menu-products">
-                            <a class="product-item-delete" href="#">
-                                <i class="fal fa-times" data-tippy="Remove"
-                                   data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50"
-                                   data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
-                            </a>
-                            <div class="product-item-img-wrapper">
-                                <a href="single-product-variable.html" class="product-item-img">
-                                    <img src="~/img/products/product-5.png" alt="Image">
-                                </a>
-                            </div>
-                            <div class="product-item-content">
-                                <a class="product-item-title" href="single-product-variable.html">American Marigold</a>
-                                <span class="product-item-qty">1 x $23.45</span>
-                            </div>
-                        </li>
-                        <li class="cart-menu-products">
-                            <a class="product-item-delete" href="#">
-                                <i class="fal fa-times" data-tippy="Remove"
-                                   data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50"
-                                   data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
-                            </a>
-                            <div class="product-item-img-wrapper">
-                                <a href="single-product-variable.html" class="product-item-img">
-                                    <img src="~/img/products/product-5.png" alt="Image">
-                                </a>
-                            </div>
-                            <div class="product-item-content">
-                                <a class="product-item-title" href="single-product-variable.html">American Marigold</a>
-                                <span class="product-item-qty">1 x $23.45</span>
-                            </div>
-                        </li>
+                    <ul class="cart-menu-list" id="cart-menu-list">
+                        
                     </ul>
                 </div>
                 <div class="cart-total-price">
                     <span>Subtotal</span>
-                    <span class="ammount">$79.35</span>
+                    <span class="ammount" id="cart-total-amount"></span>
                 </div>
                 <div class="cart-menu-btn-full gap-2 d-grid pb-60">
-                    <a href="cart.html" class="btn btn-dark btn-cart">View Cart</a>
-                    <a href="checkout.html" class="btn btn-dark btn-cart">Checkout</a>
+                    <a asp-controller="Cart" asp-action="Index" class="btn btn-dark btn-cart">View Cart</a>
                 </div>
             </div>
         </div>
@@ -396,9 +308,9 @@
     </header>
     <main class="full-main">
         @*@if (controllerName.ToUpper() != "HOME")
-        {
-            
-        }*@
+            {
+
+            }*@
         @RenderBody()
     </main>
     <footer>
@@ -551,7 +463,9 @@
     <script src="https://unpkg.com/counterup2@2.0.2/dist/index.js"></script>
     <script src="https://unpkg.com/tippy.js@4"></script>
     <script src="https://unpkg.com/swiper@7/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="~/js/ProductDetailAjax.js"></script>
     <script src="~/js/scriptC.js"></script>
 
 </body>

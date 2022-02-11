@@ -1,124 +1,139 @@
-﻿
-
+﻿@model VmCart
 <!-- #region Wishlist -->
 <div class="wishlist-full pt-100 pb-100">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <form action="#">
-                    <div class="table-content table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="product-remove">remove</th>
-                                    <th class="product-thumbnail">images</th>
-                                    <th class="cart-product-name">Product</th>
-                                    <th class="product-price">Unit Price</th>
-                                    <th class="product-stock-status">Quantity</th>
-                                    <th class="cart-btn">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="product-remove">
-                                        <a href="#">
-                                            <i class="fal fa-times" data-tippy="Remove" data-tippy-inertia="true"
-                                               data-tippy-animation="shift-away" data-tippy-delay="50"
-                                               data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
-                                        </a>
-                                    </td>
-                                    <td class="product-thumbnail">
-                                        <a href="#">
-                                            <img src="~/img/products/product-3.png" alt="Wishlist Thumbnail">
-                                        </a>
-                                    </td>
-                                    <td class="product-name"><a href="#">American Marigold</a></td>
-                                    <td class="product-price"><span class="amount">$23.45</span></td>
-                                    <td class="quantity">
-                                        <div class="cart-action" style="display: inline;">
-                                            <input class="cart-action-box" value="1" type="text">
-                                            <div class="minus quantity-btn">
-                                                <i class="fa fa-minus"></i>
-                                            </div>
-                                            <div class="plus quantity-btn">
-                                                <i class="fa fa-plus"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="product-subtotal"><span class="amount">$23.45</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="product-remove">
-                                        <a href="#">
-                                            <i class="fal fa-times" data-tippy="Remove" data-tippy-inertia="true"
-                                               data-tippy-animation="shift-away" data-tippy-delay="50"
-                                               data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
-                                        </a>
-                                    </td>
-                                    <td class="product-thumbnail">
-                                        <a href="#">
-                                            <img src="~/img/products/product-4.png" alt="Wishlist Thumbnail">
-                                        </a>
-                                    </td>
-                                    <td class="product-name"><a href="#">Black Eyed Susan</a></td>
-                                    <td class="product-price"><span class="amount">$25.45</span></td>
-                                    <td class="quantity">
-                                        <div class="cart-action" style="display: inline;">
-                                            <input class="cart-action-box" value="1" type="text">
-                                            <div class="minus quantity-btn">
-                                                <i class="fa fa-minus"></i>
-                                            </div>
-                                            <div class="plus quantity-btn">
-                                                <i class="fa fa-plus"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="product-subtotal"><span class="amount">$23.45</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="product-remove">
-                                        <a href="#">
-                                            <i class="fal fa-times" data-tippy="Remove" data-tippy-inertia="true"
-                                               data-tippy-animation="shift-away" data-tippy-delay="50"
-                                               data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
-                                        </a>
-                                    </td>
-                                    <td class="product-thumbnail">
-                                        <a href="#">
-                                            <img src="~/img/products/product-5.png" alt="Wishlist Thumbnail">
-                                        </a>
-                                    </td>
-                                    <td class="product-name"><a href="#">Bleeding Heart</a></td>
-                                    <td class="product-price"><span class="amount">$30.45</span></td>
-                                    <td class="quantity">
-                                        <div class="cart-action" style="display: inline;">
-                                            <input class="cart-action-box" value="1" type="text">
-                                            <div class="minus quantity-btn">
-                                                <i class="fa fa-minus"></i>
-                                            </div>
-                                            <div class="plus quantity-btn">
-                                                <i class="fa fa-plus"></i>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="product-subtotal"><span class="amount">$23.45</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="row justify-content-end">
-                        <div class="col-md-5 ml-auto">
-                            <div class="cart-page-total">
-                                <h2>Cart totals</h2>
-                                <ul>
-                                    <li>Subtotal <span>$79.35</span></li>
-                                    <li>Total <span>$79.35</span></li>
-                                </ul>
-                                <a href="#">Proceed to checkout</a>
+                @{
+                    if (Model.Products != null)
+                    {
+                        <form class="cart-full-checker" action="#">
+                            <div class="table-content table-responsive" style="overflow: unset !important;">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="product-remove">remove</th>
+                                            <th class="product-thumbnail">images</th>
+                                            <th class="cart-product-name">Product</th>
+                                            <th class="product-price">Unit Price</th>
+                                            <th class="product-price">Size</th>
+                                            <th class="product-stock-status">Quantity</th>
+                                            <th class="cart-btn">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            foreach (var item in Model.Products)
+                                            {
+                                                <tr>
+                                                    <td class="cart-product-remove">
+                                                        <a asp-controller="Cart" asp-action="RemoveFromCart" asp-route-Id="@item.Id">
+                                                            <i class="fal fa-times" data-tippy="Remove" data-tippy-inertia="true"
+                                                               data-tippy-animation="shift-away" data-tippy-delay="50"
+                                                               data-tippy-arrow="true" data-tippy-theme="sharpborder"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td class="product-thumbnail">
+                                                        <a href="#">
+                                                            <img src="~/img/products/@item.ProductImages.Where(p=>p.Image!=null).FirstOrDefault().Image" alt="Wishlist Thumbnail">
+                                                        </a>
+                                                    </td>
+                                                    <td class="product-name"><a href="#">@item.Name</a></td>
+                                                    <td class="product-price">
+                                                        <span class="amount @("cart-product-price"+item.Id)">
+                                                            @{
+                                                                bool noPrice = false;
+                                                                foreach (var price in item.ProductSizeToProducts)
+                                                                {
+                                                                    if (price.Price != 0)
+                                                                    {
+                                                                        @price.Price
+                                                                        noPrice = false;
+                                                                        break;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        noPrice = true;
+                                                                    }
+                                                                }
+
+                                                                if (noPrice)
+                                                                {
+                                                                    string noPriceText = "Price will be Update soon";
+                                                                    @noPriceText
+                                                                }
+                                                            }
+                                                        </span>
+                                                    </td>
+                                                    <td style="width: 230px;" id="cart-size">
+                                                        <select class="nice-select wide border-bottom-0 rounded-0 cart-nice-select">
+                                                            @foreach (var size in item.ProductSizeToProducts)
+                                                            {
+                                                                if (size.Quantity > 0)
+                                                                {
+                                                                    <option value="@size.Id">@size.ProductSize.Size</option>
+                                                                }
+                                                                else if (size.Quantity == 0)
+                                                                {
+                                                                    <option disabled value="@size.Id">@size.ProductSize.Size</option>
+                                                                }
+
+
+                                                            }
+                                                        </select>
+                                                        @{
+                                                            foreach (var s in item.ProductSizeToProducts)
+                                                            {
+                                                                <input class="cart-price" type="hidden" value="@s.Price" />
+                                                                <input class="cart-price-product-id" type="hidden" value="@item.Id" />
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td class="quantity">
+                                                        <div class="cart-action" style="display: inline;">
+                                                            <input class="cart-action-box @("cart-action-box"+item.Id)" value="1" type="text">
+                                                            <div class="minus quantity-btn @("minus"+item.Id)">
+                                                                <i class="fa fa-minus"></i>
+                                                            </div>
+                                                            <div class="plus quantity-btn @("plus"+item.Id)">
+                                                                <i class="fa fa-plus"></i>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="product-subtotal cart-product-sub-total">
+                                                        <span class="amount @("cart-product-subtotal"+item.Id)">$23.45</span>
+                                                        <input type="hidden" value="@item.Id" />
+                                                    </td>
+                                                </tr>
+                                            }
+                                            <input id="cartProductCount" type="hidden" value="@Model.Products.Count" />
+                                        }
+                                    </tbody>
+                                </table>
                             </div>
-                        </div>
-                    </div>
-                </form>
+                            <div class="row justify-content-end">
+                                <div class="col-md-5 ml-auto">
+                                    <div class="cart-page-total">
+                                        <h2>Cart totals</h2>
+                                        <ul>
+                                            <li>Subtotal <span>$79.35</span></li>
+                                            <li>Total <span>$79.35</span></li>
+                                        </ul>
+                                        <a href="#">Proceed to checkout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+            <div class="text-center">
+                <img src="~/img/uncategorized/empty-cart..png" alt="Alternate Text" style="margin-left: 20px !important;" />
+                <p style="font-size: 14px !important; color: #7d7d7d !important; ">There is nothing in your cart. Let's add some items.</p>
+                <a class="btn" style=" color: white !important; background: #abd373 !important;" asp-controller="Shop" asp-action="Index">Go To Shop</a>
+            </div>
+                    }
+                }
             </div>
         </div>
     </div>

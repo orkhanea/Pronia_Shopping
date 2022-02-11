@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,14 +7,12 @@ using System.Threading.Tasks;
 
 namespace Pronia_eCommerce.Models
 {
-    public class ProductCategoryToProduct
+    public class RatingStar
     {
         [Key]
         public int Id { get; set; }
-
-        [ForeignKey("ProductCategory")]
-        public int ProductCategoryId { get; set; }
-        public ProductCategory ProductCategory { get; set; }
+        public int Star { get; set; }
+        public string UserIp { get; set; }
 
         [ForeignKey("Product")]
         public int ProductId { get; set; }

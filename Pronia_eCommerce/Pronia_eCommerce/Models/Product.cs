@@ -25,13 +25,19 @@ namespace Pronia_eCommerce.Models
         [MaxLength(1500)]
         public string FullDesc { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+
         public List<Comment> Comment { get; set; }
 
-        public List<ProductCategoryToProduct> ProductCategoryToProducts { get; set; }
+        [ForeignKey("ProductCat")]
+        public int ProductCatId { get; set; }
+        public ProductCat ProductCat { get; set; }
+
         public List<ProductTagToProduct> ProductTagToProducts { get; set; }
         public List<ProductComment> ProductComments { get; set; }
         public List<ProductImage> ProductImages { get; set; }
         public List<ProductSizeToProduct> ProductSizeToProducts { get; set; }
+        public List<RatingStar> Ratings { get; set; }
 
 
     }

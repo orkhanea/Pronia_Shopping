@@ -34,8 +34,6 @@ namespace Pronia_eCommerce.Data
         public DbSet<Message> Messages { get; set; }
         public DbSet<OurBrand> OurBrands { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductCategory> ProductCategories { get; set; }
-        public DbSet<ProductCategoryToProduct> ProductCategoryToProducts { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<ProductSize> ProductSizes { get; set; }
@@ -47,5 +45,7 @@ namespace Pronia_eCommerce.Data
         public DbSet<Setting> Setting { get; set; }
         public DbSet<SiteSocial> SiteSocials { get; set; }
         public DbSet<Subscribe> Subscribes { get; set; }
+        public DbSet<ProductCat> ProductCats { get; set; }
+        public DbSet<RatingStar> RatingStars { get; set; }
     }
 }

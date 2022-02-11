@@ -10,8 +10,8 @@ using Pronia_eCommerce.Data;
 namespace Pronia_eCommerce.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220205070652_added_RequiredToCommentPost")]
-    partial class added_RequiredToCommentPost
+    [Migration("20220209212214_Updated_RatingStar")]
+    partial class Updated_RatingStar
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -672,6 +672,9 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FullDesc")
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
@@ -679,6 +682,9 @@ namespace Pronia_eCommerce.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("ProductCatId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SKU")
                         .HasMaxLength(20)
@@ -690,10 +696,12 @@ namespace Pronia_eCommerce.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductCatId");
+
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Pronia_eCommerce.Models.ProductCategory", b =>
+            modelBuilder.Entity("Pronia_eCommerce.Models.ProductCat", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -706,29 +714,7 @@ namespace Pronia_eCommerce.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCategories");
-                });
-
-            modelBuilder.Entity("Pronia_eCommerce.Models.ProductCategoryToProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ProductCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductCategoryId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductCategoryToProducts");
+                    b.ToTable("ProductCats");
                 });
 
             modelBuilder.Entity("Pronia_eCommerce.Models.ProductComment", b =>
@@ -864,6 +850,29 @@ namespace Pronia_eCommerce.Migrations
                     b.HasIndex("ProductTagId");
 
                     b.ToTable("ProductTagToProducts");
+                });
+
+            modelBuilder.Entity("Pronia_eCommerce.Models.RatingStar", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Star")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserIp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("RatingStars");
                 });
 
             modelBuilder.Entity("Pronia_eCommerce.Models.Sale", b =>
@@ -1146,23 +1155,15 @@ namespace Pronia_eCommerce.Migrations
                     b.Navigation("ParentComment");
                 });
 
-            modelBuilder.Entity("Pronia_eCommerce.Models.ProductCategoryToProduct", b =>
+            modelBuilder.Entity("Pronia_eCommerce.Models.Product", b =>
                 {
-                    b.HasOne("Pronia_eCommerce.Models.ProductCategory", "ProductCategory")
-                        .WithMany("ProductCategoryToProducts")
-                        .HasForeignKey("ProductCategoryId")
+                    b.HasOne("Pronia_eCommerce.Models.ProductCat", "ProductCat")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductCatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Pronia_eCommerce.Models.Product", "Product")
-                        .WithMany("ProductCategoryToProducts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("ProductCategory");
+                    b.Navigation("ProductCat");
                 });
 
             modelBuilder.Entity("Pronia_eCommerce.Models.ProductComment", b =>
@@ -1231,6 +1232,17 @@ namespace Pronia_eCommerce.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("ProductTag");
+                });
+
+            modelBuilder.Entity("Pronia_eCommerce.Models.RatingStar", b =>
+                {
+                    b.HasOne("Pronia_eCommerce.Models.Product", "Product")
+                        .WithMany("Ratings")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Pronia_eCommerce.Models.Sale", b =>
@@ -1305,8 +1317,6 @@ namespace Pronia_eCommerce.Migrations
                 {
                     b.Navigation("Comment");
 
-                    b.Navigation("ProductCategoryToProducts");
-
                     b.Navigation("ProductComments");
 
                     b.Navigation("ProductImages");
@@ -1314,11 +1324,13 @@ namespace Pronia_eCommerce.Migrations
                     b.Navigation("ProductSizeToProducts");
 
                     b.Navigation("ProductTagToProducts");
+
+                    b.Navigation("Ratings");
                 });
 
-            modelBuilder.Entity("Pronia_eCommerce.Models.ProductCategory", b =>
+            modelBuilder.Entity("Pronia_eCommerce.Models.ProductCat", b =>
                 {
-                    b.Navigation("ProductCategoryToProducts");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Pronia_eCommerce.Models.ProductSize", b =>

@@ -28,6 +28,7 @@ namespace Pronia_eCommerce.Controllers
             model.OurBrands = _context.OurBrands.ToList();
             model.CollectionL = _context.CollectionL.ToList();
             model.CollectionS = _context.CollectionS.ToList();
+            model.LatestBlogs = _context.Blogs.OrderByDescending(b => b.CreatedDate).Take(3).ToList();
             return View(model);
         }
 

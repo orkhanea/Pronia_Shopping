@@ -1277,6 +1277,11 @@ body .full-main .product-full .product-item .product-add-action ul li a i:hover 
   color: #ffffff;
 }
 
+body .full-main .product-full .product-item .product-add-action ul li a .added-to-wishlist{
+  background-color: #abd373;
+  color: #ffffff;
+}
+
 body .full-main .product-full .product-item:hover .product-add-action {
   left: 0;
 }
@@ -2552,6 +2557,10 @@ main .sidebar-wrapper .widgets-area .widgets-item .widgets-category li a {
   display: block;
 }
 
+main .sidebar-wrapper .widgets-area .widgets-item .widgets-category li a .active{
+    color: #abd373;
+}
+
 main .sidebar-wrapper .widgets-area .widgets-item .widgets-category li .active{
     color: #abd373 !important;
 }
@@ -2597,6 +2606,13 @@ main .sidebar-wrapper .widgets-area .widgets-item .widgets-tag li a {
   color: #7e7e7e;
 }
 
+main .sidebar-wrapper .widgets-area .widgets-item .widgets-tag li a .active{
+  
+  background-color: #abd373;
+  border-color: #abd373;
+  color: #ffffff;
+}
+
 main .sidebar-wrapper .widgets-area .widgets-item .widgets-tag li a:hover {
   background-color: #abd373;
   border-color: #abd373;
@@ -2622,8 +2638,7 @@ main .sidebar-wrapper .widgets-area .widgets-item .widgets-list-item .widgets-li
 main .sidebar-wrapper .widgets-area .widgets-item .widgets-list-item .widgets-list-img a img {
   width: 100%;
   overflow: hidden;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: contain;
   -o-object-position: center center;
      object-position: center center;
   max-width: 100%;
@@ -2671,6 +2686,16 @@ main .sidebar-wrapper .widgets-area .widgets-filter .price-filter form .irs--fla
   top: 18px;
   width: 18px;
   height: 18px;
+}
+
+main .sidebar-wrapper .widgets-area .widgets-filter .price-filter form .filterBtn {
+  border-radius: 10px !important;
+  padding: 0px 20px !important;
+  background-color: #abd373 !important;
+  border: none !important;
+}
+main .sidebar-wrapper .widgets-area .widgets-filter .price-filter form .filterBtn:hover {
+  background-color: #6c6c6c !important;
 }
 
 main .sidebar-wrapper .widgets-area .widgets-filter .price-filter form .irs--flat .irs-handle i {
@@ -2922,6 +2947,7 @@ main .pagination-full nav .pagination .active .page-link:hover {
 .full-main .product-info .rating-wrap .rating ul li i {
   color: #ffe24d;
   cursor: pointer;
+  font-weight: 100;
 }
 
 .full-main .product-info .rating-wrap .review {
@@ -4457,6 +4483,20 @@ main .wishlist-full .table-content .table tbody .product-remove a i {
 }
 
 main .wishlist-full .table-content .table tbody .product-remove a:hover {
+  color: #abd373;
+}
+
+main .wishlist-full .table-content .table tbody .cart-product-remove a {
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  color: #525252;
+}
+
+main .wishlist-full .table-content .table tbody .cart-product-remove a i {
+  font-size: 16px;
+}
+
+main .wishlist-full .table-content .table tbody .cart-product-remove a:hover {
   color: #abd373;
 }
 

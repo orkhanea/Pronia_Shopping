@@ -1,4 +1,4 @@
-﻿
+﻿@model VmProduct
 <!-- #region Single Product -->
 <div class="single-product-full pt-100">
     <div class="container">
@@ -7,43 +7,25 @@
                 <div class="single-product-img">
                     <div class="swiper-container single-product-slider">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <a href="img/products/product-1.png" class="single-img gallery-popup">
-                                    <img class="img-full" src="~/img/products/product-3.png" alt="Image">
-                                </a>
-                            </div>
-                            <div class="swiper-slide">
-                                <a href="img/products/product-4.png" class="single-img gallery-popup">
-                                    <img class="img-full" src="~/img/products/product-4.png" alt="Image">
-                                </a>
-                            </div>
-                            <div class="swiper-slide">
-                                <a href="img/products/product-5.png" class="single-img gallery-popup">
-                                    <img class="img-full" src="~/img/products/product-5.png" alt="Image">
-                                </a>
-                            </div>
-                            <div class="swiper-slide">
-                                <a href="img/products/product-6.png" class="single-img gallery-popup">
-                                    <img class="img-full" src="~/img/products/product-6.png" alt="Image">
-                                </a>
-                            </div>
+                            @foreach (var img in Model.SingleProduct.ProductImages)
+                            {
+                                <div class="swiper-slide">
+                                    <a href="/img/products/@img.Image" class="single-img gallery-popup">
+                                        <img class="img-full" src="~/img/products/@img.Image" alt="Product Image">
+                                    </a>
+                                </div>
+                            }
                         </div>
                     </div>
                     <div class="single-product-img-bottom">
                         <div class="swiper-container single-product-bottom-slider">
                             <div class="swiper-wrapper">
-                                <a href="#" class="swiper-slide">
-                                    <img class="img-full" src="~/img/products/product-3.png" alt="Product Thumnail">
-                                </a>
-                                <a href="#" class="swiper-slide">
-                                    <img class="img-full" src="~/img/products/product-4.png" alt="Product Thumnail">
-                                </a>
-                                <a href="#" class="swiper-slide">
-                                    <img class="img-full" src="~/img/products/product-5.png" alt="Product Thumnail">
-                                </a>
-                                <a href="#" class="swiper-slide">
-                                    <img class="img-full" src="~/img/products/product-6.png" alt="Product Thumnail">
-                                </a>
+                                @foreach (var img in Model.SingleProduct.ProductImages)
+                                {
+                                    <a class="swiper-slide">
+                                        <img class="img-full" src="~/img/products/@img.Image" alt="Product Image">
+                                    </a>
+                                }
                             </div>
                             <div class="single-product-img-button-wrap d-none d-md-block">
                                 <div class="single-product-img-button-prev">
@@ -59,46 +41,127 @@
             </div>
             <div class="col-lg-6 pt-5 pt-lg-0">
                 <div class="product-info">
-                    <h2 class="title">American Marigold</h2>
+                    <h2 class="title">@Model.SingleProduct.Name</h2>
                     <div class="price-box">
-                        <span class="price">$23.45</span>
+                        <span class="price" id="SingleProductPrice">
+                            @{
+                                bool noPrice = false;
+                                foreach (var price in Model.SingleProduct.ProductSizeToProducts)
+                                {
+                                    if (price.Price != 0)
+                                    {
+                                        @price.Price
+                                        noPrice = false;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        noPrice = true;
+                                    }
+                                }
+
+                                if (noPrice)
+                                {
+                                    string noPriceText = "Price will be Update soon";
+                                    @noPriceText
+                                }
+                            }
+                        </span>
                     </div>
                     <div class="rating-wrap">
                         <div class="rating">
                             <ul>
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
-                                <li><i class="fa fa-star"></i></li>
+
+                                @{
+
+                                    int fiveS = 0;
+                                    int fourS = 0;
+                                    int threeS = 0;
+                                    int twoS = 0;
+                                    int oneS = 0;
+
+                                    foreach (var r in Model.RatingStars)
+                                    {
+
+                                        if (r.Star == 5)
+                                        {
+                                            fiveS++;
+                                        }
+                                        else if (r.Star == 4)
+                                        {
+                                            fourS++;
+                                        }
+                                        else if (r.Star == 3)
+                                        {
+                                            threeS++;
+                                        }
+                                        else if (r.Star == 2)
+                                        {
+                                            twoS++;
+                                        }
+                                        else if (r.Star == 1)
+                                        {
+                                            oneS++;
+                                        }
+
+                                    }
+
+                                    int sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                                    int rSum = fiveS + fourS + threeS + twoS + oneS;
+
+                                    if (sum != 0)
+                                    {
+                                        var totalRating = Math.Round(Convert.ToDecimal(sum / rSum));
+                                        <input id="totalRating" type="hidden" value="@totalRating" />
+                                    }
+
+
+
+
+
+
+                                }
+                                <li>
+                                    <a class="ratingStrars" href="#"><i class="fa fa-star"></i></a>
+                                    <input class="ratingStarsValue" type="hidden" value="1" />
+                                </li>
+                                <li>
+                                    <a class="ratingStrars" href="#"><i class="fa fa-star"></i></a>
+                                    <input class="ratingStarsValue" type="hidden" value="2" />
+                                </li>
+                                <li>
+                                    <a class="ratingStrars" href="#"><i class="fa fa-star"></i></a>
+                                    <input class="ratingStarsValue" type="hidden" value="3" />
+                                </li>
+                                <li>
+                                    <a class="ratingStrars" href="#"><i class="fa fa-star"></i></a>
+                                    <input class="ratingStarsValue" type="hidden" value="4" />
+                                </li>
+                                <li>
+                                    <a class="ratingStrars" href="#"><i class="fa fa-star"></i></a>
+                                    <input class="ratingStarsValue" type="hidden" value="5" />
+                                </li>
                             </ul>
                         </div>
                         <div class="review">
                             <a href="#">( 1 Review )</a>
                         </div>
                     </div>
-                    <div class="selector-full">
-                        <span class="selector-title border-bottom-0">Color</span>
-                        <select class="nice-select wide border-bottom-0 rounded-0">
-                            <option value="default">Black & White</option>
-                            <option value="blue">Blue</option>
-                            <option value="green">Green</option>
-                            <option value="red">Red</option>
-                        </select>
-                    </div>
-                    <div class="selector-full pb-30">
+                    <div class="selector-full pb-30" id="singleProductSelector">
                         <span class="selector-title">Size</span>
                         <select class="nice-select wide rounded-0">
-                            <option value="medium">Medium Size & Poot</option>
-                            <option value="large">Large Size With Poot</option>
-                            <option value="small">Small Size With Poot</option>
+                            @foreach (var opt in Model.SingleProduct.ProductSizeToProducts)
+                            {
+                                <option class="opt-price" value="@opt.Id">@opt.ProductSize.Size</option>
+                            }
                         </select>
+                        @foreach (var opt in Model.SingleProduct.ProductSizeToProducts)
+                        {
+                            <input type="hidden" value="@opt.Price" class="opt-price-size" />
+                        }
                     </div>
                     <p class="product-desc">
-                        Lorem ipsum dolor sit amet, consectetur adipisic elit, sed do eiusmod
-                        tempo incid ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostru
-                        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                        in reprehenderit in voluptate
+                        @Model.SingleProduct.ShortDesc
                     </p>
                     <ul class="single-product-action">
                         <li class="quantity">
@@ -158,27 +221,27 @@
                         <span class="product-explanation-title">SKU:</span>
                         <ul>
                             <li>
-                                <a href="#">Ch-256xl</a>
+                                <a href="#">@Model.SingleProduct.SKU</a>
                             </li>
                         </ul>
                     </div>
                     <div class="product-explanation">
-                        <span class="product-explanation-title">Categories :</span>
+                        <span class="product-explanation-title">Category:</span>
                         <ul>
                             <li>
-                                <a href="#">Office,</a>
-                            </li>
-                            <li>
-                                <a href="#">Home</a>
+                                <a asp-controller="Shop" asp-action="Index" asp-route-SearchCategory="@Model.SingleProduct.ProductCat.Id">@Model.SingleProduct.ProductCat.CategoryName</a>
                             </li>
                         </ul>
                     </div>
                     <div class="product-explanation product-tags">
-                        <span class="product-explanation-title">Tags :</span>
+                        <span class="product-explanation-title">Tags:</span>
                         <ul>
-                            <li>
-                                <a href="#">Furniture</a>
-                            </li>
+                            @foreach (var tag in Model.SingleProduct.ProductTagToProducts)
+                            {
+                                <li>
+                                    <a asp-controller="Shop" asp-action="Index" asp-route-SearchTag="@tag.ProductTag.Id">@tag.ProductTag.TagName</a>
+                                </li>
+                            }
                         </ul>
                     </div>
                     <div class="product-explanation product-explanation-socials align-items-center pb-0">
@@ -219,22 +282,101 @@
             <div class="col-lg-12">
                 <ul class="nav product-tab-nav tab-style-2 pt-0" role="tablist">
                     <li class="nav-item" role="presentation">
+                        <a class="active tab-btn" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">
+                            Reviews(3)
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <a class="tab-btn" id="information-tab" data-bs-toggle="tab" href="#information" role="tab" aria-controls="information" aria-selected="false">
                             Information
                         </a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="active tab-btn" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">
+                        <a class="tab-btn" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">
                             Description
-                        </a>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <a class="tab-btn" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">
-                            Reviews(3)
                         </a>
                     </li>
                 </ul>
                 <div class="product-tab-content">
+                    <div class="tab-pane fade show active" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                        <div class="product-review-body">
+                            <div class="blog-comment mt-0">
+                                <h4 class="heading">Comments (@Model.SingleProduct.ProductComments.Count)</h4>
+                                @{
+                                    foreach (var msg in Model.SingleProduct.ProductComments)
+                                    {
+                                        <div class="blog-comment-item">
+                                            <div class="blog-comment-img">
+                                                <img src="~/img/user/user-4.png" alt="Image">
+                                            </div>
+                                            <div class="blog-comment-content" style=" box-shadow: 0 0 10px 0px #cec9c994 !important; padding: 20px 20px 15px 20px !important; border-radius: 10px !important;">
+                                                <div class="user-meta">
+                                                    <h2 class="user-name" style="margin: 0 !important; font-weight: 500 !important; text-transform: capitalize !important; ">@msg.CommentPost.FullName</h2>
+                                                    <span class="date" style="color: #d03838 !important; font-size: 12px !important;">
+                                                        @{
+                                                            var date = (DateTime.Now - msg.CreatedDate);
+                                                            if (date.Days == 0)
+                                                            {
+                                                                if (date.Hours == 0)
+                                                                {
+                                                                    if (date.Minutes == 0)
+                                                                    {
+                                                                        @(date.Seconds) @(" seconds before")
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @(date.Minutes) @(" minutes before")
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    @(date.Hours) @(" hours before")
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                @(date.Days) @(" days before")
+                                                            }
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <p class="user-comment" style="font-weight: 400 !important; letter-spacing: 1px !important;">
+                                                    @msg.Content
+                                                </p>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <div class="feedback-area">
+                                <h2 class="heading">Leave a comment</h2>
+                                <form class="feedback-form" asp-controller="Shop" asp-action="PostComment" method="post">
+                                    <div class="group-input">
+                                        <div class="form-field me-md-30 mb-30 mb-md-0 mr-30">
+                                            <input asp-for="@Model.CommentPost.FullName" placeholder="Your Name*" class="input-field">
+                                        </div>
+                                        <div class="form-field">
+                                            <input type="email" asp-for="@Model.CommentPost.Email" placeholder="Your Email*" class="input-field">
+                                        </div>
+                                    </div>
+                                    <div class="form-field mt-30">
+                                        <input asp-for="@Model.CommentPost.Subject" placeholder="Subject (Optinal)" class="input-field">
+                                    </div>
+                                    <div class="form-field mt-30">
+                                        <textarea asp-for="@Model.CommentPost.Content" placeholder="Message" class="textarea-field"></textarea>
+                                    </div>
+                                    <input hidden asp-for="@Model.CommentPost.ProductId" value="@Model.SingleProduct.Id" />
+                                    <div class="form-field-button-wrap pt-5">
+                                        <button type="submit" value="submit" class="btn btn-custom-size xl-size btn-pronia-primary" name="submit">
+                                            Post
+                                            Comment
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
                     <div class="tab-pane fade" id="information" role="tabpanel" aria-labelledby="information-tab">
                         <div class="product-information-body">
                             <h4 class="title">Shipping</h4>
@@ -259,114 +401,11 @@
                             </p>
                         </div>
                     </div>
-                    <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                    <div class="tab-pane fade" id="description" role="tabpanel" aria-labelledby="description-tab">
                         <div class="product-description-body">
                             <p class="short-desc mb-0">
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
-                                do eiusmod tempor incidid ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                                qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste
-                                natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam,
-                                eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta
-                                sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut
-                                fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi
-                                nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
+                                @Model.SingleProduct.FullDesc
                             </p>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
-                        <div class="product-review-body">
-                            <div class="blog-comment mt-0">
-                                <h4 class="heading">Comments (03)</h4>
-                                <div class="blog-comment-item">
-                                    <div class="blog-comment-img">
-                                        <img src="~/img/user/user-4.png" alt="User Image">
-                                    </div>
-                                    <div class="blog-comment-content">
-                                        <div class="user-meta">
-                                            <h2 class="user-name">Donald Chavez</h2>
-                                            <span class="date">21 July 2021</span>
-                                        </div>
-                                        <p class="user-comment">
-                                            Lorem ipsum dolor sit amet, consectetur adipisi
-                                            elit, sed
-                                            do eiusmod tempor incidid ut labore etl dolore magna aliqua. Ut enim ad
-                                            minim
-                                            veniam, quis nostrud exercitati ullamco laboris nisi ut aliquiex ea
-                                            commodo
-                                            consequat.
-                                        </p>
-                                        <a class="btn reply-btn" href="#">Reply</a>
-                                    </div>
-                                </div>
-                                <div class="blog-comment-item relpy-item">
-                                    <div class="blog-comment-img">
-                                        <img src="~/img/user/user-5.png" alt="User Image">
-                                    </div>
-                                    <div class="blog-comment-content">
-                                        <div class="user-meta">
-                                            <h2 class="user-name">Marissa Swan</h2>
-                                            <span class="date">21 July 2021</span>
-                                        </div>
-                                        <p class="user-comment">
-                                            Lorem ipsum dolor sit amet, consectetur adipisi
-                                            elit, sed do
-                                            eiusmod tempr incidid ut labore etl dolore magna aliqua. Ut enim ad
-                                            minim veniam,
-                                            quisnos exercitati ullamco laboris nisi ut aliquiex.
-                                        </p>
-                                        <a class="btn reply-btn inner-reply-btn" href="#">Reply</a>
-                                    </div>
-                                </div>
-                                <div class="blog-comment-item">
-                                    <div class="blog-comment-img">
-                                        <img src="~/img/user/user-6.png" alt="User Image">
-                                    </div>
-                                    <div class="blog-comment-content">
-                                        <div class="user-meta">
-                                            <h2 class="user-name">Donald Chavez</h2>
-                                            <span class="date">21 July 2021</span>
-                                        </div>
-                                        <p class="user-comment">
-                                            Lorem ipsum dolor sit amet, consectetur adipisi
-                                            elit, sed
-                                            do eiusmod tempor incidid ut labore etl dolore magna aliqua. Ut enim ad
-                                            minim
-                                            veniam, quis nostrud exercitati ullamco laboris nisi ut aliquiex ea
-                                            commodo
-                                            consequat.
-                                        </p>
-                                        <a class="btn reply-btn" href="#">Reply</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="feedback-area">
-                                <h2 class="heading">Leave a comment</h2>
-                                <form class="feedback-form" action="#">
-                                    <div class="group-input">
-                                        <div class="form-field me-md-30 mb-30 mb-md-0 mr-30">
-                                            <input type="text" name="name" placeholder="Your Name*" class="input-field">
-                                        </div>
-                                        <div class="form-field">
-                                            <input type="text" name="email" placeholder="Your Email*" class="input-field">
-                                        </div>
-                                    </div>
-                                    <div class="form-field mt-30">
-                                        <input type="text" name="subject" placeholder="Subject (Optinal)" class="input-field">
-                                    </div>
-                                    <div class="form-field mt-30">
-                                        <textarea name="message" placeholder="Message" class="textarea-field"></textarea>
-                                    </div>
-                                    <div class="form-field-button-wrap pt-5">
-                                        <button type="submit" value="submit" class="btn btn-custom-size xl-size btn-pronia-primary" name="submit">
-                                            Post
-                                            Comment
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -564,3 +603,4 @@
     </div>
 </div>
 <!-- #endregion Related Products End -->
+<input id="singleProductId" type="hidden" value="@Model.SingleProduct.Id" />

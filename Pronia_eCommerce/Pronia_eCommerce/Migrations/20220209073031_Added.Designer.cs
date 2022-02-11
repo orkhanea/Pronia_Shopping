@@ -10,8 +10,8 @@ using Pronia_eCommerce.Data;
 namespace Pronia_eCommerce.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220204073159_Remove_ShortDescFromBlogTable")]
-    partial class Remove_ShortDescFromBlogTable
+    [Migration("20220209073031_Added")]
+    partial class Added
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -460,6 +460,7 @@ namespace Pronia_eCommerce.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Content")
+                        .IsRequired()
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
@@ -467,10 +468,12 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FullName")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -669,6 +672,9 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FullDesc")
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
@@ -676,6 +682,9 @@ namespace Pronia_eCommerce.Migrations
                     b.Property<string>("Name")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("ProductCatId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SKU")
                         .HasMaxLength(20)
@@ -687,10 +696,12 @@ namespace Pronia_eCommerce.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductCatId");
+
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Pronia_eCommerce.Models.ProductCategory", b =>
+            modelBuilder.Entity("Pronia_eCommerce.Models.ProductCat", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -703,29 +714,7 @@ namespace Pronia_eCommerce.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCategories");
-                });
-
-            modelBuilder.Entity("Pronia_eCommerce.Models.ProductCategoryToProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ProductCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductCategoryId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductCategoryToProducts");
+                    b.ToTable("ProductCats");
                 });
 
             modelBuilder.Entity("Pronia_eCommerce.Models.ProductComment", b =>
@@ -1143,23 +1132,15 @@ namespace Pronia_eCommerce.Migrations
                     b.Navigation("ParentComment");
                 });
 
-            modelBuilder.Entity("Pronia_eCommerce.Models.ProductCategoryToProduct", b =>
+            modelBuilder.Entity("Pronia_eCommerce.Models.Product", b =>
                 {
-                    b.HasOne("Pronia_eCommerce.Models.ProductCategory", "ProductCategory")
-                        .WithMany("ProductCategoryToProducts")
-                        .HasForeignKey("ProductCategoryId")
+                    b.HasOne("Pronia_eCommerce.Models.ProductCat", "ProductCat")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductCatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Pronia_eCommerce.Models.Product", "Product")
-                        .WithMany("ProductCategoryToProducts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("ProductCategory");
+                    b.Navigation("ProductCat");
                 });
 
             modelBuilder.Entity("Pronia_eCommerce.Models.ProductComment", b =>
@@ -1302,8 +1283,6 @@ namespace Pronia_eCommerce.Migrations
                 {
                     b.Navigation("Comment");
 
-                    b.Navigation("ProductCategoryToProducts");
-
                     b.Navigation("ProductComments");
 
                     b.Navigation("ProductImages");
@@ -1313,9 +1292,9 @@ namespace Pronia_eCommerce.Migrations
                     b.Navigation("ProductTagToProducts");
                 });
 
-            modelBuilder.Entity("Pronia_eCommerce.Models.ProductCategory", b =>
+            modelBuilder.Entity("Pronia_eCommerce.Models.ProductCat", b =>
                 {
-                    b.Navigation("ProductCategoryToProducts");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Pronia_eCommerce.Models.ProductSize", b =>
