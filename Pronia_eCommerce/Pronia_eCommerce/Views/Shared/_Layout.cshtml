@@ -76,7 +76,7 @@
                                     <li class="minicart-wrap me-3 me-lg-0">
                                         <a href="#miniCart" class="minicart-btn toolbar-btn">
                                             <i class="fal fa-shopping-bag"></i>
-                                            <span class="quantity">3</span>
+                                            <span class="quantity quantity-cart-count @(favourites==0?"d-none":"")">@favourites</span>
                                         </a>
                                     </li>
                                     <li class="small-menu-open-btn d-block d-lg-none">
@@ -175,7 +175,7 @@
                                     <li class="minicart-wrap me-3 me-lg-0">
                                         <a href="#miniCart" class="minicart-btn toolbar-btn">
                                             <i class="fal fa-shopping-bag"></i>
-                                            <span class="quantity">3</span>
+                                            <span class="quantity quantity-cart-count @(favourites==0?"d-none":"")">@favourites</span>
                                         </a>
                                     </li>
                                     <li class="mobile-menu_wrap d-block d-lg-none">

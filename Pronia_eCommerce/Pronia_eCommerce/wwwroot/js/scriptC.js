@@ -303,7 +303,8 @@ $(document).ready(function()
         });
 
         
-        cartBtnClose.on("click", function(){
+    cartBtnClose.on("click", function (e) {
+            e.preventDefault();
             cartMenu.removeClass("open");
             cartMenuOverlay.removeClass("open");
             body.removeClass("body-overflow-hidden");
@@ -521,14 +522,6 @@ $(document).ready(function()
     let cartTotalAmount2 = document.getElementById("cart-total-amount");
 
 
-
-    //document.querySelector(".btn-close-custom").addEventListener("click", function () {
-
-        
-
-    //})
-
-
     let cartClear = function () {
 
 
@@ -539,6 +532,19 @@ $(document).ready(function()
             }
         }
         
+
+    }
+
+    let cartImgClear = function () {
+
+
+        if (document.querySelectorAll(".empty-cart-img").length != 0) {
+            let cmpe = document.querySelectorAll(".empty-cart-img");
+            for (var cic = 0; cic < cmpe.length; cic++) {
+                cmpe[cic].remove()
+            }
+        }
+
 
     }
 
@@ -584,7 +590,7 @@ $(document).ready(function()
 
                                 let cartA2 = document.createElement("a");
                                 cartA2.classList.add("product-item-img");
-                                cartA2.setAttribute("href", "#");
+                                cartA2.setAttribute("href", "/Cart/Index/");
 
                                 let cartImg = document.createElement("img");
                                 for (var pi = 0; pi < cartProducts[p].productImages["$values"].length; pi++) {
@@ -606,7 +612,7 @@ $(document).ready(function()
                                 cartDiv2.classList.add("product-item-content");
                                 let cartA3 = document.createElement("a");
                                 cartA3.classList.add("product-item-title");
-                                cartA3.setAttribute("href", "#");
+                                cartA3.setAttribute("href", "/Cart/Index/");
                                 cartA3.innerText = cartProducts[p].name;
 
                                 let cartSpan = document.createElement("span");
@@ -635,7 +641,9 @@ $(document).ready(function()
                             }
                         }
                         else {
+                            cartImgClear();
                             let img2 = document.createElement("img");
+                            img2.classList.add("empty-cart-img");
                             img2.src = "/img/uncategorized/empty-cart..png";
                             img2.classList.add("w-100");
                             cartMenuList2.appendChild(img2);
@@ -654,7 +662,98 @@ $(document).ready(function()
         })
     }
 
-    
+
+    let allStr = document.querySelectorAll(".rating-wrap .rating ul li .fa-star")
+    if (allStr != null) {
+        for (let astr = 0; astr < allStr.length; astr++) {
+
+            allStr[astr].addEventListener("mouseover", function () {
+
+                if (astr == 0) {
+                    for (let astr2 = 0; astr2 <= astr; astr2++) {
+                        allStr[astr2].style.fontWeight = "900";
+
+                    }
+                }
+                else if (astr == 1) {
+                    for (let astr2 = 0; astr2 <= astr; astr2++) {
+                        allStr[astr2].style.fontWeight = "900";
+
+                    }
+                }
+                else if (astr == 2) {
+                    for (let astr2 = 0; astr2 <= astr; astr2++) {
+                        allStr[astr2].style.fontWeight = "900";
+
+                    }
+                }
+                else if (astr == 3) {
+                    for (let astr2 = 0; astr2 <= astr; astr2++) {
+                        allStr[astr2].style.fontWeight = "900";
+
+                    }
+                }
+                else if (astr == 4) {
+                    for (let astr2 = 0; astr2 <= astr; astr2++) {
+                        allStr[astr2].style.fontWeight = "900";
+
+                    }
+
+                }
+
+
+
+                
+
+            })
+
+        }
+
+        for (let astre = allStr.length - 1; astre >= 0; astre--) {
+
+            allStr[astre].addEventListener("mouseleave", function () {
+
+                if (astre == 0) {
+                    for (let astr2 = astre; astr2 >= 0; astr2--) {
+                        allStr[astr2].style.fontWeight = "100";
+
+                    }
+                }
+                else if (astre == 1) {
+                    for (let astr2 = astre; astr2 >= 0; astr2--) {
+                        allStr[astr2].style.fontWeight = "100";
+
+                    }
+                }
+                else if (astre == 2) {
+                    for (let astr2 = astre; astr2 >= 0; astr2--) {
+                        allStr[astr2].style.fontWeight = "100";
+
+                    }
+                }
+                else if (astre == 3) {
+                    for (let astr2 = astre; astr2 >= 0; astr2--) {
+                        allStr[astr2].style.fontWeight = "100";
+
+                    }
+                }
+                else if (astre == 4) {
+                    for (let astr2 = astre; astr2 >= 0; astr2--) {
+                        allStr[astr2].style.fontWeight = "100";
+
+                    }
+
+                }
+
+
+
+
+
+            })
+
+        }
+    }
+
 
 
 });

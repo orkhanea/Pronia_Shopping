@@ -150,7 +150,8 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                        <a class="add-to-cart2" href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                                                            <input type="hidden" value="@item.Id" />
                                                             <i class="fal fa-shopping-cart"></i>
                                                         </a>
                                                     </li>
@@ -222,7 +223,7 @@
                 <img class="w-100 h-100" src="~/img/uncategorized/NoResult.png" alt="Alternate Text" />
             </div>
             <div class="modal-header" style="z-index: 20 !important">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-tippy="Close" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
+                <button id="modal-cls-btn2" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" data-tippy="Close" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
                 </button>
             </div>
             <div class="modal-body" id="productmodalbody">
@@ -244,25 +245,32 @@
                             <div class="rating-wrap">
                                 <div class="rating">
                                     <ul>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
+                                        <li>
+                                            <i class="fa fa-star modalStarBtn"></i>
+                                            <input type="hidden" value="1" />
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-star modalStarBtn"></i>
+                                            <input type="hidden" value="2" />
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-star modalStarBtn"></i>
+                                            <input type="hidden" value="3" />
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-star modalStarBtn"></i>
+                                            <input type="hidden" value="4" />
+                                        </li>
+                                        <li>
+                                            <i class="fa fa-star modalStarBtn"></i>
+                                            <input type="hidden" value="5" />
+                                        </li>
                                     </ul>
+                                    <input id="ratValprodId" type="hidden" value="" />
                                 </div>
                                 <div class="review">
-                                    <a href="#">( 1 Review )</a>
+                                    <a id="rating_value" href="#"></a>
                                 </div>
-                            </div>
-                            <div class="selector-full">
-                                <span class="selector-title border-bottom-0">Color</span>
-                                <select class="nice-select wide border-bottom-0 rounded-0">
-                                    <option value="default">Black & White</option>
-                                    <option value="blue">Blue</option>
-                                    <option value="green">Green</option>
-                                    <option value="red">Red</option>
-                                </select>
                             </div>
                             <div class="selector-full pb-30" id="selector-size">
                                 <span class="selector-title">Size</span>
@@ -277,37 +285,6 @@
                                 in reprehenderit in voluptate
                             </p>
                             <p id="quantity-left" class="d-none alert-danger text-danger" style="text-align: center !important; font-size: 20px !important; padding: 5px !important; border-radius: 5px !important; margin-bottom: 10px !important;">Only 4 left</p>
-                            <ul class="single-product-action">
-                                <li class="quantity">
-                                    <div class="cart-action">
-                                        <form action="#">
-                                            <input id="cart-action-box-value" class="cart-action-box" value="1" type="text">
-                                        </form>
-                                        <div class="minus quantity-btn">
-                                            <i class="fal fa-minus"></i>
-                                        </div>
-                                        <div class="plus quantity-btn">
-                                            <i class="fal fa-plus"></i>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="add-to-cart">
-                                    <a id="add-to-cart-btn" class="btn">
-                                        Add to
-                                        cart
-                                    </a>
-                                </li>
-                                <li class="favourite fc">
-                                    <a class="btn-fc" href="wishlist.html">
-                                        <i class="fal fa-heart"></i>
-                                    </a>
-                                </li>
-                                <li class="product-compare fc">
-                                    <a class="custom-circle-btn" href="compare.html">
-                                        <i class="fal fa-sync-alt"></i>
-                                    </a>
-                                </li>
-                            </ul>
                             <ul class="service-item-wrap pb-0">
                                 <li class="service-item">
                                     <div class="service-img">

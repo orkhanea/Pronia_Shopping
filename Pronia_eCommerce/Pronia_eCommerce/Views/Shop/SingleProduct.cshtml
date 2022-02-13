@@ -164,27 +164,19 @@
                         @Model.SingleProduct.ShortDesc
                     </p>
                     <ul class="single-product-action">
-                        <li class="quantity">
-                            <div class="cart-action">
-                                <form action="">
-                                    <input disabled class="cart-action-box" value="1" min="1" max="5" type="text">
-                                </form>
-                                <div class="minus quantity-btn">
-                                    <i class="fal fa-minus"></i>
-                                </div>
-                                <div class="plus quantity-btn">
-                                    <i class="fal fa-plus"></i>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="add-to-cart">
-                            <a class="btn" href="cart.html">Add to cart</a>
-                        </li>
+                       
                         <li class="favourite fc">
-                            <a class="btn-fc" href="wishlist.html">
-                                <i class="fal fa-heart"></i>
+                            <a class="btn-fc" id="addToWishlist_ProductDetail" href="#">
+                                <i class="fal fa-heart @(Model.Favourite!=null? (Model.Favourite.Any(f=>f==(Model.SingleProduct.Id).ToString())?"added-to-wishlist_ProductDetail":""):"")"></i>
+                                
                             </a>
                         </li>
+
+                        <li class="add-to-cart">
+                            <a class="btn" id="addToCart_ProductDetail" href="#">Add to cart</a>
+                            <input id="addToCart_ProductDetailId" type="hidden" value="@Model.SingleProduct.Id" />
+                        </li>
+
                         <li class="product-compare fc">
                             <a href="compare.html">
                                 <i class="fal fa-sync-alt"></i>
@@ -309,7 +301,7 @@
                                             <div class="blog-comment-img">
                                                 <img src="~/img/user/user-4.png" alt="Image">
                                             </div>
-                                            <div class="blog-comment-content" style=" box-shadow: 0 0 10px 0px #cec9c994 !important; padding: 20px 20px 15px 20px !important; border-radius: 10px !important;">
+                                            <div class="blog-comment-content" style=" background-color: white !important; box-shadow: 0 0 10px 0px #cec9c994 !important; padding: 20px 20px 15px 20px !important; border-radius: 10px !important;">
                                                 <div class="user-meta">
                                                     <h2 class="user-name" style="margin: 0 !important; font-weight: 500 !important; text-transform: capitalize !important; ">@msg.CommentPost.FullName</h2>
                                                     <span class="date" style="color: #d03838 !important; font-size: 12px !important;">

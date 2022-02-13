@@ -84,6 +84,13 @@ namespace Pronia_eCommerce.Controllers
                                                .FirstOrDefault(p => p.Id == Id);
                     model2.RatingStars = _context.RatingStars.Where(r => r.ProductId == Id).ToList();
 
+                    string oldData = Request.Cookies["favourites"];
+
+                    if (!string.IsNullOrEmpty(oldData))
+                    {
+                        model2.Favourite = oldData.Split("-").ToList();
+                    }
+
                     return View(model2);
                 }
                 return RedirectToAction("Index");
@@ -99,7 +106,7 @@ namespace Pronia_eCommerce.Controllers
                 if (_context.Products.Find(id) != null)
                 {
                     Product product2 = new();
-                    product2 = _context.Products.Include(p=>p.ProductImages).Include(p=>p.ProductSizeToProducts).ThenInclude(pp=>pp.ProductSize).FirstOrDefault(p => p.Id == id);
+                    product2 = _context.Products.Include(p=>p.ProductImages).Include(p=>p.ProductSizeToProducts).ThenInclude(pp=>pp.ProductSize).Include(p=>p.Ratings).FirstOrDefault(p => p.Id == id);
 
                     return Json(new { data = product2 });
                 }
@@ -154,7 +161,9 @@ namespace Pronia_eCommerce.Controllers
                             _context.SaveChanges();
 
                             response.Changed = "change";
-
+                            response.StarsCount = _context.RatingStars.Where(r => r.ProductId == prid && r.UserIp == userIp).FirstOrDefault().Star;
+                            response.Products = _context.Products.Include(pr=>pr.Ratings).Where(r => r.Id == prid).ToList();
+                           
                             return Json(response);
                         }
                         else
@@ -166,7 +175,8 @@ namespace Pronia_eCommerce.Controllers
                             _context.SaveChanges();
 
                             response.Success = "ok";
-
+                            response.StarsCount = _context.RatingStars.Where(r => r.ProductId == prid && r.UserIp == userIp).FirstOrDefault().Star;
+                            response.Products = _context.Products.Include(pr => pr.Ratings).Where(r => r.Id == prid).ToList();
                             return Json(response);
                         }
 

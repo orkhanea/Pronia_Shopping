@@ -2949,6 +2949,9 @@ main .pagination-full nav .pagination .active .page-link:hover {
   cursor: pointer;
   font-weight: 100;
 }
+.full-main .product-info .rating-wrap .rating ul li .fw{
+    font-weight: 900 !important;
+}
 
 .full-main .product-info .rating-wrap .review {
   padding-left: 20px;
@@ -3076,6 +3079,10 @@ main .pagination-full nav .pagination .active .page-link:hover {
   display: block;
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
+}
+
+.full-main .product-info .single-product-action .fc a .added-to-wishlist_ProductDetail{
+  background-color: #e25f5f;
 }
 
 .full-main .product-info .single-product-action .fc a:hover i {

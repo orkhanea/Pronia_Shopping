@@ -1,5 +1,151 @@
 $(document).ready(function () {
 
+
+    let starReview = function (userIp, singleProductId, ratingValue) {
+
+        $.ajax({
+            url: location.origin + "/Shop/ReviewPost",
+            type: "get",
+            dataType: "json",
+            data: {
+                userIp: userIp,
+                productId: String(singleProductId),
+                ratingValue: ratingValue
+            },
+            success: function (response) {
+                if (response.success != null) {
+
+                    swal("Good job!", `Thanks for taking the time to leave us a ${ratingValue} star rating `, "success");
+                    $(".rating-wrap .rating ul li .fa-star").removeClass("fw");
+                    for (let xs = 0; xs < response.starsCount; xs++) {
+
+                        document.querySelectorAll(".rating-wrap .rating ul li .fa-star")[xs].classList.add("fw");
+
+                    }
+                    let rval2 = response.products["$values"][0].ratings["$values"];
+                    for (let rs = 0; rs < rval2.length; rs++) {
+                        let fiveS = 0;
+                        let fourS = 0;
+                        let threeS = 0;
+                        let twoS = 0;
+                        let oneS = 0;
+
+                        for (let str = 0; str < rval2.length; str++) {
+                            if (rval2[str].star == 5) {
+                                fiveS++;
+                            }
+                            else if (rval2[str].star == 4) {
+                                fourS++;
+                            }
+                            else if (rval2[str].star == 3) {
+                                threeS++;
+                            }
+                            else if (rval2[str].star == 2) {
+                                twoS++;
+                            }
+                            else if (rval2[str].star == 1) {
+                                oneS++;
+                            }
+                        }
+
+                        let sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                        let rSum = fiveS + fourS + threeS + twoS + oneS;
+                        let sumRsum = sum / rSum;
+
+                        if (sumRsum != 0) {
+
+                            document.getElementById("rating_value").innerText = `(${sumRsum.toFixed(1)} Rating)`;
+                        }
+
+                    }
+
+                }
+                else if (response.changed != null) {
+
+                    swal("Changed!", `Thanks for taking the time to leave us a ${ratingValue} star rating `, "success");
+                    $(".rating-wrap .rating ul li .fa-star").removeClass("fw");
+                    for (var xs = 0; xs < response.starsCount; xs++) {
+
+                        document.querySelectorAll(".rating-wrap .rating ul li .fa-star")[xs].classList.add("fw");
+
+                    }
+                    let rval2 = response.products["$values"][0].ratings["$values"];
+                    for (let rs = 0; rs < rval2.length; rs++) {
+                        let fiveS = 0;
+                        let fourS = 0;
+                        let threeS = 0;
+                        let twoS = 0;
+                        let oneS = 0;
+
+                        for (let str = 0; str < rval2.length; str++) {
+                            if (rval2[str].star == 5) {
+                                fiveS++;
+                            }
+                            else if (rval2[str].star == 4) {
+                                fourS++;
+                            }
+                            else if (rval2[str].star == 3) {
+                                threeS++;
+                            }
+                            else if (rval2[str].star == 2) {
+                                twoS++;
+                            }
+                            else if (rval2[str].star == 1) {
+                                oneS++;
+                            }
+                        }
+
+                        let sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                        let rSum = fiveS + fourS + threeS + twoS + oneS;
+                        let sumRsum = sum / rSum;
+
+                        if (sumRsum != 0) {
+
+                            document.getElementById("rating_value").innerText = `(${sumRsum.toFixed(1)} Rating)`;
+                        }
+
+                    }
+
+                }
+                else if (response.error != null) {
+
+                    swal("Oops", "Something went wrong", "error");
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            },
+            complete: function () {
+
+            }
+        });
+
+    }
+
+    if (document.querySelectorAll(".modalStarBtn") != null || document.querySelectorAll(".modalStarBtn") != undefined || document.querySelectorAll(".modalStarBtn").length>0) {
+
+
+        let modalStarBtn = document.querySelectorAll(".modalStarBtn");
+        for (let r = 0; r < modalStarBtn.length; r++) {
+            modalStarBtn[r].addEventListener("click", function () {
+                $.getJSON("https://api.ipify.org?format=json", function (data) {
+
+                    let userIpPD = data.ip
+                    let ratingValuePD = String(modalStarBtn[r].nextElementSibling.value)
+                    let singleProductIdPD = ratValprodId.value;
+
+                    starReview(userIpPD, singleProductIdPD, ratingValuePD);
+
+                })
+
+            })
+        }
+
+
+
+
+    }
+
     let eye = document.querySelectorAll(".productFullDetail");
 
     for (let i = 0; i < eye.length; i++) {
@@ -24,7 +170,9 @@ $(document).ready(function () {
             for (var op = 0; op < sizeOptions.length; op++) {
                 sizeOptions[op].remove()
             }
-            
+
+            document.getElementById("rating_value").innerText = "(0.0 Rating)";
+            $(".rating-wrap .rating ul li .fa-star").removeClass("fw");
 
             let id = eye[i].firstChild.nextSibling.value;
 
@@ -37,7 +185,7 @@ $(document).ready(function () {
                 },
                 success: function (data) {
                     if (data.data != null) {
-
+                        
                         let noResult = $("#noResult");
                         noResult.addClass("d-none")
 
@@ -46,7 +194,64 @@ $(document).ready(function () {
                         var productSizeToProduct = Product.productSizeToProducts
                         var imagesArr = [];
 
+                        let ratValprodId = document.getElementById("ratValprodId");
+                        ratValprodId.value = Product.id
 
+                        let prodRatings = Product.ratings["$values"];
+                        
+                        for (let rs = 0; rs < prodRatings.length; rs++) {
+                            let fiveS = 0;
+                            let fourS = 0;
+                            let threeS = 0;
+                            let twoS = 0;
+                            let oneS = 0;
+
+                            for (let str = 0; str < prodRatings.length; str++) {
+                                if (prodRatings[str].star == 5) {
+                                    fiveS++;
+                                }
+                                else if (prodRatings[str].star == 4) {
+                                    fourS++;
+                                }
+                                else if (prodRatings[str].star == 3) {
+                                    threeS++;
+                                }
+                                else if (prodRatings[str].star == 2) {
+                                    twoS++;
+                                }
+                                else if (prodRatings[str].star == 1) {
+                                    oneS++;
+                                }
+                            }
+
+                            let sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                            let rSum = fiveS + fourS + threeS + twoS + oneS;
+                            let sumRsum = sum / rSum;
+
+                            if (sumRsum != 0) {
+
+                                document.getElementById("rating_value").innerText = `(${sumRsum.toFixed(1)} Rating)`;
+                            }
+
+                        }
+
+                        $.getJSON("https://api.ipify.org?format=json", function (data) {
+
+                            let userIp2 = data.ip;
+
+
+                            for (let x = 0; x < prodRatings.length; x++) {
+                                if (prodRatings[x].userIp == userIp2) {
+                                    for (var xs = 0; xs < prodRatings[x].star; xs++) {
+
+                                        document.querySelectorAll(".rating-wrap .rating ul li .fa-star")[xs].classList.add("fw");
+
+                                    }
+                                }
+                            }
+                        })
+
+                        
 
                         for (var i in productImges) {
                             for (var t = 0; t < productImges[i].length; t++) {
@@ -100,7 +305,7 @@ $(document).ready(function () {
                         let modalPrice = document.getElementById("modalPrice");
                         let modalDesc = document.getElementById("modal-product-desc");
                         let productName = document.getElementById("product-name");
-                        modalPrice.innerText = pricesArr[0].toFixed(2);
+                        modalPrice.innerText ="$"+pricesArr[0].toFixed(2);
                         productName.innerText = Product.name
                         modalDesc.innerText = Product.shortDesc
 
@@ -126,7 +331,7 @@ $(document).ready(function () {
 
                                     if (productSizeToProductHelper[i].productSizeId == sizeId) {
 
-                                        modalPrice.innerText = productSizeToProductHelper[i].price.toFixed(2)
+                                        modalPrice.innerText = "$"+productSizeToProductHelper[i].price.toFixed(2)
 
                                     }
 
@@ -136,37 +341,6 @@ $(document).ready(function () {
 
                         }
 
-                        let addCart = document.getElementById("add-to-cart-btn");
-
-                        addCart.addEventListener("click", function () {
-
-                            let sizeId = $("#modalSize").val();
-                            let quantity = $("#cart-action-box-value").val();
-                            let alert = $("#quantity-left");
-
-                            for (let i = 0; i < productSizeToProductHelper.length; i++) {
-
-                                if (productSizeToProductHelper[i].productSizeId == sizeId) {
-
-                                    if (productSizeToProductHelper[i].quantity >= quantity) {
-
-                                        console.log(sizeId, quantity)
-                                        console.log(productSizeToProductHelper[i].quantity, productSizeToProductHelper[i].productSizeId)
-
-                                        alert.addClass("d-none");
-
-
-                                    }
-                                    else {
-                                        alert.html(`Only ${productSizeToProductHelper[i].quantity} Lefts`);
-                                        alert.removeClass("d-none");
-                                    }
-
-                                }
-
-                            }
-
-                        })
                     }
                     else {
                         let noResult = $("#noResult");
@@ -183,8 +357,6 @@ $(document).ready(function () {
             });
 
         })
-
-
 
     }
 
@@ -238,10 +410,6 @@ $(document).ready(function () {
                 let userIp = data.ip
                 let ratingValue = String(ratingStarsValue[s].value)
 
-
-
-
-                
                 $.ajax({
                     url: "../ReviewPost",
                     type: "get",
@@ -316,7 +484,7 @@ $(document).ready(function () {
                         wishlistIcon[w].classList.add("added-to-wishlist");
                     }
                     else if (response.changed == "Removed") {
-                        swal("Good job!", `You removed this product from your wishlist`, "success");
+                        swal("Removed!", `You removed this product from your wishlist`, "success");
                         wishlistIcon[w].classList.remove("added-to-wishlist");
                     }
                 },
@@ -350,6 +518,12 @@ $(document).ready(function () {
                     success: function (response) {
                         if (response.success != null) {
 
+                            let cartBadgeCount = document.querySelectorAll(".quantity-cart-count");
+                            for (var cbc = 0; cbc < cartBadgeCount.length; cbc++) {
+                                cartBadgeCount[cbc].classList.remove("d-none");
+                                cartBadgeCount[cbc].innerText = response.cartCount;
+                            }
+
                             swal("Good job!", `The product added successfully to your cart`, "success");
                         }
                         else if (response.changed != null) {
@@ -375,10 +549,141 @@ $(document).ready(function () {
 
         }
 
+    }
 
+    let addToCart2 = document.querySelectorAll(".add-to-cart2");
+    for (let atc = 0; atc < addToCart2.length; atc++) {
+        addToCart2[atc].addEventListener("click", function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: location.origin + "/Cart/AddToCart",
+                type: "get",
+                dataType: "json",
+                data: {
+                    productId: String(addToCart2[atc].firstElementChild.value)
+                },
+                success: function (response) {
+                    if (response.success != null) {
+
+                        let cartBadgeCount = document.querySelectorAll(".quantity-cart-count");
+                        for (var cbc = 0; cbc < cartBadgeCount.length; cbc++) {
+                            cartBadgeCount[cbc].classList.remove("d-none");
+                            cartBadgeCount[cbc].innerText = response.cartCount;
+                        }
+
+                        swal("Good job!", `The product added successfully to your cart`, "success");
+                    }
+                    else if (response.changed != null) {
+
+                        swal("Hmm!", `You already added this product to your cart`, "info");
+                    }
+                    else if (response.error != null) {
+
+                        swal("Oops", "Something went wrong", "error");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+                complete: function () {
+
+                }
+            });
+
+
+
+        })
 
     }
 
+
+    if (document.getElementById("addToCart_ProductDetail") != null || document.getElementById("addToCart_ProductDetail") != undefined) {
+
+
+        let addToCart3 = document.getElementById("addToCart_ProductDetail");
+        let addToWishlist3 = document.getElementById("addToWishlist_ProductDetail");
+        let addToCartPrId3 = document.getElementById("addToCart_ProductDetailId").value;
+        
+        addToCart3.addEventListener("click", function (e) {
+            e.preventDefault()
+
+            $.ajax({
+                url: location.origin + "/Cart/AddToCart",
+                type: "get",
+                dataType: "json",
+                data: {
+                    productId: String(addToCartPrId3)
+                },
+                success: function (response) {
+                    if (response.success != null) {
+
+                        let cartBadgeCount = document.querySelectorAll(".quantity-cart-count");
+                        for (var cbc = 0; cbc < cartBadgeCount.length; cbc++) {
+                            cartBadgeCount[cbc].classList.remove("d-none");
+                            cartBadgeCount[cbc].innerText = response.cartCount;
+                        }
+
+                        swal("Good job!", `The product added successfully to your cart`, "success");
+                    }
+                    else if (response.changed != null) {
+
+                        swal("Hmm!", `You already added this product to your cart`, "info");
+                    }
+                    else if (response.error != null) {
+
+                        swal("Oops", "Something went wrong", "error");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+                complete: function () {
+
+                }
+            });
+
+
+
+
+
+        })
+
+        addToWishlist3.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: location.origin + "/Shop/AddToWishlist",
+                type: "get",
+                dataType: "json",
+                data: {
+                    productId: addToCartPrId3
+                },
+                success: function (response) {
+                    if (response.success == "Added") {
+
+                        swal("Good job!", `You added this product to your wishlist`, "success");
+                        addToWishlist3.firstElementChild.classList.add("added-to-wishlist_ProductDetail");
+                        
+                    }
+                    else if (response.changed == "Removed") {
+                        swal("Removed!", `You removed this product from your wishlist`, "success");
+                        addToWishlist3.firstElementChild.classList.remove("added-to-wishlist_ProductDetail");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+                complete: function () {
+
+                }
+            });
+
+
+        })
+
+
+
+    }
     
     
 });

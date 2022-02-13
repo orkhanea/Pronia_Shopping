@@ -97,7 +97,8 @@ namespace Pronia_eCommerce.Controllers
                         };
 
                         Response.Cookies.Append("cart", newData, options);
-
+                        List<string> cartCount = newData.Split("-").ToList();
+                        response.CartCount = cartCount.Count;
                         return Json(response);
 
                     }
