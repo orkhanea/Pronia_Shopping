@@ -1,42 +1,66 @@
-﻿
-
+﻿@model VmEndUser
 <!-- #region Account -->
+
+@{
+
+    if (TempData["isCreated"] != null)
+    {
+        <input id="profileIsCreated" type="hidden" value="true" />
+
+        TempData["isCreated"] = null;
+    }
+}
+
 <div class="account-full pt-100 pb-100">
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
                 <ul class="nav" id="account-page-tab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" id="account-dashboard-tab" data-bs-toggle="tab" href="#account-dashboard" role="tab" aria-controls="account-dashboard" aria-selected="true">Dashboard</a>
+                        <a class="nav-link @(TempData["UserError"]==null?"active":"")" id="account-dashboard-tab" data-bs-toggle="tab" href="#account-dashboard" role="tab" aria-controls="account-dashboard" aria-selected="true">Profile</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" id="account-orders-tab" data-bs-toggle="tab" href="#account-orders" role="tab" aria-controls="account-orders" aria-selected="false">Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="account-address-tab" data-bs-toggle="tab" href="#account-address" role="tab" aria-controls="account-address" aria-selected="false">Addresses</a>
+                        <a class="nav-link @(TempData["UserError"]!=null?"active":"")" id="account-details-tab" data-bs-toggle="tab" href="#account-details" role="tab" aria-controls="account-details" aria-selected="false">Update Account</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="account-details-tab" data-bs-toggle="tab" href="#account-details" role="tab" aria-controls="account-details" aria-selected="false">Account Details</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="account-logout-tab" href="login-register.html" role="tab" aria-selected="false">Logout</a>
+                        <a class="nav-link" id="account-logout-tab" asp-controller="Account" asp-action="Logout" role="tab" aria-selected="false">Logout</a>
                     </li>
                 </ul>
             </div>
             <div class="col-lg-9">
-                <div class="tab-content" id="account-page-tab-content">
-                    <div class="tab-pane fade show active" id="account-dashboard" role="tabpanel" aria-labelledby="account-dashboard-tab">
-                        <div class="myaccount-dashboard">
-                            <p>
-                                Hello <b>Pronia</b> (not Pronia? <a href="login-register.html">
-                                    Sign
-                                    out
-                                </a>)
-                            </p>
-                            <p>
-                                From your account dashboard you can view your recent orders, manage your shipping and
-                                billing addresses and <a href="#">edit your password and account details</a>.
-                            </p>
+                <div class="tab-content" style="padding: 30px 50px !important;" id="account-page-tab-content">
+                    <div class="tab-pane fade @(TempData["UserError"]==null?"show active":"")" id="account-dashboard" role="tabpanel" aria-labelledby="account-dashboard-tab">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="img-wraper-user">
+                                    <img style=" border-radius: 50% !important; width: 150px !important; height: 150px !important;" src="~/img/user/@(Model.EndUser.Image!=null?Model.EndUser.Image:"Avatar.png")" alt="Image" />
+                                </div>
+                            </div>
+                            <div class="col-lg-9">
+                                <div class="col-lg-12">
+                                    <span style="color: #444444 !important; font-size: 30px !important; font-weight: 500 !important;">@Model.EndUser.Name @Model.EndUser.Surname</span>
+                                </div>
+                                <div class="col-lg-12 pb-50">
+                                    <span style="display: block !important; padding-left: 5px !important; color: darkslateblue !important; font-weight: 500 !important;">@Model.EndUser.UserName</span>
+                                    <span style="display: block !important; padding-left: 5px !important; color: darkslateblue !important; font-weight: 500 !important;">@Model.EndUser.PhoneNumber</span>
+                                    <span style="display: block !important; padding-left: 5px !important; color: darkslateblue !important; font-weight: 500 !important;">@Model.EndUser.Email</span>
+
+                                </div>
+                                <div class="col-lg-12" style="text-align: end !important;">
+                                    <span style="display: block !important; font-size: 15px !important; color: #202517 !important; font-weight: 500 !important">@Model.EndUser.Country.CountryName</span>
+                                    <p class="m-0" style="font-size: 15px !important; color: #202517 !important; font-weight: 500 !important">@Model.EndUser.BillingAddress</p>
+                                    <p style="font-size: 15px !important; color: #202517 !important; font-weight: 500 !important">@Model.EndUser.BillingAddress</p>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-9 offset-3">
+
+                            </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="account-orders" role="tabpanel" aria-labelledby="account-orders-tab">
@@ -75,67 +99,90 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="account-address" role="tabpanel" aria-labelledby="account-address-tab">
-                        <div class="myaccount-address">
-                            <p>The following addresses will be used on the checkout page by default.</p>
+                    <div class="tab-pane fade @(TempData["UserError"]!=null?"show active":"")" id="account-details" role="tabpanel" aria-labelledby="account-details-tab">
+                        <form class="myaccount-dashboard" asp-controller="Account" asp-action="Update" method="post" enctype="multipart/form-data">
                             <div class="row">
-                                <div class="col">
-                                    <h4 class="small-title">BILLING ADDRESS</h4>
-                                    <address>
-                                        1234 Heaven Stress, Beverly Hill OldYork UnitedState of Lorem
-                                    </address>
+                                @{
+                                    if (TempData["UserError"] != null && TempData["UserError"] as string == "Error")
+                                    {
+                                        <div class="col-lg-12">
+                                            <p class="alert alert-danger mb-5" style="font-weight: 500 !important; text-align: center !important;">Something went wrong. Please try again!</p>
+                                        </div>
+                                        TempData["UserError2"] = null;
+                                    }
+                                    else if (TempData["Succes"] != null)
+                                    {
+                                        <input id="UpdateUserSuccess" type="hidden" value="true" />
+                                        TempData["Succes"] = null;
+                                    }
+                                    else if (TempData["UserError"] != null && TempData["UserError"] as string == "ModelStateNoValid")
+                                    {
+
+                                        <div class="col-lg-12">
+                                            <p class="alert alert-danger mb-5" style="font-weight: 500 !important; text-align: center !important;">Please fill out the fields marked with an (*) asterisk.</p>
+                                        </div>
+
+                                        TempData["Succes"] = null;
+                                    }
+                                }
+                                <div class="col-lg-3">
+                                    <div class="user-image2 d-flex" style="flex-direction: column !important; align-items: center !important;">
+                                        <img style="width: 150px !important; height: 150px !important;" src="~/img/user/@(Model.EndUser.Image!=null?Model.EndUser.Image:"Avatar.png")" alt="Alternate Text" />
+                                        <div class="input-group my-3 d-block">
+                                            <input asp-for="@Model.EndUser.ImageFile" class="form-control d-none" id="inputGroupFile02">
+                                            <label asp-for="@Model.EndUser.ImageFile" style="border-radius: 5px !important;" class="input-group-text d-block" for="inputGroupFile02">Upload</label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <h4 class="small-title">SHIPPING ADDRESS</h4>
-                                    <address>
-                                        1234 Heaven Stress, Beverly Hill OldYork UnitedState of Lorem
-                                    </address>
+                                <div class="col-lg-9">
+                                    <div class="row row-for-user justify-content-end">
+                                        <div class="mb-3 col-lg-6">
+                                            <label asp-for="@Model.EndUser.Name" class="form-label">Name *</label>
+                                            <input asp-for="@Model.EndUser.Name" type="text" class="form-control">
+                                            <span asp-validation-for="@Model.EndUser.Name"></span>
+                                        </div>
+                                        <div class="mb-3 col-lg-6">
+                                            <label asp-for="@Model.EndUser.Surname" class="form-label">Surname *</label>
+                                            <input asp-for="@Model.EndUser.Surname" type="text" class="form-control">
+                                            <span asp-validation-for="@Model.EndUser.Surname"></span>
+                                        </div>
+                                        <div class="mb-3 col-lg-12">
+                                            <label asp-for="@Model.EndUser.CountryId" class="form-label">Country</label>
+                                            <select asp-for="@Model.EndUser.CountryId" class="nice-select w-100">
+                                                @foreach (var item in Model.Countries)
+                                                {
+                                                    <option value="@item.Id">@item.CountryName</option>
+                                                }
+                                            </select>
+                                            <span asp-validation-for="@Model.EndUser.CountryId"></span>
+                                        </div>
+                                        <div class="mb-3 col-lg-12">
+                                            <label asp-for="@Model.EndUser.BillingAddress" for="exampleInputEmail1" class="form-label">Billing Address *</label>
+                                            <input asp-for="@Model.EndUser.BillingAddress" type="text" class="form-control">
+                                            <span asp-validation-for="@Model.EndUser.BillingAddress"></span>
+                                        </div>
+                                        <div class="mb-3 col-lg-12">
+                                            <label asp-for="@Model.EndUser.ShippingAddress" class="form-label">Shipping Address *</label>
+                                            <input asp-for="@Model.EndUser.ShippingAddress" type="text" class="form-control">
+                                            <span asp-validation-for="@Model.EndUser.ShippingAddress"></span>
+                                        </div>
+                                        <div class="mb-3 col-lg-6">
+                                            <label asp-for="@Model.EndUser.PhoneNumber" class="form-label">Phone</label>
+                                            <input asp-for="@Model.EndUser.PhoneNumber" type="tel" class="form-control">
+                                            <span asp-validation-for="@Model.EndUser.PhoneNumber"></span>
+                                        </div>
+                                        <div class="mb-3 col-lg-6">
+                                            <label asp-for="@Model.EndUser.UserName" class="form-label">Username</label>
+                                            <input asp-for="@Model.EndUser.UserName" type="text" class="form-control">
+                                            <span asp-validation-for="@Model.EndUser.UserName"></span>
+                                        </div>
+                                        <input type="hidden" asp-for="@Model.EndUser.Id" />
+                                        <input type="hidden" asp-for="@Model.EndUser.Image" />
+                                        <button type="submit" class="btn btn-primary w-50 my-3">Save Changes</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="account-details" role="tabpanel" aria-labelledby="account-details-tab">
-                        <div class="myaccount-details">
-                            <form action="#" class="myaccount-form">
-                                <div class="myaccount-form-inner">
-                                    <div class="single-input single-input-half">
-                                        <label>First Name*</label>
-                                        <input type="text">
-                                    </div>
-                                    <div class="single-input single-input-half">
-                                        <label>Last Name*</label>
-                                        <input type="text">
-                                    </div>
-                                    <div class="single-input">
-                                        <label>Email*</label>
-                                        <input type="email">
-                                    </div>
-                                    <div class="single-input">
-                                        <label>
-                                            Current Password(leave blank to leave
-                                            unchanged)
-                                        </label>
-                                        <input type="password">
-                                    </div>
-                                    <div class="single-input">
-                                        <label>
-                                            New Password (leave blank to leave
-                                            unchanged)
-                                        </label>
-                                        <input type="password">
-                                    </div>
-                                    <div class="single-input">
-                                        <label>Confirm New Password</label>
-                                        <input type="password">
-                                    </div>
-                                    <div class="single-input">
-                                        <button class="btn" type="submit">
-                                            <span>SAVE CHANGES</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

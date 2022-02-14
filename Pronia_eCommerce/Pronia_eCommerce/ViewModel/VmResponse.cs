@@ -14,5 +14,6 @@ namespace Pronia_eCommerce.ViewModel
         public int CartCount { get; set; }
         public int StarsCount { get; set; }
         public List<Product> Products { get; set; }
+        public List<RatingStar> StarsCounts { get; set; }
     }
 }

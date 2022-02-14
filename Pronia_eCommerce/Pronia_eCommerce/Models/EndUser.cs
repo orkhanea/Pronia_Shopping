@@ -12,16 +12,16 @@ namespace Pronia_eCommerce.Models
     public class EndUser : IdentityUser
     {
 
-        [MaxLength(20)]
+        [MaxLength(20), Required]
         public string Name { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(20), Required]
         public string Surname { get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(100), Required]
         public string ShippingAddress { get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(100), Required]
         public string BillingAddress { get; set; }
 
         public DateTime CreatedDate { get; set; }

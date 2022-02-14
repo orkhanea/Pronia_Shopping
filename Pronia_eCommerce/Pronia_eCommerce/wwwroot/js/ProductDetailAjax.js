@@ -134,6 +134,7 @@ $(document).ready(function () {
                     let ratingValuePD = String(modalStarBtn[r].nextElementSibling.value)
                     let singleProductIdPD = ratValprodId.value;
 
+
                     starReview(userIpPD, singleProductIdPD, ratingValuePD);
 
                 })
@@ -250,7 +251,6 @@ $(document).ready(function () {
                                 }
                             }
                         })
-
                         
 
                         for (var i in productImges) {

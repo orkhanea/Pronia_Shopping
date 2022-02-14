@@ -167,19 +167,45 @@
                                                     @(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? item.ProductSizeToProducts.FirstOrDefault(pp => pp.Quantity > 0).Price: "OUT OF STOCK")
                                                 </span>
                                             </div>
-                                            <div class="rating-box">
+                                            <div class="rating-box rating-box1 @("rating-box-"+item.Id)">
                                                 <ul>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li>
+                                                        <i class="fa fa-star @("fastar"+item.Id)">
+                                                            <input type="hidden" value="1" />
+                                                            <input type="hidden" value="@item.Id" />
+                                                        </i>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-star @("fastar"+item.Id)">
+                                                            <input type="hidden" value="2" />
+                                                            <input type="hidden" value="@item.Id" />
+                                                        </i>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-star @("fastar"+item.Id)">
+                                                            <input type="hidden" value="3" />
+                                                            <input type="hidden" value="@item.Id" />
+                                                        </i>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-star @("fastar"+item.Id)">
+                                                            <input type="hidden" value="4" />
+                                                            <input type="hidden" value="@item.Id" />
+                                                        </i>
+                                                    </li>
+                                                    <li>
+                                                        <i class="fa fa-star @("fastar"+item.Id)">
+                                                            <input type="hidden" value="5" />
+                                                            <input type="hidden" value="@item.Id" />
+                                                        </i>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <input class="prHiddenId" type="hidden" value="@item.Id"/>
                         }
 
                     </div>

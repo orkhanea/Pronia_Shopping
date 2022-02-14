@@ -548,8 +548,6 @@ $(document).ready(function()
 
     }
 
-    //cart - menu - overlay
-
     for (var mbtn = 0; mbtn < document.querySelectorAll(".minicart-btn").length; mbtn++) {
         document.querySelectorAll(".minicart-btn")[mbtn].addEventListener("click", function () {
 
@@ -698,12 +696,7 @@ $(document).ready(function()
                         allStr[astr2].style.fontWeight = "900";
 
                     }
-
                 }
-
-
-
-                
 
             })
 
@@ -754,6 +747,376 @@ $(document).ready(function()
         }
     }
 
+    let StarFunc = function (AllTheStars) {
+
+        let allStr = AllTheStars;
+        if (allStr != null) {
+            for (let astr = 0; astr < allStr.length; astr++) {
+
+                allStr[astr].addEventListener("mouseover", function () {
+
+                    if (astr == 0) {
+                        for (let astr2 = 0; astr2 <= astr; astr2++) {
+                            allStr[astr2].style.fontWeight = "900";
+
+                        }
+                    }
+                    else if (astr == 1) {
+                        for (let astr2 = 0; astr2 <= astr; astr2++) {
+                            allStr[astr2].style.fontWeight = "900";
+
+                        }
+                    }
+                    else if (astr == 2) {
+                        for (let astr2 = 0; astr2 <= astr; astr2++) {
+                            allStr[astr2].style.fontWeight = "900";
+
+                        }
+                    }
+                    else if (astr == 3) {
+                        for (let astr2 = 0; astr2 <= astr; astr2++) {
+                            allStr[astr2].style.fontWeight = "900";
+
+                        }
+                    }
+                    else if (astr == 4) {
+                        for (let astr2 = 0; astr2 <= astr; astr2++) {
+                            allStr[astr2].style.fontWeight = "900";
+
+                        }
+                    }
+
+                })
+
+            }
+
+            for (let astre = allStr.length - 1; astre >= 0; astre--) {
+
+                allStr[astre].addEventListener("mouseleave", function () {
+
+                    if (astre == 0) {
+                        for (let astr2 = astre; astr2 >= 0; astr2--) {
+                            allStr[astr2].style.fontWeight = "100";
+
+                        }
+                    }
+                    else if (astre == 1) {
+                        for (let astr2 = astre; astr2 >= 0; astr2--) {
+                            allStr[astr2].style.fontWeight = "100";
+
+                        }
+                    }
+                    else if (astre == 2) {
+                        for (let astr2 = astre; astr2 >= 0; astr2--) {
+                            allStr[astr2].style.fontWeight = "100";
+
+                        }
+                    }
+                    else if (astre == 3) {
+                        for (let astr2 = astre; astr2 >= 0; astr2--) {
+                            allStr[astr2].style.fontWeight = "100";
+
+                        }
+                    }
+                    else if (astre == 4) {
+                        for (let astr2 = astre; astr2 >= 0; astr2--) {
+                            allStr[astr2].style.fontWeight = "100";
+
+                        }
+
+                    }
+
+
+
+
+
+                })
+
+            }
+        }
+
+    }
+
+    let shopPId = document.querySelectorAll(".prHiddenId");
+
+    let starReviews = function (userIp, singleProductId, ratingValue) {
+
+        $.ajax({
+            url: location.origin + "/Shop/ReviewPost",
+            type: "get",
+            dataType: "json",
+            data: {
+                userIp: userIp,
+                productId: String(singleProductId),
+                ratingValue: ratingValue
+            },
+            success: function (response) {
+                if (response.success != null) {
+
+                    swal("Good job!", `Thanks for taking the time to leave us a ${ratingValue} star rating `, "success");
+                    GetAllStars();
+                    let rval2 = response.products["$values"][0].ratings["$values"];
+                    for (let rs = 0; rs < rval2.length; rs++) {
+                        let fiveS = 0;
+                        let fourS = 0;
+                        let threeS = 0;
+                        let twoS = 0;
+                        let oneS = 0;
+
+                        for (let str = 0; str < rval2.length; str++) {
+                            if (rval2[str].star == 5) {
+                                fiveS++;
+                            }
+                            else if (rval2[str].star == 4) {
+                                fourS++;
+                            }
+                            else if (rval2[str].star == 3) {
+                                threeS++;
+                            }
+                            else if (rval2[str].star == 2) {
+                                twoS++;
+                            }
+                            else if (rval2[str].star == 1) {
+                                oneS++;
+                            }
+                        }
+
+                        let sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                        let rSum = fiveS + fourS + threeS + twoS + oneS;
+                        let sumRsum = sum / rSum;
+
+                        if (sumRsum != 0) {
+
+                            document.getElementById("rating_value").innerText = `(${sumRsum.toFixed(1)} Rating)`;
+                        }
+
+                    }
+
+                }
+                else if (response.changed != null) {
+
+                    swal("Changed!", `Thanks for taking the time to leave us a ${ratingValue} star rating `, "success");
+                    GetAllStars()
+                    let rval2 = response.products["$values"][0].ratings["$values"];
+                    for (let rs = 0; rs < rval2.length; rs++) {
+                        let fiveS = 0;
+                        let fourS = 0;
+                        let threeS = 0;
+                        let twoS = 0;
+                        let oneS = 0;
+
+                        for (let str = 0; str < rval2.length; str++) {
+                            if (rval2[str].star == 5) {
+                                fiveS++;
+                            }
+                            else if (rval2[str].star == 4) {
+                                fourS++;
+                            }
+                            else if (rval2[str].star == 3) {
+                                threeS++;
+                            }
+                            else if (rval2[str].star == 2) {
+                                twoS++;
+                            }
+                            else if (rval2[str].star == 1) {
+                                oneS++;
+                            }
+                        }
+
+                        let sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                        let rSum = fiveS + fourS + threeS + twoS + oneS;
+                        let sumRsum = sum / rSum;
+
+                        if (sumRsum != 0) {
+
+                            document.getElementById("rating_value").innerText = `(${sumRsum.toFixed(1)} Rating)`;
+                        }
+
+                    }
+
+                }
+                else if (response.error != null) {
+
+                    swal("Oops", "Something went wrong", "error");
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            },
+            complete: function () {
+
+            }
+        });
+
+    }
+
+    for (let spid = 0; spid < shopPId.length; spid++) {
+
+        let shopSI = $(`.product-full .product-item .product-content .rating-box ul li .fastar${shopPId[spid].value}`);
+
+        shopSI.mouseover(function () {
+
+            StarFunc(shopSI);
+        });
+
+
+        for (let ssi = 0; ssi < shopSI.length; ssi++) {
+
+            shopSI[ssi].addEventListener("click", function () {
+
+                console.log(shopSI[ssi].firstElementChild.value)
+                console.log(shopSI[ssi].firstElementChild.nextElementSibling.value)
+
+                $.getJSON("https://api.ipify.org?format=json", function (data) {
+
+                    let userIpPD = data.ip;
+                    let ratingValuePD = String(shopSI[ssi].firstElementChild.value);
+                    let singleProductIdPD = shopSI[ssi].firstElementChild.nextElementSibling.value;
+
+                    starReviews(userIpPD, singleProductIdPD, ratingValuePD);
+
+                })
+
+
+
+
+            })
+
+
+        }
+
+    }
+
+    if ($(".fa-star2").length>0) {
+
+        let shopSISing = document.querySelectorAll(".full-main .product-info .rating-wrap .rating ul li .fa-star2");
+
+
+        for (let ssi = 0; ssi < shopSISing.length; ssi++) {
+
+            shopSISing[ssi].addEventListener("click", function () {
+
+                console.log(shopSISing[ssi].firstElementChild.value)
+                console.log(shopSISing[ssi].firstElementChild.nextElementSibling.value)
+
+                $.getJSON("https://api.ipify.org?format=json", function (data) {
+
+                    let userIpPD = data.ip;
+                    let ratingValuePD = String(shopSISing[ssi].firstElementChild.value);
+                    let singleProductIdPD = shopSISing[ssi].firstElementChild.nextElementSibling.value;
+
+                    starReviews(userIpPD, singleProductIdPD, ratingValuePD);
+
+                })
+
+
+
+
+            })
+
+
+        }
+        
+
+    }
+
+    if ($("#modal-cls-btn2").length>0) {
+
+        $("#modal-cls-btn2").click(function () {
+
+            GetAllStars();
+
+        })
+
+    }
+
+    let GetAllStars = function () {
+
+
+        $.getJSON("https://api.ipify.org?format=json", function (data) {
+
+            let userIpPDF = data.ip;
+
+            $.ajax({
+                url: location.origin + "/Shop/RefreshRating",
+                type: "get",
+                dataType: "json",
+                data: {
+                    userIp: userIpPDF,
+                },
+                success: function (response) {
+
+                    
+
+                    let rSC = response.starsCounts["$values"];
+                    let proId = response.starsCounts["$values"];
+                    let proStr = response.starsCounts["$values"];
+                    
+                    if ($(".rating-box1").length>0) {
+                        for (let rb = 0; rb < rSC.length; rb++) {
+
+                            let rBoxes = $(`.rating-box-${rSC[rb].productId}`);
+                            let rBoxesI = $(`.rating-box-${rSC[rb].productId} i`);
+
+                            if ($(`.rating-box-${rSC[rb].productId}`).length>0) {
+
+
+                                for (let i = 0; i < 5; i++) {
+
+                                    rBoxesI[i].classList.remove("fw");
+
+                                }
+
+                                for (let i = 0; i < proStr[rb].star; i++) {
+
+                                    rBoxesI[i].classList.add("fw");
+
+                                }
+
+
+                            }
+
+                            
+
+                        }
+
+                    }
+
+
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+                complete: function () {
+
+                }
+            });
+
+
+
+        })
+
+        
+
+
+
+    }
+
+
+    GetAllStars();
+
+
+    if ($("#profileIsCreated").length>0) {
+
+        swal("Perfect!", `Thank you for Signing Up!`, "success");
+
+    }
+
+    if ($("#UpdateUserSuccess").length > 0) {
+
+        swal("Updated!", `Your profile was updated successfully!`, "success");
+
+    }
 
 
 });

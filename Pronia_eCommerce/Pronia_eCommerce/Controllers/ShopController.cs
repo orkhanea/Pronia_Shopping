@@ -40,7 +40,8 @@ namespace Pronia_eCommerce.Controllers
                                                       .Include(p => p.ProductTagToProducts)
                                                       .ThenInclude(pt => pt.ProductTag)
                                                       .Include(p => p.ProductSizeToProducts)
-                                                      .ThenInclude(ps => ps.ProductSize).ToList();
+                                                      .ThenInclude(ps => ps.ProductSize)
+                                                      .Include(r=>r.Ratings).ToList();
 
             int pageCount = (int)Math.Ceiling(Convert.ToDecimal(products.Count / PageItemCount));
             model.Products = products.Skip(((int)Search.Page - 1) * (int)PageItemCount).Take((int)PageItemCount).ToList();
@@ -271,6 +272,20 @@ namespace Pronia_eCommerce.Controllers
             Response.Cookies.Append("favourites", newData, options);
 
             return RedirectToAction("index", "Wishlist");
+        }
+
+        public IActionResult RefreshRating(string userIp) {
+
+
+            VmResponse response = new();
+            response.StarsCounts = _context.RatingStars.Where(r =>r.UserIp == userIp).ToList();
+
+
+
+            return Json(response); 
+        
+        
+        
         }
 
 
