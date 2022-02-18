@@ -22,13 +22,17 @@ namespace Pronia_eCommerce.Models
         [MaxLength(50), Required]
         public string Email { get; set; }
 
-        [MaxLength(25), Required]
+        [MaxLength(25)]
         public string Phone { get; set; }
 
         [MaxLength(2000), Required]
         public string Content { get; set; }
 
+        public bool hasReaded { get; set; }
+
         public DateTime CreatedDate { get; set; }
+
+
 
     }
 }

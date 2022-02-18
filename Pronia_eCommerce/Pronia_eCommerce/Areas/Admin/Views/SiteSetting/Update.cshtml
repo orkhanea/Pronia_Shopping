@@ -1,0 +1,64 @@
+﻿@model Setting
+
+<div class="row mt-3">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div style=" font-size: 30px !important;" class="text-center card-title">Update Settings</div>
+                <hr>
+                @{
+                    if (TempData["SettingError"] != null)
+                    {
+                        <p style="font-size: 20px !important; padding: 15px !important;" class="alert text-center text-warning">@TempData["SettingError"]</p>
+                        TempData["SettingError"] = null;
+                    }
+                }
+                <form class="row" asp-controller="SiteSetting" asp-action="Update" method="post" enctype="multipart/form-data">
+                    <div class="form-group col-lg-6">
+                        <label asp-for="Phone">Phone</label>
+                        <input asp-for="Phone" type="tel" class="form-control" placeholder="Phone Number">
+                        <span class="text-warning" asp-validation-for="Phone"></span>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label asp-for="Address">Address</label>
+                        <input asp-for="Address" class="form-control" placeholder="Address">
+                        <span class="text-warning" asp-validation-for="Address"></span>
+
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label asp-for="Copyright">Copyright</label>
+                        <input asp-for="Copyright" class="form-control" placeholder="Copyright">
+                        <span class="text-warning" asp-validation-for="Copyright"></span>
+
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label asp-for="CopyrightLink">Copyright URL</label>
+                        <input class="form-control" asp-for="CopyrightLink" placeholder="Copyright URL">
+                        <span class="text-warning" asp-validation-for="CopyrightLink"></span>
+
+                    </div>
+                    <div class="form-group col-lg-10 my-3" style=" margin-left: auto !important; margin-right: auto !important;">
+                        <label style=" width: 100% !important; text-align: center !important;" asp-for="FooterDesc">Footer About</label>
+                        <textarea asp-for="FooterDesc" type="text" class="form-control" rows="7" placeholder="Footer About"></textarea>
+                        <span class="text-warning" asp-validation-for="FooterDesc"></span>
+
+                    </div>
+                    <div class="form-group col-lg-12 mt-5">
+                        <label class="w-25 btn btn-outline-white" asp-for="LogoFile">Choose Logo</label>
+                        <input asp-for="LogoFile" class="d-none form-control w-50">
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label class="w-25 btn btn-outline-white" asp-for="FooterBgImageFile">Choose Footer Background Image</label>
+                        <input asp-for="FooterBgImageFile" class="d-none form-control w-50">
+                    </div>
+                    <div class="form-group" style=" margin-left: auto !important; margin-right: auto !important;">
+                        <input type="hidden" asp-for="@Model.Id">
+                        <input type="hidden" asp-for="@Model.Logo">
+                        <input type="hidden" asp-for="@Model.FooterBgImage">
+                        <button type="submit" class="btn btn-light px-5"><i class="icon-lock"></i> Save Changes </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

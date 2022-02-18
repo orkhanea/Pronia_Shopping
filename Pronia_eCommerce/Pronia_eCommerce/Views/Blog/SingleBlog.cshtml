@@ -119,13 +119,13 @@
                                 {
                                     if (item.ParentCommentId == null)
                                     {
-                                        <div class="blog-comment-item" style=" padding: 20px !important; border-radius: 10px !important; box-shadow: 0 0 20px 0px #8c8a8a85 !important;">
-                                            <div class="blog-comment-img">
-                                                <img src="~/img/user/user-4.png" alt="User Image">
+                                        <div class="blog-comment-item" style=" background-color: white !important; padding: 20px !important; border-radius: 10px !important; box-shadow: 0 0 20px 0px #8c8a8a85 !important;">
+                                            <div class="blog-comment-img" style="height: 120px !important;">
+                                                <img style="height:100%!important" src="~/img/user/@(item.UserId!=null?(item.User.Image!=null?item.User.Image:"Avatar.png"):"Avatar.png")" alt="User Image">
                                             </div>
                                             <div class="blog-comment-content">
                                                 <div class="user-meta">
-                                                    <h2 class="user-name">@item.CommentPost.FullName</h2>
+                                                    <h2 class="user-name">@(item.UserId!=null?item.User.Name : item.CommentPost.FullName)</h2>
                                                     <span class="date">
                                                         @{
                                                             var date = (DateTime.Now - item.CreatedDate);
@@ -164,12 +164,12 @@
                                             if (item2.ParentCommentId == item.Id)
                                             {
                                                 <div class="blog-comment-item relpy-item" style="padding: 0 40px 0 !important;">
-                                                    <div class="blog-comment-img">
-                                                        <img src="~/img/user/user-5.png" alt="User Image">
+                                                    <div class="blog-comment-img" style="height: 120px !important;">
+                                                        <img style="height:100%!important" src="~/img/user/@(item2.UserId!=null?(item2.User.Image!=null?item2.User.Image:"Avatar.png"):"Avatar.png")" alt="User Image">
                                                     </div>
                                                     <div class="blog-comment-content">
                                                         <div class="user-meta">
-                                                            <h2 class="user-name">@item2.CommentPost.FullName</h2>
+                                                            <h2 class="user-name">@(item2.UserId!=null?item2.User.Name : item2.CommentPost.FullName)</h2>
                                                             <span class="date">
                                                                 @{
                                                                     var date2 = (DateTime.Now - item2.CreatedDate);
@@ -207,26 +207,33 @@
                                         }
                                         <form id="add-comment" class="add-comment mb-5 replyComment" asp-controller="Blog" asp-action="PostComment" method="post">
                                             <fieldset id="comment-fieldset">
-                                                <div class="row">
-                                                    <div class="col-md-6 mb-2">
-                                                        <div class="form-group">
-                                                            <input asp-for="@Model.CommentPost.FullName" placeholder="Name" class="form-control form-control-alternative">
-                                                            <div asp-validation-summary="All"></div>
+                                                @{
+                                                    if (!User.Identity.IsAuthenticated)
+                                                    {
+                                                        <div class="row">
+                                                            <div class="col-md-6 mb-2">
+                                                                <div class="form-group">
+                                                                    <input asp-for="@Model.CommentPost.FullName" placeholder="Name" class="form-control form-control-alternative">
+                                                                    <div asp-validation-summary="All"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 mb-2">
+                                                                <div class="form-group">
+                                                                    <input asp-for="@Model.CommentPost.Email" placeholder="Email" class="form-control form-control-alternative">
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-6 mb-2">
-                                                        <div class="form-group">
-                                                            <input asp-for="@Model.CommentPost.Email" placeholder="Email" class="form-control form-control-alternative">
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                    }
+
+
+                                                }
                                                 <div class="">
                                                     <div class="form-group">
                                                         <textarea asp-for="@Model.CommentPost.Content" class="form-control form-control-alternative" placeholder="Comment" id="exampleFormControlTextarea1" rows="3"></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-end">
-                                                    <button id="comment-reply-btn" class="mt-3 btn btn-primary">Reply to @item.CommentPost.FullName</button>
+                                                    <button id="comment-reply-btn" class="mt-3 btn btn-primary">Reply to @(item.UserId!=null?item.User.Name: item.CommentPost.FullName)</button>
                                                 </div>
                                             </fieldset>
 
@@ -239,14 +246,20 @@
                                 <div class="feedback-area">
                                     <h2 class="heading">Leave a comment</h2>
                                     <form class="feedback-form" asp-controller="Blog" asp-action="PostComment" method="post">
-                                        <div class="group-input">
-                                            <div class="form-field me-md-30 mb-30 mb-md-0 mr-30">
-                                                <input asp-for="@Model.CommentPost.FullName" placeholder="Full Name*" class="input-field">
-                                            </div>
-                                            <div class="form-field">
-                                                <input type="email" asp-for="@Model.CommentPost.Email" placeholder="Your Email*" class="input-field">
-                                            </div>
-                                        </div>
+                                        @{
+                                            if (!User.Identity.IsAuthenticated)
+                                            {
+                                                <div class="group-input">
+                                                    <div class="form-field me-md-30 mb-30 mb-md-0 mr-30">
+                                                        <input asp-for="@Model.CommentPost.FullName" placeholder="Full Name*" class="input-field">
+                                                    </div>
+                                                    <div class="form-field">
+                                                        <input type="email" asp-for="@Model.CommentPost.Email" placeholder="Your Email*" class="input-field">
+                                                    </div>
+                                                </div>
+
+                                            }
+                                        }
                                         <div class="form-field mt-30">
                                             <input asp-for="@Model.CommentPost.Subject" placeholder="Subject (Optinal)" class="input-field">
                                         </div>

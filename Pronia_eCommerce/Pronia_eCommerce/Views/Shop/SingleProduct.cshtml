@@ -309,12 +309,12 @@
                                     foreach (var msg in Model.SingleProduct.ProductComments)
                                     {
                                         <div class="blog-comment-item">
-                                            <div class="blog-comment-img">
-                                                <img src="~/img/user/user-4.png" alt="Image">
+                                            <div class="blog-comment-img" style="height: 120px !important;">
+                                                <img style="height: 100% !important;" src="~/img/user/@(msg.UserId!=null?(msg.User.Image!=null?msg.User.Image:"Avatar.png"):"Avatar.png")" alt="Image">
                                             </div>
                                             <div class="blog-comment-content" style=" background-color: white !important; box-shadow: 0 0 10px 0px #cec9c994 !important; padding: 20px 20px 15px 20px !important; border-radius: 10px !important;">
                                                 <div class="user-meta">
-                                                    <h2 class="user-name" style="margin: 0 !important; font-weight: 500 !important; text-transform: capitalize !important; ">@msg.CommentPost.FullName</h2>
+                                                    <h2 class="user-name" style="margin: 0 !important; font-weight: 500 !important; text-transform: capitalize !important; ">@(msg.UserId!=null?msg.User.Name:msg.CommentPost.FullName)</h2>
                                                     <span class="date" style="color: #d03838 !important; font-size: 12px !important;">
                                                         @{
                                                             var date = (DateTime.Now - msg.CreatedDate);
@@ -354,14 +354,20 @@
                             <div class="feedback-area">
                                 <h2 class="heading">Leave a comment</h2>
                                 <form class="feedback-form" asp-controller="Shop" asp-action="PostComment" method="post">
-                                    <div class="group-input">
-                                        <div class="form-field me-md-30 mb-30 mb-md-0 mr-30">
-                                            <input asp-for="@Model.CommentPost.FullName" placeholder="Your Name*" class="input-field">
-                                        </div>
-                                        <div class="form-field">
-                                            <input type="email" asp-for="@Model.CommentPost.Email" placeholder="Your Email*" class="input-field">
-                                        </div>
-                                    </div>
+                                    @{
+                                        if (!User.Identity.IsAuthenticated)
+                                        {
+                                            <div class="group-input">
+                                                <div class="form-field me-md-30 mb-30 mb-md-0 mr-30">
+                                                    <input asp-for="@Model.CommentPost.FullName" placeholder="Your Name*" class="input-field">
+                                                </div>
+                                                <div class="form-field">
+                                                    <input type="email" asp-for="@Model.CommentPost.Email" placeholder="Your Email*" class="input-field">
+                                                </div>
+                                            </div>
+
+                                        }
+                                    }
                                     <div class="form-field mt-30">
                                         <input asp-for="@Model.CommentPost.Subject" placeholder="Subject (Optinal)" class="input-field">
                                     </div>

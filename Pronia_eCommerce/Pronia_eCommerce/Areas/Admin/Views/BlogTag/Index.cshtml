@@ -1,0 +1,60 @@
+﻿@model List<BlogTag>
+
+<div class="row justify-content-center">
+    <div class="col-lg-7 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title text-center mb-4" style="font-size: 30px !important;">Blog Tags</h4>
+                @{
+                    if (TempData["BlogTagError"] != null)
+                    {
+                        <p style="font-size: 20px !important; padding: 15px !important;" class="alert text-center text-warning">@TempData["BlogTagError"]</p>
+
+                        TempData["BlogTagError"] = null;
+                    }
+                }
+
+                <a class="btn btn-light mb-3 px-5" asp-area="Admin" asp-controller="BlogTag" asp-action="Create">Create Tag</a>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th class="tableTrCustom">
+                                    #
+                                </th>
+                                <th class="tableTrCustom">
+                                    Blog Tags
+                                </th>
+                                <th class="tableTrCustom">
+                                    Edit
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter = 0;
+                                foreach (var item in Model)
+                                {
+                                    counter++;
+                                    <tr>
+                                        <td style=" width: 5% !important; vertical-align: middle !important; font-size: 15px !important; font-weight: 500 !important;">
+                                            @counter
+                                        </td>
+                                        <td style="width: 25% !important; vertical-align: middle !important; font-size: 15px !important; font-weight: 500 !important;">
+                                            @item.TagName
+                                        </td>
+                                        <td style="width: 16% !important; vertical-align: middle !important;">
+                                            <a data-tippy="Update" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="mr-2 btn-sm btn btn-outline-success" asp-route-id="@item.Id" asp-area="Admin" asp-controller="BlogTag" asp-action="Update"><i class="fal fa-edit"></i></a>
+                                            <a data-tippy="Delete" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="btn-sm btn btn-outline-danger" asp-route-id="@item.Id" asp-area="Admin" asp-controller="BlogTag" asp-action="Delete" onclick="return confirm('Are you sure?')"><i class="fal fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

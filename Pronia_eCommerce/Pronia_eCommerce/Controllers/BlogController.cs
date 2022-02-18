@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pronia_eCommerce.Data;
 using Pronia_eCommerce.Models;
@@ -13,10 +14,14 @@ namespace Pronia_eCommerce.Controllers
     public class BlogController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public BlogController(AppDbContext context)
+        public BlogController(AppDbContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
         public IActionResult Index(VmSearch Search)
         {
@@ -48,7 +53,6 @@ namespace Pronia_eCommerce.Controllers
             return View(model);
         }
 
-
         public IActionResult SingleBlog(int? Id, VmSearch search)
         {
             if (Id!=null)
@@ -58,7 +62,8 @@ namespace Pronia_eCommerce.Controllers
                 {
                     model2.LatestBlogs = _context.Blogs.OrderByDescending(b => b.CreatedDate).Where(p => p.Image != null).Take(3).ToList();
                     model2.BlogDetail = _context.Blogs.Include(c => c.Comments)
-                                             .ThenInclude(cp => cp.CommentPost).Include(b=>b.BlogTagToBlogs).ThenInclude(bt=>bt.BlogTag).Include(t=>t.Category).FirstOrDefault(b=>b.Id==Id);
+                                                      .ThenInclude(cu=>cu.User)
+                                                      .Include(c=>c.Comments).ThenInclude(cp => cp.CommentPost).Include(b=>b.BlogTagToBlogs).ThenInclude(bt=>bt.BlogTag).Include(t=>t.Category).FirstOrDefault(b=>b.Id==Id);
 
                     model2.Search = search;
                     model2.Setting = _context.Setting.FirstOrDefault();
@@ -83,6 +88,7 @@ namespace Pronia_eCommerce.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 _context.CommentPosts.Add(commentPost);
                 _context.SaveChanges();
 
@@ -101,6 +107,30 @@ namespace Pronia_eCommerce.Controllers
                 _context.SaveChanges();
 
 
+            }
+            else
+            {
+                if (_signInManager.IsSignedIn(User)&&commentPost.FullName==null&&commentPost.Email==null&&commentPost.Content!=null)
+                {
+                    commentPost.FullName = "";
+                    commentPost.Email = "";
+                    _context.CommentPosts.Add(commentPost);
+                    _context.SaveChanges();
+                    Comment comment = new();
+                    comment.BlogId = commentPost.BlogId;
+                    comment.CommentPostId = commentPost.Id;
+                    comment.UserId = _userManager.GetUserId(User);
+                    comment.CreatedDate = DateTime.Now;
+                    comment.Content = commentPost.Content;
+
+                    if (commentPost.CommentId > 0)
+                    {
+                        comment.ParentCommentId = commentPost.CommentId;
+                    }
+
+                    _context.Comments.Add(comment);
+                    _context.SaveChanges();
+                }
             }
 
             return RedirectToAction("SingleBlog", new { Id = commentPost.BlogId });

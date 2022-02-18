@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pronia_eCommerce.Data;
+using Pronia_eCommerce.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,13 @@ namespace Pronia_eCommerce
         {
             services.AddControllersWithViews();
             services.AddDbContext<AppDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("Pronia")));
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>(x =>
+            {
+                x.Password.RequiredLength = 7;
+                x.Password.RequireUppercase = false;
+                x.Password.RequireLowercase = false;
+                x.Password.RequireNonAlphanumeric = false;
+            }).AddEntityFrameworkStores<AppDbContext>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession();
             services.AddControllers().AddJsonOptions(x =>x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
@@ -60,6 +67,15 @@ namespace Pronia_eCommerce
 
             app.UseEndpoints(endpoints =>
             {
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapAreaControllerRoute(
+                      name: "areas",
+                      areaName: "Admin",
+                      pattern: "Admin/{controller=Home}/{action=Index}/{id?}"
+                    );
+                });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

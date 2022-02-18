@@ -13,7 +13,7 @@ namespace Pronia_eCommerce.Models
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(50), Required]
         public string Email { get; set; }
 
         public DateTime CreatedDate { get; set; }

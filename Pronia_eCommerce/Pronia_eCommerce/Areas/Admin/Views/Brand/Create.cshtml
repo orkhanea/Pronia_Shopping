@@ -1,0 +1,30 @@
+﻿@model OurBrand
+
+<div class="row mt-3">
+    <div class="col-lg-6" style="margin-left: auto !important; margin-right: auto !important;">
+        <div class="card">
+            <div class="card-body">
+                <div style=" font-size: 30px !important;" class="text-center card-title">Add New Brand Logo</div>
+                <hr>
+                @{
+                    if (TempData["BrandError2"] != null)
+                    {
+                        <p style="font-size: 20px !important; padding: 15px !important;" class="alert text-center text-warning">@TempData["BrandError2"]</p>
+
+                        TempData["BrandError2"] = null;
+                    }
+                }
+                <form class="row p-4" asp-area="Admin" asp-controller="Brand" asp-action="Create" method="post" enctype="multipart/form-data">
+
+                    <div class="col-lg-12 my-3">
+                        <label class="w-100 btn btn-outline-white" asp-for="@Model.BrandLogoFile">Choose Brand Logo</label>
+                        <input class="d-none form-control w-50" asp-for="@Model.BrandLogoFile">
+                        <span class="text-warning" asp-validation-for="@Model.BrandLogoFile"></span>
+                    </div>
+
+                    <button type="submit" style=" position: relative !important; left: -13px !important;" class="btn btn-light px-5 col-lg-6 mt-4 offset-6">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

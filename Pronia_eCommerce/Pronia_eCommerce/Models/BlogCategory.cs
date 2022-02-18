@@ -13,7 +13,7 @@ namespace Pronia_eCommerce.Models
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(15)]
+        [MaxLength(15), Required]
         public string CategoryName { get; set; }
 
         public List<Blog> Blogs { get; set; }

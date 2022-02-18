@@ -1,0 +1,73 @@
+﻿@model List<FAQ>
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title text-center mb-4" style="font-size: 30px !important;">FAQ</h4>
+                @{
+                    if (TempData["FaqError"] != null)
+                    {
+                        <p style="font-size: 20px !important; padding: 15px !important;" class="alert text-center text-warning">@TempData["FaqError"]</p>
+
+                        TempData["FaqError"] = null;
+                    }
+                }
+
+                <a class="btn btn-light mb-3 px-5" asp-area="Admin" asp-controller="Faq" asp-action="Create">Add New FAQ</a>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th class="tableTrCustom">
+                                    #
+                                </th>
+                                <th class="tableTrCustom">
+                                    Questions
+                                </th>
+                                <th class="tableTrCustom">
+                                    Answers
+                                </th>
+                                <th class="tableTrCustom">
+                                    Edit
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter = 0;
+                                foreach (var item in Model)
+                                {
+                                    counter++;
+                                    <tr>
+                                        <td style=" width: 5% !important; vertical-align: middle !important; font-size: 15px !important; font-weight: 500 !important;">
+                                            @counter
+                                        </td>
+                                        <td style="width: 25% !important; vertical-align: middle !important; font-size: 15px !important; font-weight: 500 !important;">
+                                            <marquee behavior="scroll" direction="up" height="100"
+                                                     scrollamount="2" scrolldelay="10">
+                                                @item.Question
+                                            </marquee>
+                                        </td>
+                                        <td style="width: 50% !important; vertical-align: middle !important; font-size: 15px !important; font-weight: 500 !important;">
+                                            <marquee behavior="scroll" direction="up" height="100"
+                                                     scrollamount="2" scrolldelay="10">
+                                                @item.Answer
+                                            </marquee>
+                                        </td>
+                                        <td style="width: 16% !important; vertical-align: middle !important;">
+                                            <a class="mb-2 w-50 btn-sm btn btn-outline-success" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Faq" asp-action="Update">Update</a>
+                                            <br>
+                                            <a class="w-50 btn-sm btn btn-outline-danger" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Faq" asp-action="Delete" onclick="return confirm('Are you sure?')">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

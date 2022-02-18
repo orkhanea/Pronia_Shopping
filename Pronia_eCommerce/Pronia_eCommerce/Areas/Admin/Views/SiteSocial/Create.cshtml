@@ -1,0 +1,31 @@
+﻿@model SiteSocial
+
+<div class="row mt-3">
+    <div class="col-lg-10" style="margin-left: auto !important; margin-right: auto !important;">
+        <div class="card">
+            <div class="card-body">
+                <div style=" font-size: 30px !important;" class="text-center card-title">Create New Social</div>
+                <hr>
+                <form class="p-5" asp-area="Admin" asp-controller="SiteSocial" asp-action="Create" method="post">
+                    <div class="mb-3">
+                        <label asp-for="@Model.Name" class="form-label">Social Name</label>
+                        <input class="form-control" asp-for="@Model.Name">
+                        <span class="text-warning" asp-validation-for="@Model.Name"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@Model.Icon" class="form-label">Social Icon</label>
+                        <input class="form-control" asp-for="@Model.Icon">
+                        <span class="text-warning" asp-validation-for="@Model.Icon"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@Model.Link" class="form-label">Social Link</label>
+                        <input class="form-control" asp-for="@Model.Link">
+                        <span class="text-warning" asp-validation-for="@Model.Link"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-light col-lg-6 mt-4 offset-6">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -229,6 +229,7 @@ namespace Pronia_eCommerce.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Desc")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Signature")
@@ -236,6 +237,7 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("VideoLink")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -256,10 +258,12 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Page")
+                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
@@ -317,6 +321,7 @@ namespace Pronia_eCommerce.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("CategoryName")
+                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
@@ -333,6 +338,7 @@ namespace Pronia_eCommerce.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("TagName")
+                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
@@ -437,6 +443,9 @@ namespace Pronia_eCommerce.Migrations
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BlogId");
@@ -446,6 +455,8 @@ namespace Pronia_eCommerce.Migrations
                     b.HasIndex("ParentCommentId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -492,6 +503,7 @@ namespace Pronia_eCommerce.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -500,14 +512,17 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("MapLink")
+                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("Phone")
+                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
@@ -568,10 +583,12 @@ namespace Pronia_eCommerce.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Answer")
+                        .IsRequired()
                         .HasMaxLength(1500)
                         .HasColumnType("nvarchar(1500)");
 
                     b.Property<string>("Question")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -638,9 +655,11 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
+
+                    b.Property<bool>("hasReaded")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -738,11 +757,16 @@ namespace Pronia_eCommerce.Migrations
                     b.Property<byte>("RatingValue")
                         .HasColumnType("tinyint");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CommentPostId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ProductComments");
                 });
@@ -932,14 +956,17 @@ namespace Pronia_eCommerce.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Copyright")
+                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
                     b.Property<string>("CopyrightLink")
+                        .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
@@ -948,6 +975,7 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("FooterDesc")
+                        .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
@@ -956,6 +984,7 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Phone")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -1002,6 +1031,7 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -1033,6 +1063,10 @@ namespace Pronia_eCommerce.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("ResetPasswordCode")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ShippingAddress")
                         .IsRequired()
@@ -1150,11 +1184,17 @@ namespace Pronia_eCommerce.Migrations
                         .WithMany("Comment")
                         .HasForeignKey("ProductId");
 
+                    b.HasOne("Pronia_eCommerce.Models.EndUser", "User")
+                        .WithMany("Comment")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Blog");
 
                     b.Navigation("CommentPost");
 
                     b.Navigation("ParentComment");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Pronia_eCommerce.Models.Product", b =>
@@ -1182,9 +1222,15 @@ namespace Pronia_eCommerce.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Pronia_eCommerce.Models.EndUser", "User")
+                        .WithMany("ProductComments")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("CommentPost");
 
                     b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Pronia_eCommerce.Models.ProductImage", b =>
@@ -1357,6 +1403,10 @@ namespace Pronia_eCommerce.Migrations
 
             modelBuilder.Entity("Pronia_eCommerce.Models.EndUser", b =>
                 {
+                    b.Navigation("Comment");
+
+                    b.Navigation("ProductComments");
+
                     b.Navigation("Sales");
                 });
 #pragma warning restore 612, 618

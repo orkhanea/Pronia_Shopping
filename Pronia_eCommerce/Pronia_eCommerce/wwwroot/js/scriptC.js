@@ -1118,5 +1118,17 @@ $(document).ready(function()
 
     }
 
+    if ($("#ResetSuccess").length > 0) {
+
+        swal("Success!", `Your password has been changed successfully!`, "success");
+
+    }
+
+    if ($("#ResetError2").length > 0) {
+
+        swal("Oops!", `Something went wrong. Try it again!`, "error");
+
+    }
+
 
 });

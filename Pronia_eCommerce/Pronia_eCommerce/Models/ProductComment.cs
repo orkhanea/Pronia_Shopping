@@ -28,5 +28,9 @@ namespace Pronia_eCommerce.Models
         public int CommentPostId { get; set; }
         public CommentPost CommentPost { get; set; }
 
+        [ForeignKey("User")]
+        public string UserId { get; set; }
+        public EndUser User { get; set; }
+
     }
 }

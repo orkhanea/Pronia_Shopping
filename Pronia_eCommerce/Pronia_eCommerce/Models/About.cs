@@ -13,9 +13,10 @@ namespace Pronia_eCommerce.Models
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public string Desc { get; set; }
 
-        [MaxLength(255)]
+        [MaxLength(255), Required]
         public string VideoLink { get; set; }
 
         [MaxLength(255)]

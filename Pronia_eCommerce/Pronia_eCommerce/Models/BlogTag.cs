@@ -13,7 +13,7 @@ namespace Pronia_eCommerce.Models
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(15)]
+        [MaxLength(15), Required]
         public string TagName { get; set; }
 
         public List<BlogTagToBlog> BlogTagToBlogs { get; set; }

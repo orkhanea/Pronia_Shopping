@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Pronia_eCommerce.Controllers
 {
@@ -20,14 +24,16 @@ namespace Pronia_eCommerce.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IWebHostEnvironment _webHostEnviroment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AccountController(AppDbContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IWebHostEnvironment webHostEnviroment)
+        public AccountController(AppDbContext context, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IWebHostEnvironment webHostEnviroment, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _webHostEnviroment = webHostEnviroment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public IActionResult Index()
@@ -75,7 +81,8 @@ namespace Pronia_eCommerce.Controllers
                         ModelState.AddModelError("", item.Description);
                     }
 
-                    return RedirectToAction("Index", model);
+                    TempData["UserErrorIndex2"] = "Fill out all fields correctly";
+                    return RedirectToAction("Index");
                 }
             }
             else
@@ -84,19 +91,21 @@ namespace Pronia_eCommerce.Controllers
                 return RedirectToAction("Index");
             }
 
-            
+
         }
 
         public IActionResult Profile()
         {
             if (_signInManager.IsSignedIn(User))
             {
-                if (_context.EndUsers.Find(_userManager.GetUserId(User))!=null)
+                if (_context.EndUsers.Find(_userManager.GetUserId(User)) != null)
                 {
                     VmEndUser model = new();
                     model.Setting = _context.Setting.FirstOrDefault();
                     model.SiteSocial = _context.SiteSocials.ToList();
                     model.EndUser = _context.EndUsers.Find(_userManager.GetUserId(User));
+                    _context.EndUsers.Find(_userManager.GetUserId(User)).ResetPasswordCode = "";
+                    _context.SaveChanges();
                     model.Countries = _context.Countries.ToList();
                     return View(model);
                 }
@@ -111,8 +120,8 @@ namespace Pronia_eCommerce.Controllers
                 return RedirectToAction("Index");
             }
 
-            
-            
+
+
         }
 
         [HttpPost]
@@ -121,7 +130,7 @@ namespace Pronia_eCommerce.Controllers
             if (ModelState.IsValid)
             {
 
-                if (_context.EndUsers.Find(VmEndUser.EndUser.Id)!=null)
+                if (_context.EndUsers.Find(VmEndUser.EndUser.Id) != null)
                 {
                     EndUser endUser = _context.EndUsers.Find(VmEndUser.EndUser.Id);
                     endUser.Name = VmEndUser.EndUser.Name;
@@ -185,7 +194,7 @@ namespace Pronia_eCommerce.Controllers
                     TempData["UserError"] = "Error";
                     return RedirectToAction("Profile");
                 }
-                
+
             }
             else
             {
@@ -195,19 +204,19 @@ namespace Pronia_eCommerce.Controllers
             }
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Login(VmRegister vmRegister)
         {
-            
 
-            if (vmRegister.VmLogin.UserName != null && vmRegister.VmLogin.Password!=null)
+
+            if (vmRegister.VmLogin.UserName != null && vmRegister.VmLogin.Password != null)
             {
 
                 var result = await _signInManager.PasswordSignInAsync(vmRegister.VmLogin.UserName, vmRegister.VmLogin.Password, false, false);
 
                 if (result.Succeeded)
                 {
+
                     return RedirectToAction("Profile");
                 }
                 else
@@ -232,5 +241,161 @@ namespace Pronia_eCommerce.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+
+        public IActionResult ResetPassword()
+        {
+
+            VmResetPassword model = new();
+            model.Setting = _context.Setting.FirstOrDefault();
+            model.SiteSocial = _context.SiteSocials.ToList();
+
+
+
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult ResetPassword(VmResetPassword model)
+        {
+
+
+            if (ModelState.IsValid)
+            {
+                if (_context.EndUsers.Any(u => u.Email == model.Email))
+                {
+
+
+                    var user = _context.EndUsers.FirstOrDefault(u => u.Email == model.Email);
+
+                    if (user != null)
+                    {
+
+                        string resetCode = Guid.NewGuid().ToString();
+                        var verifyUrl = "Account/ChangePassword/" + resetCode;
+
+                        Uri baseUri = new Uri("https://localhost:44397/");
+
+                        var link = baseUri + HttpContext.Request.Scheme.Replace(HttpContext.Request.Scheme, verifyUrl);
+
+
+                        user.ResetPasswordCode = resetCode;
+
+                        _context.SaveChanges();
+
+                        var subject = "Password Reset Request";
+                        var body = "Hi " + user.Name + ", <br/> You recently requested to reset your password for your account. Click the link below to reset it. " +
+                         " <br/><br/><a href='" + link + "'>" + link + "</a> <br/><br/>" +
+                         "If you did not request a password reset, please ignore this email or reply to let us know.<br/><br/> Thank you";
+
+                        SendEmail(user.Email, body, subject);
+
+                        ViewBag.Message = "Reset password link has been sent to your email id.";
+
+                    }
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    model.SiteSocial = _context.SiteSocials.ToList();
+                    model.Setting = _context.Setting.FirstOrDefault();
+                    ModelState.AddModelError("", "Such an Email doesnt exist!");
+                    return View(model);
+                }
+            }
+
+            model.SiteSocial = _context.SiteSocials.ToList();
+            model.Setting = _context.Setting.FirstOrDefault();
+            return View(model);
+        }
+
+        private void SendEmail(string emailAddress, string body, string subject)
+        {
+
+            MailMessage RecoveryMessage = new MailMessage("proniaecommerce@gmail.com", emailAddress);
+            RecoveryMessage.Subject = subject;
+            RecoveryMessage.Body = body;
+
+            RecoveryMessage.IsBodyHtml = true;
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.EnableSsl = true;
+            NetworkCredential NetworkCred = new NetworkCredential("proniaecommerce@gmail.com", "123456Pronia@");
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = NetworkCred;
+            smtp.Port = 587;
+            smtp.Send(RecoveryMessage);
+        }
+
+        public ActionResult ChangePassword(string id)
+        {
+
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return RedirectToAction("ResetPassword");
+            }
+
+            var user = _context.EndUsers.Where(a => a.ResetPasswordCode == id).FirstOrDefault();
+            if (user != null)
+            {
+                VmChangePassword model = new VmChangePassword();
+                model.ResetCode = id;
+                model.Setting = _context.Setting.FirstOrDefault();
+                model.SiteSocial = _context.SiteSocials.ToList();
+                return View(model);
+            }
+            else
+            {
+                TempData["ResetError"] = "Something went wrong!";
+                return RedirectToAction("ResetPassword");
+            }
+
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ChangePassword(VmChangePassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                EndUser user = _context.EndUsers.Where(a => a.ResetPasswordCode == model.ResetCode).FirstOrDefault();
+                if (user != null)
+                {
+                    if (model.NewPassword.Length >= 7)
+                    {
+                        await _userManager.RemovePasswordAsync(user);
+                        await _userManager.AddPasswordAsync(user, model.NewPassword);
+                        user.ResetPasswordCode = "";
+                        await _context.SaveChangesAsync();
+                        TempData["ResetSuccess"] = "true";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        TempData["pswsyntax"] = "Password length should be at least 7 characters";
+                        model.Setting = _context.Setting.FirstOrDefault();
+                        model.SiteSocial = _context.SiteSocials.ToList();
+                        return View(model);
+                    }
+                }
+                else
+                {
+                    VmResetPassword model2 = new();
+                    model2.Setting = _context.Setting.FirstOrDefault();
+                    model2.SiteSocial = _context.SiteSocials.ToList();
+                    TempData["ResetError2"] = "Try it again!";
+                    return RedirectToAction("ResetPassword", model2);
+                }
+            }
+            else
+            {
+                model.Setting = _context.Setting.FirstOrDefault();
+                model.SiteSocial = _context.SiteSocials.ToList();
+                return View(model);
+            }
+        }
+
     }
 }

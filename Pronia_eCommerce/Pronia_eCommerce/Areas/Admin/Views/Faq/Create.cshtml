@@ -1,0 +1,25 @@
+﻿@model FAQ
+
+<div class="row mt-3">
+    <div class="col-lg-10" style="margin-left: auto !important; margin-right: auto !important;">
+        <div class="card">
+            <div class="card-body">
+                <div style=" font-size: 30px !important;" class="text-center card-title">Create New FAQ</div>
+                <hr>
+                <form class="p-5" asp-area="Admin" asp-controller="Faq" asp-action="Create" method="post">
+                    <div class="mb-3">
+                        <label asp-for="@Model.Question" class="form-label">Question</label>
+                        <textarea class="form-control" rows="4" asp-for="@Model.Question" placeholder="Write a question..."></textarea>
+                        <span class="text-warning" asp-validation-for="@Model.Question"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@Model.Answer" class="form-label">Answer</label>
+                        <textarea class="form-control" rows="6" asp-for="@Model.Answer" placeholder="Write a answer..."></textarea>
+                        <span class="text-warning" asp-validation-for="@Model.Answer"></span>
+                    </div>
+                    <button type="submit" class="btn btn-light col-lg-6 mt-4 offset-6">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

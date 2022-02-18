@@ -13,19 +13,19 @@ namespace Pronia_eCommerce.Models
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(1000)]
+        [MaxLength(1000), Required]
         public string FooterDesc { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(20),Required]
         public string Phone { get; set; }
 
-        [MaxLength(200)]
+        [MaxLength(200), Required]
         public string Address { get; set; }
 
-        [MaxLength(25)]
+        [MaxLength(25), Required]
         public string Copyright { get; set; }
 
-        [MaxLength(250)]
+        [MaxLength(250), Required]
         public string CopyrightLink { get; set; }
 
         [MaxLength(255)]

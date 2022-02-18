@@ -30,5 +30,9 @@ namespace Pronia_eCommerce.Models
         public int? ParentCommentId { get; set; }
         public Comment ParentComment { get; set; }
 
+        [ForeignKey("User")]
+        public string UserId { get; set; }
+        public EndUser User { get; set; }
+
     }
 }

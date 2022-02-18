@@ -13,10 +13,10 @@ namespace Pronia_eCommerce.Models
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(30)]
+        [MaxLength(30), Required]
         public string Title { get; set; }
 
-        [MaxLength(30)]
+        [MaxLength(30), Required]
         public string Page { get; set; }
 
         [MaxLength(255)]

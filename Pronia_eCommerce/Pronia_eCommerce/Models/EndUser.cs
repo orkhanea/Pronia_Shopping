@@ -35,8 +35,13 @@ namespace Pronia_eCommerce.Models
         [ForeignKey("Country")]
         public int CountryId { get; set; }
         public Country Country { get; set; }
-
         public List<Sale> Sales { get; set; }
 
+        [MaxLength(500)]
+        public string ResetPasswordCode { get; set; }
+
+        public List<Comment> Comment { get; set; }
+
+        public List<ProductComment> ProductComments { get; set; }
     }
 }
