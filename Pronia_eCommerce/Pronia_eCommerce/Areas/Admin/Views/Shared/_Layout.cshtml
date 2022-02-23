@@ -14,9 +14,12 @@
     <!-- Bootstrap core CSS-->
     <link href="~/Areas/assets/css/bootstrap.min.css" rel="stylesheet" />
     <!-- animate CSS-->
+    <script src="//cdn.ckeditor.com/4.17.2/full/ckeditor.js"></script>
     <link href="~/Areas/assets/css/animate.css" rel="stylesheet" type="text/css" />
     <!-- Icons CSS-->
     <link href="~/Areas/assets/css/icons.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" rel="stylesheet" />
     <!-- Sidebar CSS-->
     <link href="~/Areas/assets/css/sidebar-menu.css" rel="stylesheet" />
     <!-- Custom Style-->
@@ -70,14 +73,25 @@
                     </a>
                     <div class="collapse" id="blog-section">
                         <ul class="nav flex-column sub-menu pl-4">
+                            <li class="nav-item"> <a class="nav-link" asp-controller="Blog" asp-action="Index">Blogs</a></li>
                             <li class="nav-item"> <a class="nav-link" asp-controller="BlogTag" asp-action="Index">Blog Tags</a></li>
+                            <li class="nav-item"> <a class="nav-link" asp-controller="BlogCategory" asp-action="Index">Blog Categories</a></li>
                         </ul>
                     </div>
                 </li>
-                <li>
-                    <a href="icons.html">
-                        <i class="zmdi zmdi-invert-colors"></i> <span>UI Icons</span>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#shop_" aria-expanded="false" aria-controls="shop_">
+                        <i class="fas fa-store"></i>
+                        <span class="menu-title">Shop</span>
+                        <i class="menu-arrow"></i>
                     </a>
+                    <div class="collapse" id="shop_">
+                        <ul class="nav flex-column sub-menu pl-4">
+                            <li class="nav-item"> <a class="nav-link" asp-controller="Shop" asp-action="Index">Shop</a></li>
+                            <li class="nav-item"> <a class="nav-link" asp-controller="ProductTag" asp-action="Index">Product Tags</a></li>
+                            <li class="nav-item"> <a class="nav-link" asp-controller="ProductCategory" asp-action="Index">Product Categories</a></li>
+                        </ul>
+                    </div>
                 </li>
 
                 <li>
@@ -271,8 +285,12 @@
     <script src="~/Areas/assets/plugins/Chart.js/Chart.min.js"></script>
     <!-- FontAwsome Icon -->
     <link href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="~/Areas/assets/js/Select2.js"></script>
     <!-- Tippy Tooltip -->
     <script src="https://unpkg.com/tippy.js@4"></script>
+
 
 </body>
 </html>

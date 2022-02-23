@@ -13,8 +13,12 @@ namespace Pronia_eCommerce.Models
         [Key]
         public int Id { get; set; }
 
+        [Range(0.0, 100000000.0, ErrorMessage = "Price must be greter than zero!")]
+        [Required]
         public decimal Price { get; set; }
 
+        [Range(0, byte.MaxValue, ErrorMessage = "Please enter a value bigger than {0}")]
+        [Required]
         public byte Quantity { get; set; }
 
         [ForeignKey("ProductSize")]

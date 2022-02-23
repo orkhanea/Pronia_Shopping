@@ -106,49 +106,56 @@
                         <div class="review">
                             <a id="rating_value" href="#">
                                 @{
-                                    var rval2 = Model.RatingStars;
-                                    var fiveS = 0;
-                                    var fourS = 0;
-                                    var threeS = 0;
-                                    var twoS = 0;
-                                    var oneS = 0;
-                                    for (var rs = 0; rs < rval2.Count; rs++)
+                                    if (Model.RatingStars.Count > 0)
                                     {
-
-
-                                        for (var str = 0; str < rval2.Count; str++)
+                                        var rval2 = Model.RatingStars;
+                                        var fiveS = 0;
+                                        var fourS = 0;
+                                        var threeS = 0;
+                                        var twoS = 0;
+                                        var oneS = 0;
+                                        for (var rs = 0; rs < rval2.Count; rs++)
                                         {
-                                            if (rval2[str].Star == 5)
+
+
+                                            for (var str = 0; str < rval2.Count; str++)
                                             {
-                                                fiveS++;
+                                                if (rval2[str].Star == 5)
+                                                {
+                                                    fiveS++;
+                                                }
+                                                else if (rval2[str].Star == 4)
+                                                {
+                                                    fourS++;
+                                                }
+                                                else if (rval2[str].Star == 3)
+                                                {
+                                                    threeS++;
+                                                }
+                                                else if (rval2[str].Star == 2)
+                                                {
+                                                    twoS++;
+                                                }
+                                                else if (rval2[str].Star == 1)
+                                                {
+                                                    oneS++;
+                                                }
                                             }
-                                            else if (rval2[str].Star == 4)
-                                            {
-                                                fourS++;
-                                            }
-                                            else if (rval2[str].Star == 3)
-                                            {
-                                                threeS++;
-                                            }
-                                            else if (rval2[str].Star == 2)
-                                            {
-                                                twoS++;
-                                            }
-                                            else if (rval2[str].Star == 1)
-                                            {
-                                                oneS++;
-                                            }
+
                                         }
 
-                                    }
+                                        decimal sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                                        decimal rSum = fiveS + fourS + threeS + twoS + oneS;
+                                        var sumRsum = Math.Round((sum / rSum), 1, MidpointRounding.ToEven);
 
-                                    decimal sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
-                                    decimal rSum = fiveS + fourS + threeS + twoS + oneS;
-                                    var sumRsum = Math.Round((sum / rSum), 1, MidpointRounding.ToEven);
-
-                                    if (sumRsum != 0)
-                                    {
-                                        @("( "+ sumRsum + " Rating )" );
+                                        if (sumRsum != 0)
+                                        {
+                                            @("( "+ sumRsum.ToString("F1") + " Rating )" );
+                                        }
+                                        else
+                                        {
+                                            @("( 0.0 Rating )");
+                                        }
                                     }
                                     else
                                     {

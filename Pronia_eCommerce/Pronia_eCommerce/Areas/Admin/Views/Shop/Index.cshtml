@@ -1,0 +1,171 @@
+﻿@model List<Product>
+
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title text-center" style="font-size: 30px !important;">Products</h4>
+                <a class="btn btn-light mb-3 px-5" asp-area="Admin" asp-controller="Shop" asp-action="Create">Add New Product</a>
+                @{
+                    if (TempData["ProductError"] != null)
+                    {
+                        <p style="font-size: 20px !important; padding: 15px !important;" class="alert text-center text-warning">@TempData["ProductError"]</p>
+
+                        TempData["ProductError"] = null;
+                    }
+                }
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th class="tableTrCustom">
+                                    #
+                                </th>
+                                <th class="tableTrCustom">
+                                    Product Image
+                                </th>
+                                <th class="tableTrCustom">
+                                    Product Name
+                                </th>
+                                <th class="tableTrCustom">
+                                    SKU
+                                </th>
+                                <th class="tableTrCustom">
+                                    Size & Price & Quantity
+                                </th>
+                                <th class="tableTrCustom">
+                                    Rating
+                                </th>
+                                <th class="tableTrCustom">
+                                    Edit
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter = 0;
+                                foreach (var item in Model)
+                                {
+                                    counter++;
+                                    <tr>
+                                        <td style="width: 5% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                            @counter
+                                        </td>
+                                        <td style="width: 25% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                            <div style="display: inline-block; width: 200px !important; height: 150px !important; ">
+                                                <div class="owl-carousel-admin owl-theme owl-loaded" style="width: 100% !important; height: 100% !important; overflow: hidden !important; display: inline-block !important; ">
+                                                    <div class="owl-stage-outer w-100 h-100">
+                                                        <div class="owl-stage d-flex h-100">
+
+                                                            @foreach (var imgs in item.ProductImages)
+                                                            {
+                                                                <div class="owl-item"><img style="width: 100% !important; height: 100% !important; object-position: center center; object-fit: contain !important;" src="~/img/products/@imgs.Image" alt="Product Image" /></div>
+
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="width: 30% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important;">
+                                            @item.Name
+                                        </td>
+                                        <td style="width: 15% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                            @item.SKU
+                                        </td>
+                                        <td style="width: 15% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Size</th>
+                                                        <th>Quantity</th>
+                                                        <th>Prize</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var ps in item.ProductSizeToProducts)
+                                                    {
+
+                                                        <tr>
+                                                            <td>@ps.ProductSize.Size</td>
+                                                            <td>@(ps.Quantity>0?ps.Quantity:"Out Stock")</td>
+                                                            <td>$ @ps.Price</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                        <td style="width: 10% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                            @{
+                                                if (item.Ratings.Count > 0)
+                                                {
+                                                    var rval2 = item.Ratings;
+                                                    var fiveS = 0;
+                                                    var fourS = 0;
+                                                    var threeS = 0;
+                                                    var twoS = 0;
+                                                    var oneS = 0;
+                                                    for (var rs = 0; rs < rval2.Count; rs++)
+                                                    {
+
+
+                                                        for (var str = 0; str < rval2.Count; str++)
+                                                        {
+                                                            if (rval2[str].Star == 5)
+                                                            {
+                                                                fiveS++;
+                                                            }
+                                                            else if (rval2[str].Star == 4)
+                                                            {
+                                                                fourS++;
+                                                            }
+                                                            else if (rval2[str].Star == 3)
+                                                            {
+                                                                threeS++;
+                                                            }
+                                                            else if (rval2[str].Star == 2)
+                                                            {
+                                                                twoS++;
+                                                            }
+                                                            else if (rval2[str].Star == 1)
+                                                            {
+                                                                oneS++;
+                                                            }
+                                                        }
+
+                                                    }
+
+                                                    decimal sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                                                    decimal rSum = fiveS + fourS + threeS + twoS + oneS;
+                                                    var sumRsum = Math.Round((sum / rSum), 1, MidpointRounding.ToEven);
+
+                                                    if (sumRsum != 0)
+                                                    {
+                                                        @(sumRsum.ToString("F1")); <i class="fa fa-star" style="color: goldenrod !important;"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        @("0.0"); <i class="fa fa-star" style="color: goldenrod !important;"></i>
+                                                    }
+                                                }
+                                            }
+                                        </td>
+                                        <td style="width: 5% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important;">
+                                            <a data-tippy="Detail" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="btn-sm btn btn-outline-info w-100" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Shop" asp-action="ProductDetail"><i class="fal fa-info-square"></i></a>
+                                            <br />
+                                            <a data-tippy="Update" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="my-2 btn-sm btn btn-outline-success w-100" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Shop" asp-action="Update"><i class="fal fa-edit"></i></a>
+                                            <br />
+                                            <a data-tippy="Delete" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="btn-sm btn btn-outline-danger w-100" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Shop" asp-action="Delete" onclick="return confirm('Are you sure?')"><i class="fal fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

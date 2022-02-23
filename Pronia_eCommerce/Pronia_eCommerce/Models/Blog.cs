@@ -16,6 +16,9 @@ namespace Pronia_eCommerce.Models
         [Column(TypeName = "ntext"), Required]
         public string Content { get; set; }
 
+        [MaxLength(200), Required]
+        public string ShortDesc { get; set; }
+
         [MaxLength(50), Required]
         public string Title { get; set; }
 
@@ -38,5 +41,8 @@ namespace Pronia_eCommerce.Models
 
         public List<BlogTagToBlog> BlogTagToBlogs { get; set; }
         public List<Comment> Comments { get; set; }
+
+        [NotMapped]
+        public List<int> BlogTagToBlogId { get; set; }
     }
 }

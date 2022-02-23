@@ -13,16 +13,16 @@ namespace Pronia_eCommerce.Models
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(50), Required]
         public string Name { get; set; }
 
-        [MaxLength(500)]
+        [MaxLength(500), Required]
         public string ShortDesc { get; set; }
 
         [MaxLength(20)]
         public string SKU { get; set; }
 
-        [MaxLength(1500)]
+        [Required]
         public string FullDesc { get; set; }
 
         public DateTime CreatedDate { get; set; }
@@ -32,6 +32,9 @@ namespace Pronia_eCommerce.Models
         [ForeignKey("ProductCat")]
         public int ProductCatId { get; set; }
         public ProductCat ProductCat { get; set; }
+
+        [NotMapped]
+        public List<int> ProductTagToProductId { get; set; }
 
         public List<ProductTagToProduct> ProductTagToProducts { get; set; }
         public List<ProductComment> ProductComments { get; set; }

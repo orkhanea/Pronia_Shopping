@@ -1,0 +1,257 @@
+﻿@model Product
+
+    <div class="container">
+        <div class="row align-items-center my-4" style="flex-direction: column;">
+            @{
+                if (TempData["CommentError"] != null)
+                {
+                    <p style="font-size: 20px !important;" class="alert alert-danger col-lg-10 text-center">@TempData["CommentError"]</p>
+
+                    TempData["CommentError"] = null;
+                }
+            }
+            <div class="col-lg-10 m-5">
+                <div class="card text-center">
+                    <div class="card-header alert alert-light p-3" style="border-bottom: none!important;">
+                        <span style="font-size: 24px !important;" class="">@Model.Name</span>
+                        <span class="alert p-2 mx-3">
+                            @{
+                                if (Model.Ratings.Count>0)
+                                {
+                                    var rval2 = Model.Ratings;
+                                    var fiveS = 0;
+                                    var fourS = 0;
+                                    var threeS = 0;
+                                    var twoS = 0;
+                                    var oneS = 0;
+                                    for (var rs = 0; rs < rval2.Count; rs++)
+                                    {
+
+
+                                        for (var str = 0; str < rval2.Count; str++)
+                                        {
+                                            if (rval2[str].Star == 5)
+                                            {
+                                                fiveS++;
+                                            }
+                                            else if (rval2[str].Star == 4)
+                                            {
+                                                fourS++;
+                                            }
+                                            else if (rval2[str].Star == 3)
+                                            {
+                                                threeS++;
+                                            }
+                                            else if (rval2[str].Star == 2)
+                                            {
+                                                twoS++;
+                                            }
+                                            else if (rval2[str].Star == 1)
+                                            {
+                                                oneS++;
+                                            }
+                                        }
+
+                                    }
+
+                                    decimal sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                                    decimal rSum = fiveS + fourS + threeS + twoS + oneS;
+                                    var sumRsum = Math.Round((sum / rSum), 1, MidpointRounding.ToEven);
+
+                                    if (sumRsum != 0)
+                                    {
+                                        @(sumRsum.ToString("F1")); <i class="fa fa-star" style="color: goldenrod !important;"></i>
+                                    }
+                                    else
+                                    {
+                                        @("0.0"); <i class="fa fa-star" style="color: goldenrod !important;"></i>
+                                    }
+                                }
+                            }
+                        </span>
+                    </div>
+                    <span class="mb-3" style="font-size: 20px;">
+                        SKU:
+                        <span>
+                            @Model.SKU
+                        </span>
+                    </span>
+                    <div style="padding-right: 20px !important; padding-left: 20px !important; width: 100% !important; height: 350px !important;">
+                        <div style="display: inline-block; width: 100% !important; height: 350px !important;">
+                            <div class="owl-carousel-admin owl-theme owl-loaded" style="width: 100% !important; height: 100% !important; overflow: hidden !important; display: inline-block !important; ">
+                                <div class="owl-stage-outer w-100 h-100">
+                                    <div class="owl-stage d-flex h-100">
+                                        @foreach (var img in Model.ProductImages)
+                                        {
+                                            <div class="owl-item"><img style="width: 100% !important; height: 100% !important; object-position: center center; object-fit: contain !important;" src="~/img/products/@img.Image" alt="Product Image" /></div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4 mt-4" style=" display: flex; justify-content: center;">
+                            <table class="bg-dark-light1 w-75 table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Size</th>
+                                        <th>Quantity</th>
+                                        <th>Prize</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var ps in Model.ProductSizeToProducts)
+                                    {
+
+                                        <tr>
+                                            <td>@ps.ProductSize.Size</td>
+                                            <td>@(ps.Quantity>0?ps.Quantity:"Out Stock")</td>
+                                            <td>$ @ps.Price</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; margin-left: auto; margin-right: auto;" class="w-75 py-4 text-left">
+                            <span class="alert p-2 m-1"> <span style="font-weight: bold !important; font-size: 16px !important; margin-right: 10px !important;">Added Date: </span> @Model.CreatedDate.ToString("d MMMM yyyy")</span>
+                            <span class="alert p-2 m-1"> <span style="font-weight: bold !important; font-size: 16px !important; margin-right: 10px !important;">Product Category: </span>  @Model.ProductCat.CategoryName</span>
+                            <span class="alert p-2 m-1">
+                                <span style="font-weight: bold !important; font-size: 16px !important; margin-right: 10px !important;">Product Tags:</span>
+                                @foreach (var tag in Model.ProductTagToProducts)
+                                {
+                                    <span>@tag.ProductTag.TagName</span>
+                                }
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Nav tabs -->
+            <ul class="justify-content-center nav nav-tabs alert alert-link p-2 m-0" role="tablist" id="navtabpr" style="width: fit-content;">
+                <li class="alert alert-dark p-2 m-2"><a href="#hometab" class="active" role="tab" data-toggle="tab">Short Description</a></li>
+                <li class="alert alert-dark p-2 m-2"><a href="#javatab" role="tab" data-toggle="tab">Full Description</a></li>
+                <li class="alert alert-dark p-2 m-2"><a href="#csharptab" role="tab" data-toggle="tab">Comments</a></li>
+
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content" style="min-width: 100%;">
+                <div class="tab-pane active" id="hometab">
+                    <div class="col-lg-12 my-5" style="margin-left: auto; margin-right: auto;">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                <span style="font-size: 24px !important;" class="font-weight-bold text-facebook">Short Description</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert-light bg-dark-light2 p-5" style="color: white !important;">@Model.ShortDesc</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="javatab">
+                    <div class="col-lg-12 my-5" style="margin-left: auto; margin-right: auto;">
+                        <div class="card text-center">
+                            <div class="card-header">
+                                <span style="font-size: 24px !important;" class="font-weight-bold text-facebook">Product Description</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert-light bg-dark-light2 p-5" style="color: white !important;">@Model.FullDesc</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="csharptab">
+                    <div class="col-lg-12 my-5" style="margin-left: auto; margin-right: auto;">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title text-center" style=" font-size: 30px !important; font-weight: 600 !important; color: white !important; margin-bottom: 20px !important;">Comments</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered text-center">
+                                        <thead>
+                                            <tr>
+                                                <th class="tableTrCustom">
+                                                    #
+                                                </th>
+                                                <th class="tableTrCustom">
+                                                    Full Name
+                                                </th>
+                                                <th class="tableTrCustom">
+                                                    Email
+                                                </th>
+                                                <th class="tableTrCustom">
+                                                    Content
+                                                </th>
+                                                <th class="tableTrCustom">
+                                                    Created Date
+                                                </th>
+                                                <th class="tableTrCustom">
+                                                    Edit
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                int counter = 0;
+                                                foreach (var item in Model.ProductComments)
+                                                {
+                                                    counter++;
+                                                    <tr>
+                                                        <td style="vertical-align: middle !important;">
+                                                            @counter
+                                                        </td>
+                                                        <td style="vertical-align: middle !important;">
+                                                            @(item.CommentPost.FullName!=""? item.CommentPost.FullName: item.User.Name)
+                                                        </td>
+                                                        <td style="vertical-align: middle !important;">
+                                                            @(item.CommentPost.Email!=""? item.CommentPost.Email:item.User.Email)
+                                                        </td>
+                                                        <td style="vertical-align: middle !important; width: 320px !important;">
+                                                            <marquee behavior="scroll" direction="up" height="100"
+                                                                     scrollamount="2" scrolldelay="10">
+                                                                @item.Content
+                                                            </marquee>
+                                                        </td>
+                                                        <td style="vertical-align: middle !important;">
+                                                            @item.CreatedDate.ToString("d.MM.yyyy")
+                                                        </td>
+                                                        <td style="vertical-align: middle !important;">
+                                                            <a data-tippy="Delete" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="btn-sm btn btn-outline-danger" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Shop" asp-action="DeleteCom" onclick="return confirm('Are you sure?')"><i class="fal fa-trash-alt"></i></a>
+                                                        </td>
+                                                    </tr>
+
+
+                                                    TempData["ProdIdForAction"] = Model.Id;
+
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                
+
+                
+                @*<div class="col-lg-10 p-3">
+                <p class="text-facebook" style="text-align: center !important; font-size: 24px !important; font-weight: 600 !important;">Author</p>
+                <div class="d-flex p-3 shadow-sm" style="border-radius: 10px !important;">
+                    <img style="border-radius: 50% !important;" class="col-lg-3 w-25" src="~/assets/images/@(Model.CustomUser.Image==null?"default-avatar.png":Model.CustomUser.Image)" alt="Image" />
+                    <div class="d-flex flex-column justify-content-center col-lg-9">
+                        <h4>@Model.CustomUser.Name @Model.CustomUser.Name</h4>
+                        <p>Phone - @Model.CustomUser.PhoneNumber</p>
+                        <p>Email - @Model.CustomUser.Email</p>
+                    </div>
+                </div>
+            </div>*@
+            </div>
+        </div>
+</div>

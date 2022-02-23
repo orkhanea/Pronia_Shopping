@@ -48,19 +48,7 @@
                                                         <a asp-route-Id="@item.Id" asp-controller="Blog" asp-action="SingleBlog">@item.Title</a>
                                                     </h2>
                                                     <p class="text mb-7">
-                                                        @{
-                                                            if (item.Content.Length > 200)
-                                                            {
-                                                                for (int i = 200; ; i++)
-                                                                {
-                                                                    if (item.Content[i] == '.')
-                                                                    {
-                                                                        @item.Content.Substring(0, i + 1);
-                                                                        break;
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        @item.ShortDesc
                                                     </p>
                                                 </div>
                                                 <div class="latest-blog-img">
@@ -89,19 +77,7 @@
                                                         <a asp-route-Id="@item.Id" asp-controller="Blog" asp-action="SingleBlog">@item.Title</a>
                                                     </h2>
                                                     <p class="text mb-7">
-                                                        @{
-                                                            if (item.Content.Length > 200)
-                                                            {
-                                                                for (int i = 200; ; i++)
-                                                                {
-                                                                    if (item.Content[i] == '.')
-                                                                    {
-                                                                        @item.Content.Substring(0, i + 1);
-                                                                        break;
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
+                                                        @item.ShortDesc
                                                     </p>
                                                 </div>
                                                 <div class="ratio ratio-16x9">

@@ -1,0 +1,100 @@
+﻿@model List<Blog>
+
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title text-center" style="font-size: 30px !important;">Blogs</h4>
+                <a class="btn btn-light mb-3 px-5" asp-area="Admin" asp-controller="Blog" asp-action="Create">Create New Blog</a>
+                @{
+                    if (TempData["BlogError"] != null)
+                    {
+                        <p style="font-size: 20px !important; padding: 15px !important;" class="alert text-center text-warning">@TempData["BlogError"]</p>
+
+                        TempData["BlogError"] = null;
+                    }
+                }
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th class="tableTrCustom">
+                                    #
+                                </th>
+                                <th class="tableTrCustom">
+                                    Title
+                                </th>
+                                <th class="tableTrCustom">
+                                    Content Info
+                                </th>
+                                <th class="tableTrCustom">
+                                    Category
+                                </th>
+                                <th class="tableTrCustom">
+                                    Tags
+                                </th>
+                                <th class="tableTrCustom">
+                                    Created Date
+                                </th>
+                                <th class="tableTrCustom">
+                                    Edit
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter = 0;
+                                foreach (var item in Model)
+                                {
+                                    counter++;
+                                    <tr>
+                                        <td style="width: 5% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                            @counter
+                                        </td>
+                                        <td style="width: 25% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                            <marquee behavior="scroll" direction="left" height="auto"
+                                                     scrollamount="2" scrolldelay="10">
+                                                @item.Title
+                                            </marquee>
+                                        </td>
+                                        <td style="width: 30% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important;">
+                                            <marquee behavior="scroll" direction="up" height="100"
+                                                     scrollamount="2" scrolldelay="10">
+                                                @item.ShortDesc
+                                            </marquee>
+                                        </td>
+                                        <td style="width: 15% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                            @item.Category.CategoryName
+                                        </td>
+                                        <td style="width: 15% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                            @{ 
+                                                foreach (var tag in item.BlogTagToBlogs)
+                                                {
+                                                                                        <br />
+                                                    <span>@tag.BlogTag.TagName</span>
+
+                                                }
+                                            }
+                                        </td>
+                                        <td style="width: 10% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                            @item.CreatedDate.ToString("dd.MM.yy")
+                                        </td>
+                                        <td style="width: 5% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important;">
+                                            <a data-tippy="Detail" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="btn-sm btn btn-outline-info w-100" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Blog" asp-action="BlogDetail"><i class="fal fa-info-square"></i></a>
+                                            <br />
+                                            <a data-tippy="Update" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="my-2 btn-sm btn btn-outline-success w-100" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Blog" asp-action="Update"><i class="fal fa-edit"></i></a>
+                                            <br />
+                                            <a data-tippy="Delete" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="btn-sm btn btn-outline-danger w-100" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Blog" asp-action="Delete" onclick="return confirm('Are you sure?')"><i class="fal fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

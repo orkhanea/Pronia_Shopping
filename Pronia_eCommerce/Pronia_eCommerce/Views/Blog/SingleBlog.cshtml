@@ -57,9 +57,13 @@
                                     </div>
                                 }
 
-                                <p class="single-blog-p">
-                                    @Model.BlogDetail.Content
-                                </p>
+                                <blockquote class="my-5" style="color: white !important; font-size: 20px !important; padding: 50px 20px !important;">
+                                    @Model.BlogDetail.ShortDesc
+                                </blockquote>
+
+                                <div class="single-blog-p">
+                                    @Html.Raw(Model.BlogDetail.Content)
+                                </div>
 
                             </div>
                             <div class="blog-social-tags">

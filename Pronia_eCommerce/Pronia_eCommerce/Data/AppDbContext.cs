@@ -47,5 +47,9 @@ namespace Pronia_eCommerce.Data
         public DbSet<Subscribe> Subscribes { get; set; }
         public DbSet<ProductCat> ProductCats { get; set; }
         public DbSet<RatingStar> RatingStars { get; set; }
+        public DbSet<BankCarts> BankCarts { get; set; }
+        public DbSet<InvoiceNo> Invoice { get; set; }
+        public DbSet<UnregisteredCustomer> UnregisteredCustomers { get; set; }
+
     }
 }

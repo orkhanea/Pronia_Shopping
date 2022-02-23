@@ -11,7 +11,7 @@ namespace Pronia_eCommerce.Models
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(20), Required]
         public string CategoryName { get; set; }
 
         public List<Product> Products { get; set; }

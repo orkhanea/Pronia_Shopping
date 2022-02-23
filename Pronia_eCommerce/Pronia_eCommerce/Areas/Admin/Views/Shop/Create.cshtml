@@ -1,0 +1,95 @@
+﻿@model VmCreateProduct
+
+<div class="row mt-3">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div style=" font-size: 30px !important;" class="text-center card-title">Add New Product</div>
+                <hr>
+                @{
+                    if (TempData["ProductError"] != null)
+                    {
+                        <p style="font-size: 20px !important; padding: 15px !important;" class="alert text-center text-warning">@TempData["ProductError"]</p>
+                        TempData["ProductError"] = null;
+                    }
+                }
+                <form class="row" asp-area="Admin" asp-controller="Shop" asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div class="form-group col-lg-6">
+                        <label asp-for="@Model.product.Name">Prodcut Name *</label>
+                        <input asp-for="@Model.product.Name" class="form-control" placeholder="Write a product name...">
+                        <span class="text-warning" asp-validation-for="@Model.product.Name"></span>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label asp-for="@Model.product.ShortDesc">Product Short Description *</label>
+                        <textarea rows="3" asp-for="@Model.product.ShortDesc" class="form-control" placeholder="Write a product description..."></textarea>
+                        <span class="text-warning" asp-validation-for="@Model.product.ShortDesc"></span>
+
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label asp-for="@Model.product.FullDesc">Product Description *</label>
+                        <textarea asp-for="@Model.product.FullDesc" class="form-control"></textarea>
+                        <span class="text-warning" asp-validation-for="@Model.product.FullDesc"></span>
+
+                    </div>
+                    <div class="form-group col-lg-6">
+                        <label asp-for="@Model.product.ProductCatId">Category</label>
+                        @{
+                            <select asp-for="@Model.product.ProductCatId" class="form-select form-control mmm">
+                                <option selected disabled> Choose product category</option>
+                                @foreach (var item in ViewBag.prodCat)
+                                {
+                                    <option style="font-size: 16px !important; color:black !important;" value="@item.Id">@item.CategoryName</option>
+                                }
+
+                            </select>
+
+                        }
+                        <span class="text-warning" asp-validation-for="@Model.product.ProductCatId"></span>
+                    </div>
+                    <div class="mb-3 col-lg-6">
+                        <label asp-for="@Model.product.ProductTagToProductId" class="form-label">Product Tags</label>
+                        <select class="form-control form-select js-example-basic-multiple" multiple="multiple" asp-for="@Model.product.ProductTagToProductId">
+                            @{
+                                foreach (var bt in ViewBag.ProdTags)
+                                {
+                                    <option value="@bt.Id">@bt.TagName</option>
+                                }
+                            }
+                        </select>
+                        <span class="text-warning" asp-validation-for="@Model.product.ProductTagToProductId"></span>
+                    </div>
+
+                    <div class="mb-3 col-lg-4">
+                        <div class="alert alert-dark pb-5 px-5 mt-4">
+                            <p style="color: white; font-size: 22px; font-weight: 600;" class="pt-4 text-center">Size & Price & Quantity</p>
+                            @{
+
+                                for (var i = 0; i < Model.sizes.Count; i++)
+                                {
+                                    <div class="form-group row">
+                                        <label class="form-label col-lg-12">@(Model.sizes[i].Size)</label>
+                                        <input asp-for="productSizeToProduct[i].Quantity" type="number" class="form-control col-lg-5 mx-2 mb-2" placeholder="Enter quantity" />
+                                        <input asp-for="productSizeToProduct[i].Price" type="number" class="form-control col-lg-5 mx-2" placeholder="Enter price" />
+                                        <input asp-for="productSizeToProduct[i].ProductSizeId" value="@Model.sizes[i].Id" type="hidden" class="form-control" placeholder="Enter price" />
+                                    </div>
+                                }
+
+                            }
+                        </div>
+                    </div>
+                    <div class="mb-3 col-lg-8" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <div class="alert alert-dark py-5 px-5 mt-4">
+                            <label for="1234a" class="w-100 btn btn-outline-white">Choose Product Images *</label>
+                            <input type="file" id="1234a" asp-for="productImage" multiple class="d-none form-control w-50">
+                        </div>
+                        <div class="form-group text-right" style="margin-left: auto !important; margin-right: 15px !important; margin-top: 20px !important; ">
+
+                            <button type="submit" class="btn btn-light px-5"><i class="icon-lock"></i> Add Product </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
