@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pronia_eCommerce.Data;
@@ -18,26 +20,42 @@ namespace Pronia_eCommerce.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IWebHostEnvironment _webHostEnviroment;
 
-        public BankController(AppDbContext context, IHttpContextAccessor httpContextAccessor)
+        public BankController(AppDbContext context, IHttpContextAccessor httpContextAccessor, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IWebHostEnvironment webHostEnviroment)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _webHostEnviroment = webHostEnviroment;
         }
 
         public IActionResult Index(VmPayment vmPayment)
         {
-            if (ModelState.IsValid)
+
+            if (User.Identity.IsAuthenticated)
             {
 
-                HttpContext.Session.SetObject("paymentInfo", vmPayment);
                 return View();
+
             }
             else
             {
-                Extension.Put(TempData, "modelState", vmPayment);
-                TempData["modelMessage"] = "Please fill in the fields marked with an asterisk (*)";
-                return RedirectToAction("Indext", "Checkout");
+                if (ModelState.IsValid)
+                {
+
+                    HttpContext.Session.SetObject("paymentInfo", vmPayment);
+                    return View();
+                }
+                else
+                {
+                    Extension.Put(TempData, "modelState", vmPayment);
+                    TempData["modelMessage"] = "Please fill in the fields marked with an asterisk (*)";
+                    return RedirectToAction("Indext", "Checkout");
+                }
             }
 
         }
@@ -53,7 +71,7 @@ namespace Pronia_eCommerce.Controllers
 
                     if (crt != null)
                     {
-                        var vmpayment = HttpContext.Session.GetObject<VmPayment>("paymentInfo");
+
                         var vmSessionObjectL = HttpContext.Session.GetObject<VmSessionObject>("testSession");
 
 
@@ -71,143 +89,181 @@ namespace Pronia_eCommerce.Controllers
 
                         if (crt.Balance >= total)
                         {
-
-
-                            UnregisteredCustomer unregisteredCustomer = new();
-                            unregisteredCustomer.FirstName = vmpayment.FirstName;
-                            unregisteredCustomer.LastName = vmpayment.LastName;
-                            unregisteredCustomer.Phone = vmpayment.Phone;
-                            unregisteredCustomer.Email = vmpayment.Email;
-                            unregisteredCustomer.Address = vmpayment.Address;
-                            unregisteredCustomer.CompanyName = vmpayment.CompanyName;
-                            unregisteredCustomer.CountyName = vmpayment.CountyName;
-                            unregisteredCustomer.Apartment = vmpayment.Apartment;
-                            unregisteredCustomer.PostcodeZip = vmpayment.PostcodeZip;
-                            unregisteredCustomer.TownCity = vmpayment.TownCity;
-                            unregisteredCustomer.OrderNotes = vmpayment.OrderNotes;
-
-                            _context.UnregisteredCustomers.Add(unregisteredCustomer);
-                            _context.SaveChanges();
-
-
-                            InvoiceNo invoiceNoBase = _context.Invoice.FirstOrDefault();
-                            invoiceNoBase.iNumber += 1;
-
-                            _context.Invoice.Update(invoiceNoBase);
-                            _context.SaveChanges();
-
-                            Sale sale = new();
-                            sale.InvoiceNo = "PRN" + invoiceNoBase.iNumber.ToString("D7");
-                            sale.UnregisteredCustomerId = unregisteredCustomer.Id;
-                            sale.SaleDate = DateTime.Now;
-
-                            _context.Sales.Add(sale);
-                            _context.SaveChanges();
-
-
-                            for (int i = 0; i < model.prstp.Count; i++)
+                            if (!User.Identity.IsAuthenticated)
                             {
-                                SaleItem saleItem = new();
+                                var vmpayment = HttpContext.Session.GetObject<VmPayment>("paymentInfo");
 
-                                saleItem.ProductSizeToProductId = model.prstp[i].Id;
-                                saleItem.Price = model.prstp[i].Price;
-                                saleItem.Quantity = (byte)model.prqty[i];
-                                saleItem.SaleId = sale.Id;
+                                UnregisteredCustomer unregisteredCustomer = new();
+                                unregisteredCustomer.FirstName = vmpayment.FirstName;
+                                unregisteredCustomer.LastName = vmpayment.LastName;
+                                unregisteredCustomer.Phone = vmpayment.Phone;
+                                unregisteredCustomer.Email = vmpayment.Email;
+                                unregisteredCustomer.Address = vmpayment.Address;
+                                unregisteredCustomer.CompanyName = vmpayment.CompanyName;
+                                unregisteredCustomer.CountyName = vmpayment.CountyName;
+                                unregisteredCustomer.Apartment = vmpayment.Apartment;
+                                unregisteredCustomer.PostcodeZip = vmpayment.PostcodeZip;
+                                unregisteredCustomer.TownCity = vmpayment.TownCity;
+                                unregisteredCustomer.OrderNotes = vmpayment.OrderNotes;
 
-                                _context.SaleItems.Add(saleItem);
+                                _context.UnregisteredCustomers.Add(unregisteredCustomer);
                                 _context.SaveChanges();
 
-                                ProductSizeToProduct productSizeToProduct2 = _context.ProductSizeToProducts.Find(model.prstp[i].Id);
-                                productSizeToProduct2.Quantity -= (byte)model.prqty[i];
 
-                                _context.ProductSizeToProducts.Update(productSizeToProduct2);
+                                InvoiceNo invoiceNoBase = _context.Invoice.FirstOrDefault();
+                                invoiceNoBase.iNumber += 1;
+
+                                _context.Invoice.Update(invoiceNoBase);
+                                _context.SaveChanges();
+
+                                Sale sale = new();
+                                sale.InvoiceNo = "PRN" + invoiceNoBase.iNumber.ToString("D7");
+                                sale.UnregisteredCustomerId = unregisteredCustomer.Id;
+                                sale.SaleDate = DateTime.Now;
+
+                                _context.Sales.Add(sale);
                                 _context.SaveChanges();
 
 
+                                for (int i = 0; i < model.prstp.Count; i++)
+                                {
+                                    SaleItem saleItem = new();
+
+                                    saleItem.ProductSizeToProductId = model.prstp[i].Id;
+                                    saleItem.Price = model.prstp[i].Price;
+                                    saleItem.Quantity = (byte)model.prqty[i];
+                                    saleItem.SaleId = sale.Id;
+
+                                    _context.SaleItems.Add(saleItem);
+                                    _context.SaveChanges();
+
+                                    ProductSizeToProduct productSizeToProduct2 = _context.ProductSizeToProducts.Find(model.prstp[i].Id);
+                                    productSizeToProduct2.Quantity -= (byte)model.prqty[i];
+
+                                    _context.ProductSizeToProducts.Update(productSizeToProduct2);
+                                    _context.SaveChanges();
+
+
+                                }
+
+
+
+
+
+                                crt.Balance -= total;
+
+                                _context.BankCarts.Update(crt);
+                                _context.SaveChanges();
+
+
+
+
+
+                                MailMessage newInvoice = new MailMessage("proniaecommerce@gmail.com", unregisteredCustomer.Email);
+                                newInvoice.Subject = "Pronia Shopping";
+
+                                newInvoice.Body = @"<h2>Your purchase complete successfully.<h2/><br/><h4>Total: $<h4/>" + total;
+                                newInvoice.IsBodyHtml = true;
+                                SmtpClient smtp = new SmtpClient();
+                                smtp.Host = "smtp.gmail.com";
+                                smtp.EnableSsl = true;
+                                NetworkCredential NetworkCred = new NetworkCredential("proniaecommerce@gmail.com", "123456Pronia@");
+                                smtp.UseDefaultCredentials = false;
+                                smtp.Credentials = NetworkCred;
+                                smtp.Port = 587;
+                                smtp.Send(newInvoice);
+
+
+
+
+
+
+                                return RedirectToAction("Index", "Home");
                             }
+                            else
+                            {
+                                InvoiceNo invoiceNoBase = _context.Invoice.FirstOrDefault();
+                                invoiceNoBase.iNumber += 1;
+
+                                _context.Invoice.Update(invoiceNoBase);
+                                _context.SaveChanges();
+
+                                Sale sale = new();
+                                sale.InvoiceNo = "PRN" + invoiceNoBase.iNumber.ToString("D7");
+                                sale.EndUserId = _context.EndUsers.Find(_userManager.GetUserId(User)).Id;
+                                sale.SaleDate = DateTime.Now;
+
+                                _context.Sales.Add(sale);
+                                _context.SaveChanges();
+
+
+                                for (int i = 0; i < model.prstp.Count; i++)
+                                {
+                                    SaleItem saleItem = new();
+
+                                    saleItem.ProductSizeToProductId = model.prstp[i].Id;
+                                    saleItem.Price = model.prstp[i].Price;
+                                    saleItem.Quantity = (byte)model.prqty[i];
+                                    saleItem.SaleId = sale.Id;
+
+                                    _context.SaleItems.Add(saleItem);
+                                    _context.SaveChanges();
+
+                                    ProductSizeToProduct productSizeToProduct2 = _context.ProductSizeToProducts.Find(model.prstp[i].Id);
+                                    productSizeToProduct2.Quantity -= (byte)model.prqty[i];
+
+                                    _context.ProductSizeToProducts.Update(productSizeToProduct2);
+                                    _context.SaveChanges();
+
+
+                                }
 
 
 
 
 
-                            crt.Balance -= total;
+                                crt.Balance -= total;
 
-                            _context.BankCarts.Update(crt);
-                            _context.SaveChanges();
-
-
-
-
-
-                            MailMessage newInvoice = new MailMessage("proniaecommerce@gmail.com", unregisteredCustomer.Email);
-                            newInvoice.Subject = "Pronia Shopping";
-
-                            newInvoice.Body = @"<h2>Your purchase complete successfully.<h2/><br/><h4>Total: $<h4/>"+total;
-                            newInvoice.IsBodyHtml = true;
-                            SmtpClient smtp = new SmtpClient();
-                            smtp.Host = "smtp.gmail.com";
-                            smtp.EnableSsl = true;
-                            NetworkCredential NetworkCred = new NetworkCredential("proniaecommerce@gmail.com", "123456Pronia@");
-                            smtp.UseDefaultCredentials = false;
-                            smtp.Credentials = NetworkCred;
-                            smtp.Port = 587;
-                            smtp.Send(newInvoice);
-
-                            
+                                _context.BankCarts.Update(crt);
+                                _context.SaveChanges();
 
 
 
 
-                            return RedirectToAction("Index", "Home");
+
+                                MailMessage newInvoice = new MailMessage("proniaecommerce@gmail.com", _context.EndUsers.Find(_userManager.GetUserId(User)).Email);
+                                newInvoice.Subject = "Pronia Shopping";
+
+                                newInvoice.Body = @"<h2>Your purchase complete successfully.<h2/><br/><h4>Total: $<h4/>" + total;
+                                newInvoice.IsBodyHtml = true;
+                                SmtpClient smtp = new SmtpClient();
+                                smtp.Host = "smtp.gmail.com";
+                                smtp.EnableSsl = true;
+                                NetworkCredential NetworkCred = new NetworkCredential("proniaecommerce@gmail.com", "123456Pronia@");
+                                smtp.UseDefaultCredentials = false;
+                                smtp.Credentials = NetworkCred;
+                                smtp.Port = 587;
+                                smtp.Send(newInvoice);
 
 
 
+
+
+
+                                return RedirectToAction("Index", "Home");
+                            }
 
 
                         }
 
-
                     }
-
-
-
-
-
-
-
 
                 }
 
-
-
-
             }
-
-
-
 
             return RedirectToAction("Index", "Home");
         }
 
-
-
-
-        //private void SendEmail(string emailAddress, VmCheckout vmCheckout)
-        //{
-
-        //    MailMessage RecoveryMessage = new MailMessage("proniaecommerce@gmail.com", emailAddress);
-        //    RecoveryMessage.Subject = "Pronia Shopping";
-        //    RecoveryMessage.Body = System.IO.File.ReadAllText()
-
-        //    RecoveryMessage.IsBodyHtml = true;
-        //    SmtpClient smtp = new SmtpClient();
-        //    smtp.Host = "smtp.gmail.com";
-        //    smtp.EnableSsl = true;
-        //    NetworkCredential NetworkCred = new NetworkCredential("proniaecommerce@gmail.com", "123456Pronia@");
-        //    smtp.UseDefaultCredentials = false;
-        //    smtp.Credentials = NetworkCred;
-        //    smtp.Port = 587;
-        //    smtp.Send(RecoveryMessage);
-        //}
     }
 }

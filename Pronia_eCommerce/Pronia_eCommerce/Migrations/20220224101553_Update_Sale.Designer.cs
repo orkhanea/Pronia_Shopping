@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Pronia_eCommerce.Data;
 
 namespace Pronia_eCommerce.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220224101553_Update_Sale")]
+    partial class Update_Sale
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -969,9 +971,6 @@ namespace Pronia_eCommerce.Migrations
                     b.Property<int?>("UnregisteredCustomerId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("hideToClien")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EndUserId");
@@ -1202,9 +1201,6 @@ namespace Pronia_eCommerce.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("UserCart")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasIndex("CountryId");
 

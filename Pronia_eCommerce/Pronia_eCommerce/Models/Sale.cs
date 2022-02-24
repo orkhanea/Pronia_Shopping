@@ -22,9 +22,11 @@ namespace Pronia_eCommerce.Models
         public EndUser EndUser { get; set; }
 
         [ForeignKey("UnregisteredCustomer")]
-        public int UnregisteredCustomerId { get; set; }
+        public int? UnregisteredCustomerId { get; set; }
         public UnregisteredCustomer UnregisteredCustomer { get; set; }
 
         public List<SaleItem> SaleItems { get; set; }
+
+        public bool hideToClien { get; set; }
     }
 }

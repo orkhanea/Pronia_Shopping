@@ -1,251 +1,388 @@
 ﻿@model VmCheckout
-
 <!-- #region Checkout -->
 <div class="checkout-full pt-100 pb-100">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-6 col-12">
-                @{ 
-                    if (TempData["modelMessage"]!=null)
-                    {
-                        <p class="alert alert-danger text-danger">@TempData["modelMessage"]</p>
-                        TempData["modelMessage"] = null;
-                    }
-                }
-                <form asp-controller="Bank" asp-action="Index">
-                    <div class="billing-form">
-                        <h3>Billing Details</h3>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="checkout-form-list">
-                                    <label>First Name <span class="required">*</span></label>
-                                    <input asp-for="@Model.vmPayment.FirstName" placeholder="First Name">
-                                    <span asp-validation-for="@Model.vmPayment.FirstName"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="checkout-form-list">
-                                    <label>Last Name <span class="required">*</span></label>
-                                    <input asp-for="@Model.vmPayment.LastName" placeholder="Last Name">
-                                    <span asp-validation-for="@Model.vmPayment.LastName"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="checkout-form-list">
-                                    <label>Company Name</label>
-                                    <input asp-for="@Model.vmPayment.CompanyName" placeholder="Company Name">
-                                    <span asp-validation-for="@Model.vmPayment.CompanyName"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="choose-counrty clearfix">
-                                    <label>Country <span class="required">*</span></label>
-                                    <select asp-for="@Model.vmPayment.CountyName" class="nice-select wide">
-                                        <option selected disabled>Choose Country</option>
-                                        <option value="Azerbaijan">Azerbaijan</option>
-                                        <option value="Turkey">Turkey</option>
-                                        <option value="Georgia">Georgia</option>
-                                        <option value="Russia">Russia</option>
-                                        <option value="Estonia">Estonia</option>
-                                        <option value="Czech Republic">Czech Republic</option>
-                                        <option value="Bangladesh">Bangladesh</option>
-                                        <option value="London">London</option>
-                                        <option value="Romania">Romania</option>
-                                        <option value="France">France</option>
-                                        <option value="Germany">Germany</option>
-                                        <option value="Australia">Australia</option>
-                                    </select>
-                                    <span asp-validation-for="@Model.vmPayment.CountyName"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="checkout-form-list">
-                                    <label>Town / City <span class="required">*</span></label>
-                                    <input asp-for="@Model.vmPayment.TownCity" placeholder="Town / City">
-                                    <span asp-validation-for="@Model.vmPayment.TownCity"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="checkout-form-list">
-                                    <label>Address <span class="required">*</span></label>
-                                    <input asp-for="@Model.vmPayment.Address" placeholder="Street address">
-                                    <span asp-validation-for="@Model.vmPayment.Address"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="checkout-form-list">
-                                    <label>Postcode / Zip <span class="required">*</span></label>
-                                    <input asp-for="@Model.vmPayment.PostcodeZip" placeholder="Postcode / Zip">
-                                    <span asp-validation-for="@Model.vmPayment.PostcodeZip"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="checkout-form-list">
-                                    <label>Apartment</label>
-                                    <input asp-for="@Model.vmPayment.Apartment" placeholder="Apartment, suite, unit etc. (optional)">
-                                    <span asp-validation-for="@Model.vmPayment.Apartment"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="checkout-form-list">
-                                    <label>Email Address <span class="required">*</span></label>
-                                    <input asp-for="@Model.vmPayment.Email" placeholder="Email Address">
-                                    <span asp-validation-for="@Model.vmPayment.Email"></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="checkout-form-list">
-                                    <label>Phone <span class="required">*</span></label>
-                                    <input asp-for="@Model.vmPayment.Phone">
-                                    <span asp-validation-for="@Model.vmPayment.Phone"></span>                               
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="order-notes">
-                                    <div class="checkout-form-list checkout-form-list-2">
-                                        <label>Order Notes</label>
-                                        <textarea asp-for="@Model.vmPayment.OrderNotes" id="checkout-mess" cols="30" rows="10" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
-                                        <span asp-validation-for="@Model.vmPayment.OrderNotes"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="text-end">
-                        <button class="btn btn-success mt-3" style=" width: 250px; background-color: #abd373; border-color: #abd373;" type="submit">Payment</button>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-6 col-12">
-                @{
-                    if (Model.Messages != null)
-                    {
-                        <div>
-                            @foreach (var msg in Model.Messages)
+            @{
+                if (User.Identity.IsAuthenticated)
+                {
+                    <div class="col-lg-8 col-12">
+                        @{
+                            if (Model.Messages != null)
                             {
-                                <p class="alert alert-warning text-danger">
-                                    @msg
-                                </p>
+                                <div>
+                                    @foreach (var msg in Model.Messages)
+                                    {
+                                        <p class="alert alert-warning text-danger">
+                                            @msg
+                                        </p>
+                                    }
+                                </div>
                             }
-                        </div>
-                    }
-                }
-                <div class="your-order">
-                    <h3>Your order</h3>
-                    <div class="your-order-table table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="cart-product-name">Product</th>
-                                    <th class="cart-product-total">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{
-
-                                    for (int i = 0; i < Model.prstp.Count; i++)
-                                    {
-                                        <tr class="cart_item">
-                                            <td class="cart-product-name">@Model.prstp[i].Product.Name (@Model.prstp[i].ProductSize.Size)<strong class="product-quantity"> × @Model.prqty[i]</strong></td>
-                                            <td class="cart-product-total"><span class="amount">$@(Model.prqty[i] * Model.prstp[i].Price)</span></td>
-
+                        }
+                        <div class="your-order">
+                            <h3>Your order</h3>
+                            <div class="your-order-table table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="cart-product-name">Product</th>
+                                            <th class="cart-product-total">Total</th>
                                         </tr>
-                                    }
-                                }
-                            </tbody>
-                            <tfoot>
-                                @{
-                                    decimal total = 0;
-                                    for (int i = 0; i < Model.prstp.Count; i++)
-                                    {
-                                        total += Model.prqty[i] * Model.prstp[i].Price;
-                                    }
-                                    <tr class="order-total">
-                                        <th>Order Total</th>
-                                        <td><strong><span class="amount">$ @total</span></strong></td>
-                                    </tr>
-                                }
+                                    </thead>
+                                    <tbody>
+                                        @{
+
+                                            for (int i = 0; i < Model.prstp.Count; i++)
+                                            {
+                                                <tr class="cart_item">
+                                                    <td class="cart-product-name">@Model.prstp[i].Product.Name (@Model.prstp[i].ProductSize.Size)<strong class="product-quantity"> × @Model.prqty[i]</strong></td>
+                                                    <td class="cart-product-total"><span class="amount">$@(Model.prqty[i] * Model.prstp[i].Price)</span></td>
+
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        @{
+                                            decimal total1 = 0;
+                                            for (int i = 0; i < Model.prstp.Count; i++)
+                                            {
+                                                total1 += Model.prqty[i] * Model.prstp[i].Price;
+                                            }
+                                            <tr class="order-total">
+                                                <th>Order Total</th>
+                                                <td><strong><span class="amount">$ @total1</span></strong></td>
+                                            </tr>
+                                        }
 
 
-                            </tfoot>
-                        </table>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="payment-method" style="margin-top: 30px;">
+                                <div class="payment-accordion">
+                                    <p style="font-size: 20px; font-weight: 600; text-align: center; border-bottom: 1px solid #acaaac70; padding-bottom: 15px; margin-bottom: 25px; color: #454444;">Payment Information</p>
+                                    <div id="accordion">
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-1">
+                                                <h5 class="panel-title">
+                                                    <a href="#" class="" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true">
+                                                        Direct Bank Transfer.
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p>
+                                                        Make your payment directly into our bank account. Please use your
+                                                        Order
+                                                        ID as the payment
+                                                        reference. Your order won’t be shipped until the funds have cleared
+                                                        in
+                                                        our account.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-2">
+                                                <h5 class="panel-title">
+                                                    <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false">
+                                                        Cheque Payment
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p>
+                                                        Make your payment directly into our bank account. Please use your
+                                                        Order
+                                                        ID as the payment
+                                                        reference. Your order won’t be shipped until the funds have cleared
+                                                        in
+                                                        our account.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-3">
+                                                <h5 class="panel-title">
+                                                    <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false">
+                                                        PayPal
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p>
+                                                        Make your payment directly into our bank account. Please use your
+                                                        Order
+                                                        ID as the payment
+                                                        reference. Your order won’t be shipped until the funds have cleared
+                                                        in
+                                                        our account.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="payment-btn text-end">
+                                            <a class="btn btn-success w-50" style="background-color: #87d05e; border-color: #87d05e;" asp-controller="Bank" asp-action="Index">Place order</a>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="payment-method" style="margin-top: 30px;">
-                        <div class="payment-accordion">
-                            <p style="font-size: 20px; font-weight: 600; text-align: center; border-bottom: 1px solid #acaaac70; padding-bottom: 15px; margin-bottom: 25px; color: #454444;">Payment Information</p>
-                            <div id="accordion">
-                                <div class="card">
-                                    <div class="card-header" id="#payment-1">
-                                        <h5 class="panel-title">
-                                            <a href="#" class="" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true">
-                                                Direct Bank Transfer.
-                                            </a>
-                                        </h5>
-                                    </div>
-                                    <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
-                                        <div class="card-body">
-                                            <p>
-                                                Make your payment directly into our bank account. Please use your
-                                                Order
-                                                ID as the payment
-                                                reference. Your order won’t be shipped until the funds have cleared
-                                                in
-                                                our account.
-                                            </p>
+                }
+                else
+                {
+                    <div class="col-lg-6 col-12">
+                        @{
+                            if (TempData["modelMessage"] != null)
+                            {
+                                <p class="alert alert-danger text-danger">@TempData["modelMessage"]</p>
+                                TempData["modelMessage"] = null;
+                            }
+                        }
+                        <form asp-controller="Bank" asp-action="Index">
+                            <div class="billing-form">
+                                <h3>Billing Details</h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>First Name <span class="required">*</span></label>
+                                            <input asp-for="@Model.vmPayment.FirstName" placeholder="First Name">
+                                            <span asp-validation-for="@Model.vmPayment.FirstName"></span>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header" id="#payment-2">
-                                        <h5 class="panel-title">
-                                            <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false">
-                                                Cheque Payment
-                                            </a>
-                                        </h5>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
-                                        <div class="card-body">
-                                            <p>
-                                                Make your payment directly into our bank account. Please use your
-                                                Order
-                                                ID as the payment
-                                                reference. Your order won’t be shipped until the funds have cleared
-                                                in
-                                                our account.
-                                            </p>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>Last Name <span class="required">*</span></label>
+                                            <input asp-for="@Model.vmPayment.LastName" placeholder="Last Name">
+                                            <span asp-validation-for="@Model.vmPayment.LastName"></span>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header" id="#payment-3">
-                                        <h5 class="panel-title">
-                                            <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false">
-                                                PayPal
-                                            </a>
-                                        </h5>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label>Company Name</label>
+                                            <input asp-for="@Model.vmPayment.CompanyName" placeholder="Company Name">
+                                            <span asp-validation-for="@Model.vmPayment.CompanyName"></span>
+                                        </div>
                                     </div>
-                                    <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
-                                        <div class="card-body">
-                                            <p>
-                                                Make your payment directly into our bank account. Please use your
-                                                Order
-                                                ID as the payment
-                                                reference. Your order won’t be shipped until the funds have cleared
-                                                in
-                                                our account.
-                                            </p>
+                                    <div class="col-md-6">
+                                        <div class="choose-counrty clearfix">
+                                            <label>Country <span class="required">*</span></label>
+                                            <select asp-for="@Model.vmPayment.CountyName" class="nice-select wide">
+                                                <option selected disabled>Choose Country</option>
+                                                <option value="Azerbaijan">Azerbaijan</option>
+                                                <option value="Turkey">Turkey</option>
+                                                <option value="Georgia">Georgia</option>
+                                                <option value="Russia">Russia</option>
+                                                <option value="Estonia">Estonia</option>
+                                                <option value="Czech Republic">Czech Republic</option>
+                                                <option value="Bangladesh">Bangladesh</option>
+                                                <option value="London">London</option>
+                                                <option value="Romania">Romania</option>
+                                                <option value="France">France</option>
+                                                <option value="Germany">Germany</option>
+                                                <option value="Australia">Australia</option>
+                                            </select>
+                                            <span asp-validation-for="@Model.vmPayment.CountyName"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>Town / City <span class="required">*</span></label>
+                                            <input asp-for="@Model.vmPayment.TownCity" placeholder="Town / City">
+                                            <span asp-validation-for="@Model.vmPayment.TownCity"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>Address <span class="required">*</span></label>
+                                            <input asp-for="@Model.vmPayment.Address" placeholder="Street address">
+                                            <span asp-validation-for="@Model.vmPayment.Address"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>Postcode / Zip <span class="required">*</span></label>
+                                            <input asp-for="@Model.vmPayment.PostcodeZip" placeholder="Postcode / Zip">
+                                            <span asp-validation-for="@Model.vmPayment.PostcodeZip"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="checkout-form-list">
+                                            <label>Apartment</label>
+                                            <input asp-for="@Model.vmPayment.Apartment" placeholder="Apartment, suite, unit etc. (optional)">
+                                            <span asp-validation-for="@Model.vmPayment.Apartment"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>Email Address <span class="required">*</span></label>
+                                            <input asp-for="@Model.vmPayment.Email" placeholder="Email Address">
+                                            <span asp-validation-for="@Model.vmPayment.Email"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="checkout-form-list">
+                                            <label>Phone <span class="required">*</span></label>
+                                            <input asp-for="@Model.vmPayment.Phone">
+                                            <span asp-validation-for="@Model.vmPayment.Phone"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="order-notes">
+                                            <div class="checkout-form-list checkout-form-list-2">
+                                                <label>Order Notes</label>
+                                                <textarea asp-for="@Model.vmPayment.OrderNotes" id="checkout-mess" cols="30" rows="10" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                                <span asp-validation-for="@Model.vmPayment.OrderNotes"></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            @*<div class="payment-btn text-end">
-                                <a class="btn btn-success w-50" style="background-color: #87d05e; border-color: #87d05e;" asp-controller="Payment" asp-action="Index">Place order</a>
-                            </div>*@
+
+                            <div class="text-end">
+                                <button class="btn btn-success mt-3" style=" width: 250px; background-color: #abd373; border-color: #abd373;" type="submit">Payment</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        @{
+                            if (Model.Messages != null)
+                            {
+                                <div>
+                                    @foreach (var msg in Model.Messages)
+                                    {
+                                        <p class="alert alert-warning text-danger">
+                                            @msg
+                                        </p>
+                                    }
+                                </div>
+                            }
+                        }
+                        <div class="your-order">
+                            <h3>Your order</h3>
+                            <div class="your-order-table table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="cart-product-name">Product</th>
+                                            <th class="cart-product-total">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+
+                                            for (int i = 0; i < Model.prstp.Count; i++)
+                                            {
+                                                <tr class="cart_item">
+                                                    <td class="cart-product-name">@Model.prstp[i].Product.Name (@Model.prstp[i].ProductSize.Size)<strong class="product-quantity"> × @Model.prqty[i]</strong></td>
+                                                    <td class="cart-product-total"><span class="amount">$@(Model.prqty[i] * Model.prstp[i].Price)</span></td>
+
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        @{
+                                            decimal total = 0;
+                                            for (int i = 0; i < Model.prstp.Count; i++)
+                                            {
+                                                total += Model.prqty[i] * Model.prstp[i].Price;
+                                            }
+                                            <tr class="order-total">
+                                                <th>Order Total</th>
+                                                <td><strong><span class="amount">$ @total</span></strong></td>
+                                            </tr>
+                                        }
+
+
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="payment-method" style="margin-top: 30px;">
+                                <div class="payment-accordion">
+                                    <p style="font-size: 20px; font-weight: 600; text-align: center; border-bottom: 1px solid #acaaac70; padding-bottom: 15px; margin-bottom: 25px; color: #454444;">Payment Information</p>
+                                    <div id="accordion">
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-1">
+                                                <h5 class="panel-title">
+                                                    <a href="#" class="" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true">
+                                                        Direct Bank Transfer.
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p>
+                                                        Make your payment directly into our bank account. Please use your
+                                                        Order
+                                                        ID as the payment
+                                                        reference. Your order won’t be shipped until the funds have cleared
+                                                        in
+                                                        our account.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-2">
+                                                <h5 class="panel-title">
+                                                    <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false">
+                                                        Cheque Payment
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p>
+                                                        Make your payment directly into our bank account. Please use your
+                                                        Order
+                                                        ID as the payment
+                                                        reference. Your order won’t be shipped until the funds have cleared
+                                                        in
+                                                        our account.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header" id="#payment-3">
+                                                <h5 class="panel-title">
+                                                    <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false">
+                                                        PayPal
+                                                    </a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+                                                <div class="card-body">
+                                                    <p>
+                                                        Make your payment directly into our bank account. Please use your
+                                                        Order
+                                                        ID as the payment
+                                                        reference. Your order won’t be shipped until the funds have cleared
+                                                        in
+                                                        our account.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<div class="payment-btn text-end">
+                                            <a class="btn btn-success w-50" style="background-color: #87d05e; border-color: #87d05e;" asp-controller="Payment" asp-action="Index">Place order</a>
+                                        </div>*@
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                }
+            }
         </div>
     </div>
 </div>

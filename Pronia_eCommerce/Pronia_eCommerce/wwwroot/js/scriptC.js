@@ -256,7 +256,14 @@ $(document).ready(function()
             });
         // #endregion Modal-slider end \\
 
+        if ($(".owl-carousel-admin").length > 0) {
+            $(".owl-carousel-admin").owlCarousel({
 
+                items: 1,
+                loop: true
+
+            });
+        }
 
     // #endregion Sliders End\\
 

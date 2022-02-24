@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pronia_eCommerce.Data;
@@ -14,47 +16,104 @@ namespace Pronia_eCommerce.Controllers
     public class CartController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IWebHostEnvironment _webHostEnviroment;
 
-        public CartController(AppDbContext context)
+        public CartController(AppDbContext context, IHttpContextAccessor httpContextAccessor, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, IWebHostEnvironment webHostEnviroment)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _roleManager = roleManager;
+            _webHostEnviroment = webHostEnviroment;
         }
         public IActionResult Index()
         {
-            string oldData = Request.Cookies["cart"];
 
-            if (!string.IsNullOrEmpty(oldData))
+            if (User.Identity.IsAuthenticated)
             {
-                var cart = oldData.Split("-").ToList();
 
+                string oldData = _context.EndUsers.Find(_userManager.GetUserId(User)).UserCart;
 
-                List<Product> _products = new();
-                foreach (var pr in cart)
+                if (!string.IsNullOrEmpty(oldData))
                 {
-                    if (_context.Products.Find(Int32.Parse(pr)) != null)
+                    var cart = oldData.Split("-").ToList();
+
+
+                    List<Product> _products = new();
+                    foreach (var pr in cart)
                     {
-                        _products.Add(_context.Products.Include(p => p.ProductImages).Include(p => p.ProductSizeToProducts).ThenInclude(ps => ps.ProductSize).FirstOrDefault(p => p.Id == Int32.Parse(pr)));
-                    }
+                        if (_context.Products.Find(Int32.Parse(pr)) != null)
+                        {
+                            _products.Add(_context.Products.Include(p => p.ProductImages).Include(p => p.ProductSizeToProducts).ThenInclude(ps => ps.ProductSize).FirstOrDefault(p => p.Id == Int32.Parse(pr)));
+                        }
 
-                }
-                VmCart model = new();
-                model.Setting = _context.Setting.FirstOrDefault();
-                model.SiteSocial = _context.SiteSocials.ToList();
-                if (_products.Count > 0)
-                {
-                    model.Products = _products;
+                    }
+                    VmCart model = new();
+                    model.Setting = _context.Setting.FirstOrDefault();
+                    model.SiteSocial = _context.SiteSocials.ToList();
+                    if (_products.Count > 0)
+                    {
+                        model.Products = _products;
+                        return View(model);
+                    }
                     return View(model);
                 }
-                return View(model);
+                else
+                {
+                    VmCart model = new();
+                    model.Setting = _context.Setting.FirstOrDefault();
+                    model.SiteSocial = _context.SiteSocials.ToList();
+
+                    return View(model);
+                }
+
+
+
             }
             else
             {
-                VmCart model = new();
-                model.Setting = _context.Setting.FirstOrDefault();
-                model.SiteSocial = _context.SiteSocials.ToList();
+                string oldData = Request.Cookies["cart"];
 
-                return View(model);
+                if (!string.IsNullOrEmpty(oldData))
+                {
+                    var cart = oldData.Split("-").ToList();
+
+
+                    List<Product> _products = new();
+                    foreach (var pr in cart)
+                    {
+                        if (_context.Products.Find(Int32.Parse(pr)) != null)
+                        {
+                            _products.Add(_context.Products.Include(p => p.ProductImages).Include(p => p.ProductSizeToProducts).ThenInclude(ps => ps.ProductSize).FirstOrDefault(p => p.Id == Int32.Parse(pr)));
+                        }
+
+                    }
+                    VmCart model = new();
+                    model.Setting = _context.Setting.FirstOrDefault();
+                    model.SiteSocial = _context.SiteSocials.ToList();
+                    if (_products.Count > 0)
+                    {
+                        model.Products = _products;
+                        return View(model);
+                    }
+                    return View(model);
+                }
+                else
+                {
+                    VmCart model = new();
+                    model.Setting = _context.Setting.FirstOrDefault();
+                    model.SiteSocial = _context.SiteSocials.ToList();
+
+                    return View(model);
+                }
             }
+
+            
 
         }
 
@@ -67,39 +126,81 @@ namespace Pronia_eCommerce.Controllers
                     if (_context.Products.Any(p => p.Id == Int16.Parse(productId)))
                     {
 
-                        string oldData = Request.Cookies["cart"];
-                        string newData = null;
-                        VmResponse response = new();
-                        if (string.IsNullOrEmpty(oldData))
+                        if (User.Identity.IsAuthenticated)
                         {
-                            newData = productId;
-                            response.Success = "Added";
-                        }
-                        else
-                        {
-                            List<string> favouriteList = oldData.Split("-").ToList();
-                            if (favouriteList.Any(f => f == productId))
-                            {
-                                response.Changed = "Already Added";
-                                return Json(response);
+                            EndUser endUser = _context.EndUsers.Find(_userManager.GetUserId(User));
 
+                            string oldData = endUser.UserCart;
+                            string newData = null;
+                            VmResponse response = new();
+
+                            if (string.IsNullOrEmpty(oldData))
+                            {
+                                newData = productId;
+                                response.Success = "Added";
                             }
                             else
                             {
-                                newData = oldData + "-" + productId;
+                                List<string> userCartList = oldData.Split("-").ToList();
+                                if (userCartList.Any(f => f == productId))
+                                {
+                                    response.Changed = "Already Added";
+                                    return Json(response);
+
+                                }
+                                else
+                                {
+                                    newData = oldData + "-" + productId;
+                                    response.Success = "Added";
+                                }
+                            }
+
+                            endUser.UserCart = newData;
+                            _context.EndUsers.Update(endUser);
+                            _context.SaveChanges();
+                            List<string> cartCount = newData.Split("-").ToList();
+                            response.CartCount = cartCount.Count;
+                            return Json(response);
+
+
+                        }
+                        else
+                        {
+                            string oldData = Request.Cookies["cart"];
+                            string newData = null;
+                            VmResponse response = new();
+                            if (string.IsNullOrEmpty(oldData))
+                            {
+                                newData = productId;
                                 response.Success = "Added";
                             }
+                            else
+                            {
+                                List<string> favouriteList = oldData.Split("-").ToList();
+                                if (favouriteList.Any(f => f == productId))
+                                {
+                                    response.Changed = "Already Added";
+                                    return Json(response);
+
+                                }
+                                else
+                                {
+                                    newData = oldData + "-" + productId;
+                                    response.Success = "Added";
+                                }
+                            }
+
+                            CookieOptions options = new()
+                            {
+                                Expires = DateTime.Now.AddMonths(1)
+                            };
+
+                            Response.Cookies.Append("cart", newData, options);
+                            List<string> cartCount = newData.Split("-").ToList();
+                            response.CartCount = cartCount.Count;
+                            return Json(response);
                         }
 
-                        CookieOptions options = new()
-                        {
-                            Expires = DateTime.Now.AddMonths(1)
-                        };
-
-                        Response.Cookies.Append("cart", newData, options);
-                        List<string> cartCount = newData.Split("-").ToList();
-                        response.CartCount = cartCount.Count;
-                        return Json(response);
 
                     }
                     else
@@ -132,75 +233,161 @@ namespace Pronia_eCommerce.Controllers
 
         public IActionResult GetCartMenu()
         {
-            string oldData = Request.Cookies["cart"];
 
-            if (!string.IsNullOrEmpty(oldData))
+            if (User.Identity.IsAuthenticated)
             {
-                var cart = oldData.Split("-").ToList();
 
+                EndUser endUser = _context.EndUsers.Find(_userManager.GetUserId(User));
 
-                List<Product> _products = new();
-                foreach (var pr in cart)
+                string oldData = endUser.UserCart;
+
+                if (!string.IsNullOrEmpty(oldData))
                 {
-                    if (_context.Products.Find(Int32.Parse(pr)) != null)
+                    var cart = oldData.Split("-").ToList();
+
+
+                    List<Product> _products = new();
+                    foreach (var pr in cart)
                     {
-                        _products.Add(_context.Products.Include(p => p.ProductImages).Include(p => p.ProductSizeToProducts).FirstOrDefault(p => p.Id == Int32.Parse(pr)));
+                        if (_context.Products.Find(Int32.Parse(pr)) != null)
+                        {
+                            _products.Add(_context.Products.Include(p => p.ProductImages).Include(p => p.ProductSizeToProducts).FirstOrDefault(p => p.Id == Int32.Parse(pr)));
+                        }
+
                     }
+                    VmCart model = new();
+                    if (_products.Count > 0)
+                    {
+                        model.Products = _products;
 
+
+                        return Json(_products);
+                    }
+                    else
+                    {
+                        return Json(new { data = "Empty" });
+                    }
                 }
-                VmCart model = new();
-                if (_products.Count > 0)
+                else
                 {
-                    model.Products = _products;
+                    return Json(new { data = "Empty" });
+                }
 
 
-                    return Json(_products);
+            }
+            else
+            {
+                string oldData = Request.Cookies["cart"];
+
+                if (!string.IsNullOrEmpty(oldData))
+                {
+                    var cart = oldData.Split("-").ToList();
+
+
+                    List<Product> _products = new();
+                    foreach (var pr in cart)
+                    {
+                        if (_context.Products.Find(Int32.Parse(pr)) != null)
+                        {
+                            _products.Add(_context.Products.Include(p => p.ProductImages).Include(p => p.ProductSizeToProducts).FirstOrDefault(p => p.Id == Int32.Parse(pr)));
+                        }
+
+                    }
+                    VmCart model = new();
+                    if (_products.Count > 0)
+                    {
+                        model.Products = _products;
+
+
+                        return Json(_products);
+                    }
+                    else
+                    {
+                        return Json(new { data = "Empty" });
+                    }
                 }
                 else
                 {
                     return Json(new { data = "Empty" });
                 }
             }
-            else
-            {
-                return Json(new { data = "Empty" });
-            }
 
-
-            
         }
 
         public IActionResult RemoveFromCart(int? Id)
         {
-            string oldData = Request.Cookies["cart"];
-            string newData = null;
 
-            if (!string.IsNullOrEmpty(oldData))
+            if (User.Identity.IsAuthenticated)
             {
-                List<string> carts = oldData.Split("-").ToList();
-                if (carts.Any(f => f == Id.ToString()))
+
+                EndUser endUser = _context.EndUsers.Find(_userManager.GetUserId(User));
+
+                string oldData = endUser.UserCart;
+                string newData = null;
+
+                if (!string.IsNullOrEmpty(oldData))
                 {
-                    carts.Remove(Id.ToString());
-                    newData = string.Join("-", carts);
+                    List<string> carts = oldData.Split("-").ToList();
+                    if (carts.Any(f => f == Id.ToString()))
+                    {
+                        carts.Remove(Id.ToString());
+                        newData = string.Join("-", carts);
+                    }
+                    else
+                    {
+                        return RedirectToAction("index");
+                    }
                 }
                 else
                 {
                     return RedirectToAction("index");
                 }
+
+                endUser.UserCart = newData;
+
+                _context.EndUsers.Update(endUser);
+                _context.SaveChanges();
+
+                return RedirectToAction("index");
             }
             else
             {
+                string oldData = Request.Cookies["cart"];
+                string newData = null;
+
+                if (!string.IsNullOrEmpty(oldData))
+                {
+                    List<string> carts = oldData.Split("-").ToList();
+                    if (carts.Any(f => f == Id.ToString()))
+                    {
+                        carts.Remove(Id.ToString());
+                        newData = string.Join("-", carts);
+                    }
+                    else
+                    {
+                        return RedirectToAction("index");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("index");
+                }
+
+                CookieOptions options = new()
+                {
+                    Expires = DateTime.Now.AddMonths(1)
+                };
+
+                Response.Cookies.Append("cart", newData, options);
+
                 return RedirectToAction("index");
             }
 
-            CookieOptions options = new()
-            {
-                Expires = DateTime.Now.AddMonths(1)
-            };
 
-            Response.Cookies.Append("cart", newData, options);
 
-            return RedirectToAction("index");
+
+
+            
         }
 
 

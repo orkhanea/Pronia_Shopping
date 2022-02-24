@@ -43,5 +43,7 @@ namespace Pronia_eCommerce.Models
         public List<Comment> Comment { get; set; }
 
         public List<ProductComment> ProductComments { get; set; }
+
+        public string UserCart { get; set; }
     }
 }

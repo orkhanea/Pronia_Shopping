@@ -74,26 +74,38 @@
                                             <th>DATE</th>
                                             <th>STATUS</th>
                                             <th>TOTAL</th>
-                                            <th></th>
+                                            <th>Detail</th>
+                                            <th>Delete</th>
                                         </tr>
-                                        <tr>
-                                            <td><a class="account-order-id" href="#">#5364</a></td>
-                                            <td>Mar 27, 2019</td>
-                                            <td>On Hold</td>
-                                            <td>$162.00 for 2 items</td>
-                                            <td>
-                                                <a href="#" class="btn btn-dark"><span>View</span></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><a class="account-order-id" href="#">#5356</a></td>
-                                            <td>Mar 27, 2019</td>
-                                            <td>On Hold</td>
-                                            <td>$162.00 for 2 items</td>
-                                            <td>
-                                                <a href="#" class="btn btn-dark"><span>View</span></a>
-                                            </td>
-                                        </tr>
+                                        @{ 
+                                            @foreach (var item in Model.EndUser.Sales)
+                                            {
+                                                <tr>
+                                                    <td><a class="account-order-id" href="#">@item.InvoiceNo</a></td>
+                                                    <td>@item.SaleDate.ToString("MMM d yyyy")</td>
+                                                    <td>On Hold</td>
+                                                    <td>
+                                                        @{
+                                                            decimal totalPr = 0;
+                                                            var prCounts = 0;
+                                                            foreach (var item2 in item.SaleItems)
+                                                            {
+                                                                totalPr += (item2.Price * item2.Quantity);
+                                                                prCounts += item2.Quantity;
+                                                            }
+                                                        }
+                                                        @totalPr.ToString("C2") for @prCounts @(prCounts>1?" items":" item")
+                                                    </td>
+                                                    <td>
+                                                        <a asp-controller="Account" asp-action="Order" asp-route-Id="@item.Id" class="btn btn-dark"><span>View</span></a>
+                                                    </td>
+                                                    <td>
+                                                        <a data-tippy="Delete" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="btn-sm btn btn-outline-danger w-100" asp-route-id="@item.Id" asp-controller="Account" asp-action="HideOrder" onclick="return confirm('Are you sure?')"><i class="fal fa-trash-alt"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        
                                     </tbody>
                                 </table>
                             </div>

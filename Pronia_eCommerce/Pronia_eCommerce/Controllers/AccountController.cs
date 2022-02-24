@@ -103,7 +103,7 @@ namespace Pronia_eCommerce.Controllers
                     VmEndUser model = new();
                     model.Setting = _context.Setting.FirstOrDefault();
                     model.SiteSocial = _context.SiteSocials.ToList();
-                    model.EndUser = _context.EndUsers.Find(_userManager.GetUserId(User));
+                    model.EndUser = _context.EndUsers.Include(u=>u.Sales.Where(s=>s.hideToClien==false)).ThenInclude(s=>s.SaleItems).FirstOrDefault(u=>u.Id == _userManager.GetUserId(User));
                     _context.EndUsers.Find(_userManager.GetUserId(User)).ResetPasswordCode = "";
                     _context.SaveChanges();
                     model.Countries = _context.Countries.ToList();
@@ -122,6 +122,31 @@ namespace Pronia_eCommerce.Controllers
 
 
 
+        }
+
+        public IActionResult Order(int? Id) {
+
+            if (Id!=null)
+            {
+
+                if (_context.Sales.Find(Id)!=null)
+                {
+
+                    VmOrder vmOrder = new();
+                    vmOrder.Setting = _context.Setting.FirstOrDefault();
+                    vmOrder.SiteSocial = _context.SiteSocials.ToList();
+                    vmOrder.Sale = _context.Sales.Include(s => s.SaleItems).ThenInclude(si => si.ProductSizeToProduct).ThenInclude(ps => ps.Product).ThenInclude(p=>p.ProductImages).Include(s => s.SaleItems).ThenInclude(si => si.ProductSizeToProduct).ThenInclude(ps => ps.ProductSize).FirstOrDefault(s => s.Id == Id);
+
+
+                    return View(vmOrder);
+
+                }
+
+            }
+
+
+            TempData["OrderError"] = "Something went wrong. Please try it again!";
+            return RedirectToAction("Profile");
         }
 
         [HttpPost]
@@ -395,6 +420,22 @@ namespace Pronia_eCommerce.Controllers
                 model.SiteSocial = _context.SiteSocials.ToList();
                 return View(model);
             }
+        }
+
+        public IActionResult HideOrder(int? Id)
+        {
+            if (Id!=null)
+            {
+                if (_context.Sales.Find(Id)!=null)
+                {
+                    Sale sale = _context.Sales.Find(Id);
+                    sale.hideToClien = true;
+                    _context.Sales.Update(sale);
+                    _context.SaveChanges();
+                }
+            }
+
+            return RedirectToAction("Profile");
         }
 
     }
