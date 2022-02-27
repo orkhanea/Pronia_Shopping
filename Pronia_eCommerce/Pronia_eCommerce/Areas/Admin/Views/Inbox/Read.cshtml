@@ -1,0 +1,86 @@
+﻿@model VmSendEmail
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-12 text-left">
+            <a class="btn btn-sm btn-light w-25" asp-area="Admin" asp-controller="Inbox" asp-action="Index">Go back to Messages</a>
+        </div>
+
+        <div class="col-lg-7 pt-5 pb-2" style="text-align: center; font-size: 25px; color: white; font-weight: 600;">
+            Message
+        </div>
+        <div class="col-lg-7">
+            <div class="card text-center">
+                <div class="card-header alert alert-light py-2">
+                    <div>
+                        <div style="color: white;">
+                            Full Name: <span style="font-weight: 300 !important; color: #c8edff !important; ">@Model.message.FirstName @Model.message.LastName</span>
+                        </div>
+                        <div style="color: white;">
+                            Email: <span style="font-weight: 300 !important; color: #c8edff !important; ">@Model.message.Email</span>
+                        </div>
+                        <div style="color: white;">
+                            Phone: <span style="color: #c8edff !important;">@Model.message.Phone</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body" id="cstmscrlbr" style="max-height: 280px; overflow: auto;">
+                    <p class="card-text" style=" padding: 10px; text-align: justify;">@Model.message.Content</p>
+                </div>
+                <div class="card-footer" style=" display: flex; flex-direction: row; justify-content: space-around; align-items: center;">
+                    <small style="color: #a0e2ff !important;">
+                        @{
+                            var date = (DateTime.Now - Model.message.CreatedDate);
+                            if (date.Days == 0)
+                            {
+                                if (date.Hours == 0)
+                                {
+                                    if (date.Minutes == 0)
+                                    {
+                                        @(date.Seconds) @(" seconds before")
+                                    }
+                                    else
+                                    {
+                                        @(date.Minutes) @(" minutes before")
+                                    }
+                                }
+                                else
+                                {
+                                    @(date.Hours) @(" hours before")
+                                }
+                            }
+                            else
+                            {
+                                @(date.Days) @(" days before")
+                            }
+                        }
+                    </small>
+                    <div>
+                        <a class="btn btn-sm btn-outline-info" style=" text-decoration: none;" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Send Email</a>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse multi-collapse" id="multiCollapseExample1">
+                <div class="card card-body">
+                    <form asp-controller="Inbox" asp-action="Read" method="post">
+                        <div class="mb-3">
+                            <label asp-for="@Model.sendingMessage" class="form-label">Message Content</label>
+                            <textarea asp-for="@Model.sendingMessage" placeholder="Message..." class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <span asp-validation-for="@Model.sendingMessage"></span>
+                        </div>
+                        <div class="mb-3 text-right">
+                            <input asp-for="@Model.EmailAddress" type="hidden" value="@Model.message.Email" />
+                            <button class="btn btn-sm btn-light w-25" type="submit">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+
+

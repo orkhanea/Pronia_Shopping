@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Pronia_eCommerce.Data;
 using Pronia_eCommerce.Models;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 namespace Pronia_eCommerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin, Admin")]
     public class ContactController : Controller
     {
         private readonly AppDbContext _context;

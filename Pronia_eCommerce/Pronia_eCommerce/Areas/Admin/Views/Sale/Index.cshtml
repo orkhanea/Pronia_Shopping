@@ -2,6 +2,68 @@
 
 
 <div class="row">
+
+    @{
+        if (Model.Any(s => s.isReaded == false))
+        {
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title text-center" style="font-size: 30px !important;">Unchecked Sales</h4>
+                        <div class="table-responsive text-center">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr class="make-it-unvisible">
+                                        <th>Invoice NO</th>
+                                        <th>DATE</th>
+                                        <th>TOTAL</th>
+                                        <th>Customer</th>
+                                        <th>Is User</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        @foreach (var item in Model)
+                                        {
+                                            if (item.isReaded == false)
+                                            {
+                                                <tr style="background-color:@(item.isReaded==false?"#0c135666":"");">
+                                                    <td style="vertical-align: middle;"><a class="account-order-id" href="#">@item.InvoiceNo</a></td>
+                                                    <td style="vertical-align: middle;">@item.SaleDate.ToString("MMM d yyyy")</td>
+                                                    <td style="vertical-align: middle;">
+                                                        @{
+                                                            decimal totalPr = 0;
+                                                            var prCounts = 0;
+                                                            foreach (var item2 in item.SaleItems)
+                                                            {
+                                                                totalPr += (item2.Price * item2.Quantity);
+                                                                prCounts += item2.Quantity;
+                                                            }
+                                                        }
+                                                        @totalPr.ToString("C2") for @prCounts @(prCounts>1?" items":" item")
+                                                    </td>
+                                                    <td style="vertical-align: middle;">@(item.EndUserId!=null?item.EndUser.Name + " " + item.EndUser.Surname:item.UnregisteredCustomer.FirstName +" "+ item.UnregisteredCustomer.LastName)</td>
+                                                    <td style="vertical-align: middle;">@(item.EndUserId==null?"Non-User":"User")</td>
+                                                    <td style="vertical-align: middle;">
+                                                        <a data-tippy="Detail" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="mb-2 btn-sm btn btn-outline-info" asp-area="Admin" asp-route-id="@item.Id" asp-controller="Sale" asp-action="SaleDetail"><i class="fal fa-info-square"></i></a>
+                                                        <br />
+                                                        <a data-tippy="Delete" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="btn-sm btn btn-outline-danger" asp-area="Admin" asp-route-id="@item.Id" asp-controller="Sale" asp-action="HideOrder" onclick="return confirm('Are you sure?')"><i class="fal fa-trash-alt"></i></a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
@@ -14,51 +76,51 @@
                         TempData["SaleError"] = null;
                     }
                 }
-            <div class="table-responsive text-center">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr class="make-it-unvisible">
-                            <th>Invoice NO</th>
-                            <th>DATE</th>
-                            <th>TOTAL</th>
-                            <th>Customer</th>
-                            <th>Is User</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td style="vertical-align: middle;"><a class="account-order-id" href="#">@item.InvoiceNo</a></td>
-                                    <td style="vertical-align: middle;">@item.SaleDate.ToString("MMM d yyyy")</td>
-                                    <td style="vertical-align: middle;">
-                                        @{
-                                            decimal totalPr = 0;
-                                            var prCounts = 0;
-                                            foreach (var item2 in item.SaleItems)
-                                            {
-                                                totalPr += (item2.Price * item2.Quantity);
-                                                prCounts += item2.Quantity;
+                <div class="table-responsive text-center">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr class="make-it-unvisible">
+                                <th>Invoice NO</th>
+                                <th>DATE</th>
+                                <th>TOTAL</th>
+                                <th>Customer</th>
+                                <th>Is User</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                @foreach (var item in Model)
+                                {
+                                    <tr style="background-color:@(item.isReaded==false?"#0c135666":"");">
+                                        <td style="vertical-align: middle;"><a class="account-order-id" href="#">@item.InvoiceNo</a></td>
+                                        <td style="vertical-align: middle;">@item.SaleDate.ToString("MMM d yyyy")</td>
+                                        <td style="vertical-align: middle;">
+                                            @{
+                                                decimal totalPr = 0;
+                                                var prCounts = 0;
+                                                foreach (var item2 in item.SaleItems)
+                                                {
+                                                    totalPr += (item2.Price * item2.Quantity);
+                                                    prCounts += item2.Quantity;
+                                                }
                                             }
-                                        }
-                                        @totalPr.ToString("C2") for @prCounts @(prCounts>1?" items":" item")
-                                    </td>
-                                    <td style="vertical-align: middle;">@(item.EndUserId!=null?item.EndUser.Name + " " + item.EndUser.Surname:item.UnregisteredCustomer.FirstName +" "+ item.UnregisteredCustomer.LastName)</td>
-                                    <td style="vertical-align: middle;">@(item.EndUserId==null?"Non-User":"User")</td>
-                                    <td style="vertical-align: middle;">
-                                        <a data-tippy="Detail" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="mb-2 btn-sm btn btn-outline-info" asp-area="Admin" asp-route-id="@item.Id" asp-controller="Sale" asp-action="SaleDetail"><i class="fal fa-info-square"></i></a>
-                                        <br />
-                                        <a data-tippy="Delete" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="btn-sm btn btn-outline-danger" asp-area="Admin" asp-route-id="@item.Id" asp-controller="Sale" asp-action="HideOrder" onclick="return confirm('Are you sure?')"><i class="fal fa-trash-alt"></i></a>
-                                    </td>
-                                </tr>
+                                            @totalPr.ToString("C2") for @prCounts @(prCounts>1?" items":" item")
+                                        </td>
+                                        <td style="vertical-align: middle;">@(item.EndUserId!=null?item.EndUser.Name + " " + item.EndUser.Surname:item.UnregisteredCustomer.FirstName +" "+ item.UnregisteredCustomer.LastName)</td>
+                                        <td style="vertical-align: middle;">@(item.EndUserId==null?"Non-User":"User")</td>
+                                        <td style="vertical-align: middle;">
+                                            <a data-tippy="Detail" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="mb-2 btn-sm btn btn-outline-info" asp-area="Admin" asp-route-id="@item.Id" asp-controller="Sale" asp-action="SaleDetail"><i class="fal fa-info-square"></i></a>
+                                            <br />
+                                            <a data-tippy="Delete" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="btn-sm btn btn-outline-danger" asp-area="Admin" asp-route-id="@item.Id" asp-controller="Sale" asp-action="HideOrder" onclick="return confirm('Are you sure?')"><i class="fal fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                }
                             }
-                        }
 
-                    </tbody>
-                </table>
-            </div>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

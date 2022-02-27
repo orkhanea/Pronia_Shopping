@@ -1137,5 +1137,12 @@ $(document).ready(function()
 
     }
 
+    if ($("#LoginRoleError").length > 0) {
+
+        swal("Oops!", `You dont have permission to use this account like End User!`, "error");
+
+    }
+    
+
 
 });

@@ -30,7 +30,12 @@ namespace Pronia_eCommerce
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<AppDbContext>(option => option.UseSqlServer(Configuration.GetConnectionString("Pronia")));
+            services.AddDbContext<AppDbContext>(option => {
+                option.UseSqlServer(Configuration.GetConnectionString("Pronia"));
+            });
+
+
+
             services.AddIdentity<IdentityUser, IdentityRole>(x =>
             {
                 x.Password.RequiredLength = 7;
@@ -72,7 +77,7 @@ namespace Pronia_eCommerce
                     endpoints.MapAreaControllerRoute(
                       name: "areas",
                       areaName: "Admin",
-                      pattern: "Admin/{controller=Home}/{action=Index}/{id?}"
+                      pattern: "Admin/{controller=Account}/{action=Login}/{id?}"
                     );
                 });
 

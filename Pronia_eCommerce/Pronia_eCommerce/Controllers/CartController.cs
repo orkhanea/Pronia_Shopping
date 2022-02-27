@@ -33,6 +33,13 @@ namespace Pronia_eCommerce.Controllers
         }
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
 
             if (User.Identity.IsAuthenticated)
             {
@@ -119,6 +126,14 @@ namespace Pronia_eCommerce.Controllers
 
         public IActionResult AddToCart(string productId)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
+
             if (productId!=null)
             {
                 if (_context.Products.Find(Int32.Parse(productId))!=null)
@@ -236,6 +251,14 @@ namespace Pronia_eCommerce.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
+
+            if (User.Identity.IsAuthenticated)
+            {
 
                 EndUser endUser = _context.EndUsers.Find(_userManager.GetUserId(User));
 
@@ -316,6 +339,14 @@ namespace Pronia_eCommerce.Controllers
 
         public IActionResult RemoveFromCart(int? Id)
         {
+
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
 
             if (User.Identity.IsAuthenticated)
             {

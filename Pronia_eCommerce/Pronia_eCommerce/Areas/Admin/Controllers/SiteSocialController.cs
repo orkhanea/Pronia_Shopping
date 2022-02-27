@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Pronia_eCommerce.Data;
 using Pronia_eCommerce.Models;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 namespace Pronia_eCommerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public class SiteSocialController : Controller
     {
         private readonly AppDbContext _context;

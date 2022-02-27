@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Pronia_eCommerce.Data;
 using Pronia_eCommerce.Models;
@@ -22,6 +23,14 @@ namespace Pronia_eCommerce.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
+
             VmHome model = new();
             model.Setting = _context.Setting.FirstOrDefault();
             model.SiteSocial = _context.SiteSocials.ToList();

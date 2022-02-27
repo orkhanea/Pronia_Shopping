@@ -62,6 +62,13 @@ namespace Pronia_eCommerce.Controllers
 
         public IActionResult Indext()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
 
             var vmSessionObjectL = HttpContext.Session.GetObject<VmSessionObject>("testSession");
             var vmpayment = Extension.Get<VmPayment>(TempData, "modelState");
@@ -94,6 +101,13 @@ namespace Pronia_eCommerce.Controllers
 
         public IActionResult CartToCheckout(VmCart cart)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
 
             if (cart.ProductCounts != null && cart.ProductIds != null && cart.ProductSizeIds != null)
             {

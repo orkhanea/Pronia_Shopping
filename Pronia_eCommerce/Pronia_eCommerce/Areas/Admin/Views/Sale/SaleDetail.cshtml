@@ -21,7 +21,6 @@
                     <div>
                         <span class="mr-2" style="font-weight: bold; color: white;">Country: </span>
                         <span class="card-text">@(Model.EndUserId!=null?Model.EndUser.Country.CountryName:Model.UnregisteredCustomer.CountyName)</span>
-                        @*<span>class="card-text">@(Model.EndUserId!=null?Model.EndUser.Country.CountryName:Model.UnregisteredCustomer.CountyName)</span>*@
                     </div>
                     <div>
                         <span class="mr-2" style="font-weight: bold; color: white;">Email: </span>
@@ -40,6 +39,10 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="col-lg-12">
+        <a class="btn btn-light m-3 px-5" asp-area="Admin" asp-controller="Sale" asp-action="Index">Back To Sale</a>
     </div>
 
     <div class="col-lg-12 grid-margin stretch-card">

@@ -25,7 +25,14 @@ namespace Pronia_eCommerce.Controllers
         }
         public IActionResult Index(VmSearch Search)
         {
-            
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
+
             VmBlog model = new();
             if (Search==null|| Search.Page == null)
             {
@@ -55,6 +62,14 @@ namespace Pronia_eCommerce.Controllers
 
         public IActionResult SingleBlog(int? Id, VmSearch search)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
+
             if (Id!=null)
             {
                 VmBlog model2 = new();
@@ -86,6 +101,7 @@ namespace Pronia_eCommerce.Controllers
 
         public IActionResult PostComment(CommentPost commentPost)
         {
+
             if (ModelState.IsValid)
             {
 

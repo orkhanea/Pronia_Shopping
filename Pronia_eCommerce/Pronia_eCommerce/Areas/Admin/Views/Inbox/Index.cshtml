@@ -1,0 +1,129 @@
+﻿@model List<Message>
+
+@{ 
+    var m2 = Model.Where(m => m.hasReaded == false).ToList();
+}
+
+<div class="container">
+    <h4 class="card-title text-center my-4" style="font-size: 35px !important; font-weight: 600 !important; color: #3b579d !important; ">Messages</h4>
+    @{
+        if (TempData["MessageError"] != null)
+        {
+            <p style="font-size: 20px !important;" class="alert text-center text-warning p-2">@TempData["MessageError"]</p>
+
+            TempData["MessageError"] = null;
+        }
+        if (TempData["EmailSucces"] != null)
+        {
+            <p style="font-size: 20px !important; color: lightgreen !important;" class="alert text-center p-2">@TempData["EmailSucces"]</p>
+
+            TempData["EmailSucces"] = null;
+        }
+    }
+<div class="row justify-content-around">
+    <div id="cstmscrlbr" class="list-group col-lg-5" style="height: 543px; overflow: auto;">
+        <h5 style="text-align: center;">All Messages (@(Model.Count))</h5>
+        <div>
+            @{
+                int counter2 = 0;
+                foreach (var m in Model)
+                {
+                    counter2++;
+                    <div class="align-items-center d-flex mb-2">
+                        <span class="badge badge-info" style="background-color: #003b68a1; font-size: 14px !important;"> @counter2</span>
+                        <a asp-controller="Inbox" asp-action="Read" asp-route-Id="@m.Id" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">@m.FirstName @m.LastName</h5>
+                                <small style="color: #a0e2ff !important;">
+                                    @{
+                                        var date = (DateTime.Now - m.CreatedDate);
+                                        if (date.Days == 0)
+                                        {
+                                            if (date.Hours == 0)
+                                            {
+                                                if (date.Minutes == 0)
+                                                {
+                                                    @(date.Seconds) @(" seconds before")
+                                                }
+                                                else
+                                                {
+                                                    @(date.Minutes) @(" minutes before")
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @(date.Hours) @(" hours before")
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @(date.Days) @(" days before")
+                                        }
+                                    }
+                                </small>
+                            </div>
+                            <p class="mb-1">@(m.Content.Length>50? m.Content.Substring(0,50)+"...": m.Content)</p>
+                        </a>
+                        <a data-tippy="Delete" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="ml-2 btn-sm btn btn-outline-danger" asp-area="Admin" asp-route-id="@m.Id" asp-controller="Inbox" asp-action="DelMes" onclick="return confirm('Are you sure?')"><i class="fal fa-trash-alt"></i></a>
+                    </div>
+                }
+            }
+        </div>
+
+    </div>
+    <div id="cstmscrlbr" class="list-group col-lg-5" style="height: 543px; overflow: auto;">
+        <h5 style="text-align: center;">Unreaded Messages (@(m2.Count))</h5>
+        <div>
+            @{
+                int counter3 = 0;
+                foreach (var m in m2)
+                {
+                    counter3++;
+                    <div class="align-items-center d-flex mb-2">
+                        <span class="badge badge-info" style="background-color: #003b68a1; font-size: 14px !important;"> @counter3</span>
+                        <a asp-controller="Inbox" asp-action="Read" asp-route-Id="@m.Id" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">@m.FirstName @m.LastName</h5>
+                                <small style="color: #a0e2ff !important;">
+                                    @{
+                                        var date = (DateTime.Now - m.CreatedDate);
+                                        if (date.Days == 0)
+                                        {
+                                            if (date.Hours == 0)
+                                            {
+                                                if (date.Minutes == 0)
+                                                {
+                                                    @(date.Seconds) @(" seconds before")
+                                                }
+                                                else
+                                                {
+                                                    @(date.Minutes) @(" minutes before")
+                                                }
+                                            }
+                                            else
+                                            {
+                                                @(date.Hours) @(" hours before")
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @(date.Days) @(" days before")
+                                        }
+                                    }
+                                </small>
+                            </div>
+                            <p class="mb-1">@(m.Content.Length>50? m.Content.Substring(0,50)+"...": m.Content)</p>
+                        </a>
+                        <a data-tippy="Delete" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="ml-2 btn-sm btn btn-outline-danger" asp-area="Admin" asp-route-id="@m.Id" asp-controller="Inbox" asp-action="DelMes" onclick="return confirm('Are you sure?')"><i class="fal fa-trash-alt"></i></a>
+                    </div>
+                }
+            }
+        </div>
+
+    </div>
+</div>
+</div>
+
+
+
+

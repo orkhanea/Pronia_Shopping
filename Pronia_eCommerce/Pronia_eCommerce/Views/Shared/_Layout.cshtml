@@ -9,6 +9,7 @@
     int favourites = 0;
     if (User.Identity.IsAuthenticated)
     {
+
         string oldData = _context.EndUsers.Find(_userManager.GetUserId(User)).UserCart;
         if (!string.IsNullOrEmpty(oldData))
         {
@@ -23,8 +24,16 @@
             favourites = oldData.Split("-").Length;
         }
     }
+
 }
 @model VmLayout
+
+@{
+    if (TempData["LoginRoleError"] != null)
+    {
+        <input id="LoginRoleError" type="hidden" />
+    }
+}
 
 
 <!DOCTYPE html>

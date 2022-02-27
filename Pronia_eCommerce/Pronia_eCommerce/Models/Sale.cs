@@ -28,5 +28,7 @@ namespace Pronia_eCommerce.Models
         public List<SaleItem> SaleItems { get; set; }
 
         public bool hideToClien { get; set; }
+
+        public bool isReaded { get; set; }
     }
 }

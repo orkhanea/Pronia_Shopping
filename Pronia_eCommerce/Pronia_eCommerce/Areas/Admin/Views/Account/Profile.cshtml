@@ -1,0 +1,127 @@
+﻿@model VmSiteUserProfile
+
+
+
+<div class="row mt-3">
+    <div class="col-lg-4">
+        <div class="card profile-card-2">
+            <div class="card-img-block">
+                <img style="width: 100%; height: 100%; object-fit: cover;" class="img-fluid" src="~/img/userBgImage/@(Model.SiteUser.BgImage!=null?Model.SiteUser.BgImage:"default-cover-6.jpg")" alt="Card image cap">
+            </div>
+            <div class="card-body pt-5">
+                <img src="~/img/user/@(Model.SiteUser.Image!=null?Model.SiteUser.Image:"Avatar.png")" alt="profile-image" class="profile">
+                <h5 class="card-title">@Model.SiteUser.Name @Model.SiteUser.Surname</h5>
+                <p class="card-text">@(Model.SiteUser.UserInfo!=null? Model.SiteUser.UserInfo:"Please write about yourself!")</p>
+            </div>
+            
+            <div class="card-body border-top border-light">
+                <div class="media align-items-center">
+                    <div>
+                        Email:
+                    </div>
+                    <div class="media-body text-left ml-3">
+                        <div class="progress-wrapper">
+                            <p class="m-0">@(Model.SiteUser.Email!=null? Model.SiteUser.Email:"")</p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="media align-items-center">
+                    <div>
+                        Phone:
+                    </div>
+                    <div class="media-body text-left ml-3">
+                        <div class="progress-wrapper">
+                            <p class="m-0">@(Model.SiteUser.PhoneNumber!=null? Model.SiteUser.PhoneNumber:"")</p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="media align-items-center">
+                    <div>
+                        Date of birth:
+                    </div>
+                    <div class="media-body text-left ml-3">
+                        <div class="progress-wrapper">
+                            <p class="m-0">@Model.SiteUser.BDate.ToString("d MMM yyy")</p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="media align-items-center">
+                    <div>
+                        Created date:
+                    </div>
+                    <div class="media-body text-left ml-3">
+                        <div class="progress-wrapper">
+                            <p class="m-0">@Model.SiteUser.CreatedDate.ToString("d MMM yyy")</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="tab-pane" id="edit">
+                    <form asp-area="Admin" asp-controller="Account" asp-action="SiteUserUpdate">
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <label asp-for="SiteUser.Name" class="form-label">Name</label>
+                                <input asp-for="SiteUser.Name" class="form-control" type="text">
+                                <span asp-validation-for="SiteUser.Name"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label asp-for="SiteUser.Surname" class="form-label">Surname</label>
+                                <input asp-for="SiteUser.Surname" class="form-control" type="text">
+                                <span asp-validation-for="SiteUser.Surname"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <label asp-for="SiteUser.PhoneNumber" class="form-label">Phone</label>
+                                <input asp-for="SiteUser.PhoneNumber" class="form-control" type="tel">
+                                <span asp-validation-for="SiteUser.PhoneNumber"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label asp-for="SiteUser.BDate" class="form-label">Date of birth</label>
+                                <input asp-for="SiteUser.BDate" class="form-control" type="date">
+                                <span asp-validation-for="SiteUser.BDate"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row justify-content-center">
+                            <div class="col-lg-12">
+                                <label asp-for="SiteUser.UserInfo" class="form-label">About</label>
+                                <textarea asp-for="SiteUser.UserInfo" placeholder="Write something bout yourself" rows="4" class="form-control"></textarea>
+                                <span asp-validation-for="SiteUser.UserInfo"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <label asp-for="SiteUser.ImageFile" class="w-100 btn btn-outline-white btn-sm">Profile Photo</label>
+                                <input asp-for="SiteUser.ImageFile" class="d-none form-control">
+                                <span asp-validation-for="SiteUser.ImageFile"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <label asp-for="SiteUser.BgImageFile" class="w-100 btn btn-outline-white btn-sm">Cover Photo</label>
+                                <input asp-for="SiteUser.BgImageFile" class="d-none form-control">
+                                <span asp-validation-for="SiteUser.BgImageFile"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-lg-12" style=" text-align: end;">
+                                <input asp-for="UserId" type="hidden" value="@Model.SiteUser.Id"/>
+                                <button type="submit" style="width: 250px;" class="btn btn-light btn-sm">Save Changes</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

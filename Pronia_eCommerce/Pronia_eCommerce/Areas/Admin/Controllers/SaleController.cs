@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pronia_eCommerce.Data;
 using Pronia_eCommerce.Models;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace Pronia_eCommerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "SuperAdmin")]
     public class SaleController : Controller
     {
         private readonly AppDbContext _context;
@@ -53,6 +55,9 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
                                              .Include(si => si.EndUser)
                                              .ThenInclude(u=>u.Country)
                                              .FirstOrDefault(s => s.Id == Id);
+                    sale.isReaded = true;
+                    _context.Sales.Update(sale);
+                    _context.SaveChanges();
 
                     return View(sale);
 

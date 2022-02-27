@@ -19,6 +19,14 @@ namespace Pronia_eCommerce.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
+
             VmAbout model = new();
             model.Setting = _context.Setting.FirstOrDefault();
             model.SiteSocial = _context.SiteSocials.ToList();

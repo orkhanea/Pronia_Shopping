@@ -972,6 +972,9 @@ namespace Pronia_eCommerce.Migrations
                     b.Property<bool>("hideToClien")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("isReaded")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EndUserId");
@@ -1209,6 +1212,45 @@ namespace Pronia_eCommerce.Migrations
                     b.HasIndex("CountryId");
 
                     b.HasDiscriminator().HasValue("EndUser");
+                });
+
+            modelBuilder.Entity("Pronia_eCommerce.Models.SiteUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<DateTime>("BDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("BgImage")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("SiteUser_CreatedDate");
+
+                    b.Property<string>("Image")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)")
+                        .HasColumnName("SiteUser_Image");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SiteUser_Name");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)")
+                        .HasColumnName("SiteUser_Surname");
+
+                    b.Property<string>("UserInfo")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasDiscriminator().HasValue("SiteUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

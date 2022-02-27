@@ -20,6 +20,14 @@ namespace Pronia_eCommerce.Controllers
         }
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
+
             string oldData = Request.Cookies["favourites"];
 
             if (!string.IsNullOrEmpty(oldData))

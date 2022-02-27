@@ -35,6 +35,13 @@ namespace Pronia_eCommerce.Controllers
 
         public IActionResult Index(VmPayment vmPayment)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
 
             if (User.Identity.IsAuthenticated)
             {

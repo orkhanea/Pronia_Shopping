@@ -29,6 +29,14 @@ namespace Pronia_eCommerce.Controllers
         }
         public IActionResult Index(VmProductSearch Search)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
+
             VmProduct model = new();
             if (Search == null || Search.Page == null)
             {
@@ -72,6 +80,14 @@ namespace Pronia_eCommerce.Controllers
         }
         public IActionResult SingleProduct(int? Id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!User.IsInRole("User"))
+                {
+                    return RedirectToAction("Logout", "Account");
+                }
+            }
+
             if (Id!=null)
             {
                 if (_context.Products.Find(Id)!=null)
