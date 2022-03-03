@@ -331,6 +331,9 @@ namespace Pronia_eCommerce.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("SiteUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -343,6 +346,8 @@ namespace Pronia_eCommerce.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BlogCategoryId");
+
+                    b.HasIndex("SiteUserId");
 
                     b.ToTable("Blogs");
                 });
@@ -934,13 +939,22 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("EndUserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Star")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserIp")
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserSurname")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -1209,6 +1223,9 @@ namespace Pronia_eCommerce.Migrations
                     b.Property<string>("UserCart")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserFavourite")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasIndex("CountryId");
 
                     b.HasDiscriminator().HasValue("EndUser");
@@ -1310,7 +1327,13 @@ namespace Pronia_eCommerce.Migrations
                         .WithMany("Blogs")
                         .HasForeignKey("BlogCategoryId");
 
+                    b.HasOne("Pronia_eCommerce.Models.SiteUser", "SiteUser")
+                        .WithMany("Blogs")
+                        .HasForeignKey("SiteUserId");
+
                     b.Navigation("Category");
+
+                    b.Navigation("SiteUser");
                 });
 
             modelBuilder.Entity("Pronia_eCommerce.Models.BlogTagToBlog", b =>
@@ -1589,6 +1612,11 @@ namespace Pronia_eCommerce.Migrations
                     b.Navigation("ProductComments");
 
                     b.Navigation("Sales");
+                });
+
+            modelBuilder.Entity("Pronia_eCommerce.Models.SiteUser", b =>
+                {
+                    b.Navigation("Blogs");
                 });
 #pragma warning restore 612, 618
         }

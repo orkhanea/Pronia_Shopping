@@ -45,12 +45,34 @@ namespace Pronia_eCommerce.Controllers
 
             if (User.Identity.IsAuthenticated)
             {
-
-                return View();
+                if (_context.EndUsers.Find(_userManager.GetUserId(User)).BillingAddress!=null && _context.EndUsers.Find(_userManager.GetUserId(User)).BillingAddress != "" && _context.EndUsers.Find(_userManager.GetUserId(User)).ShippingAddress != null && _context.EndUsers.Find(_userManager.GetUserId(User)).ShippingAddress != "" && _context.EndUsers.Find(_userManager.GetUserId(User)).PhoneNumber != null && _context.EndUsers.Find(_userManager.GetUserId(User)).PhoneNumber != "")
+                {
+                    if (TempData["BalanceError"] != null)
+                    {
+                        var ttt = HttpContext.Session.GetObject<BankCarts>("bankcartInfo");
+                        return View(ttt);
+                    }
+                    else
+                    {
+                        return View();
+                    }
+                }
+                else
+                {
+                    TempData["UpdateProfilePLS"] = "Please fill in the fields marked with an asterisk (*) to shopping!";
+                    return RedirectToAction("Profile", "Account");
+                }
 
             }
             else
             {
+
+                if (TempData["BalanceError"] != null)
+                {
+                    var ttt = HttpContext.Session.GetObject<BankCarts>("bankcartInfo");
+                    return View(ttt);
+                }
+
                 if (ModelState.IsValid)
                 {
 
@@ -184,8 +206,12 @@ namespace Pronia_eCommerce.Controllers
 
 
 
-
-                                return RedirectToAction("Index", "Home");
+                                TempData["PaymentSuccess"] = "Thank you for choosing us!";
+                                if (Request.Cookies["cart"]!=null)
+                                {
+                                    _httpContextAccessor.HttpContext.Response.Cookies.Delete("cart");
+                                }
+                                return RedirectToAction("Index", "Cart");
                             }
                             else
                             {
@@ -256,20 +282,46 @@ namespace Pronia_eCommerce.Controllers
 
 
 
-
-                                return RedirectToAction("Index", "Home");
+                                TempData["PaymentSuccess"] = "Thank you for choosing us!";
+                                if (_context.EndUsers.Find(_userManager.GetUserId(User)).UserCart!=null)
+                                {
+                                    _context.EndUsers.Find(_userManager.GetUserId(User)).UserCart = null;
+                                    _context.SaveChanges();
+                                }
+                                return RedirectToAction("Index", "Cart");
                             }
 
 
                         }
+                        else
+                        {
+                            HttpContext.Session.SetObject("bankcartInfo", bankCarts);
+                            TempData["BalanceError"] = "You do not have enough funds in your balance to complete this payment!";
+                            return RedirectToAction("Index");
+                        }
 
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetObject("bankcartInfo", bankCarts);
+                        TempData["BalanceError"] = "The credit/debit card information is not valid";
+                        return RedirectToAction("Index");
                     }
 
                 }
+                else
+                {
+                    HttpContext.Session.SetObject("bankcartInfo", bankCarts);
+                    TempData["BalanceError"] = "The credit/debit card information is not valid";
+                    return RedirectToAction("Index");
+                }
 
             }
+            else
+            {
+                return RedirectToAction("Index");
+            }
 
-            return RedirectToAction("Index", "Home");
         }
 
     }

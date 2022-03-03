@@ -42,6 +42,10 @@ namespace Pronia_eCommerce.Models
         public List<BlogTagToBlog> BlogTagToBlogs { get; set; }
         public List<Comment> Comments { get; set; }
 
+        [ForeignKey("SiteUser")]
+        public string SiteUserId { get; set; }
+        public SiteUser SiteUser { get; set; }
+
         [NotMapped]
         public List<int> BlogTagToBlogId { get; set; }
     }

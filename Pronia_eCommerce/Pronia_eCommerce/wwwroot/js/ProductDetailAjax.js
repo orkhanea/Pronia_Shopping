@@ -1,152 +1,6 @@
 $(document).ready(function () {
 
 
-    let starReview = function (userIp, singleProductId, ratingValue) {
-
-        $.ajax({
-            url: location.origin + "/Shop/ReviewPost",
-            type: "get",
-            dataType: "json",
-            data: {
-                userIp: userIp,
-                productId: String(singleProductId),
-                ratingValue: ratingValue
-            },
-            success: function (response) {
-                if (response.success != null) {
-
-                    swal("Good job!", `Thanks for taking the time to leave us a ${ratingValue} star rating `, "success");
-                    $(".rating-wrap .rating ul li .fa-star").removeClass("fw");
-                    for (let xs = 0; xs < response.starsCount; xs++) {
-
-                        document.querySelectorAll(".rating-wrap .rating ul li .fa-star")[xs].classList.add("fw");
-
-                    }
-                    let rval2 = response.products["$values"][0].ratings["$values"];
-                    for (let rs = 0; rs < rval2.length; rs++) {
-                        let fiveS = 0;
-                        let fourS = 0;
-                        let threeS = 0;
-                        let twoS = 0;
-                        let oneS = 0;
-
-                        for (let str = 0; str < rval2.length; str++) {
-                            if (rval2[str].star == 5) {
-                                fiveS++;
-                            }
-                            else if (rval2[str].star == 4) {
-                                fourS++;
-                            }
-                            else if (rval2[str].star == 3) {
-                                threeS++;
-                            }
-                            else if (rval2[str].star == 2) {
-                                twoS++;
-                            }
-                            else if (rval2[str].star == 1) {
-                                oneS++;
-                            }
-                        }
-
-                        let sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
-                        let rSum = fiveS + fourS + threeS + twoS + oneS;
-                        let sumRsum = sum / rSum;
-
-                        if (sumRsum != 0) {
-
-                            document.getElementById("rating_value").innerText = `(${sumRsum.toFixed(1)} Rating)`;
-                        }
-
-                    }
-
-                }
-                else if (response.changed != null) {
-
-                    swal("Changed!", `Thanks for taking the time to leave us a ${ratingValue} star rating `, "success");
-                    $(".rating-wrap .rating ul li .fa-star").removeClass("fw");
-                    for (var xs = 0; xs < response.starsCount; xs++) {
-
-                        document.querySelectorAll(".rating-wrap .rating ul li .fa-star")[xs].classList.add("fw");
-
-                    }
-                    let rval2 = response.products["$values"][0].ratings["$values"];
-                    for (let rs = 0; rs < rval2.length; rs++) {
-                        let fiveS = 0;
-                        let fourS = 0;
-                        let threeS = 0;
-                        let twoS = 0;
-                        let oneS = 0;
-
-                        for (let str = 0; str < rval2.length; str++) {
-                            if (rval2[str].star == 5) {
-                                fiveS++;
-                            }
-                            else if (rval2[str].star == 4) {
-                                fourS++;
-                            }
-                            else if (rval2[str].star == 3) {
-                                threeS++;
-                            }
-                            else if (rval2[str].star == 2) {
-                                twoS++;
-                            }
-                            else if (rval2[str].star == 1) {
-                                oneS++;
-                            }
-                        }
-
-                        let sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
-                        let rSum = fiveS + fourS + threeS + twoS + oneS;
-                        let sumRsum = sum / rSum;
-
-                        if (sumRsum != 0) {
-
-                            document.getElementById("rating_value").innerText = `(${sumRsum.toFixed(1)} Rating)`;
-                        }
-
-                    }
-
-                }
-                else if (response.error != null) {
-
-                    swal("Oops", "Something went wrong", "error");
-                }
-            },
-            error: function (error) {
-                console.log(error);
-            },
-            complete: function () {
-
-            }
-        });
-
-    }
-
-    if (document.querySelectorAll(".modalStarBtn") != null || document.querySelectorAll(".modalStarBtn") != undefined || document.querySelectorAll(".modalStarBtn").length>0) {
-
-
-        let modalStarBtn = document.querySelectorAll(".modalStarBtn");
-        for (let r = 0; r < modalStarBtn.length; r++) {
-            modalStarBtn[r].addEventListener("click", function () {
-                $.getJSON("https://api.ipify.org?format=json", function (data) {
-
-                    let userIpPD = data.ip
-                    let ratingValuePD = String(modalStarBtn[r].nextElementSibling.value)
-                    let singleProductIdPD = ratValprodId.value;
-
-
-                    starReview(userIpPD, singleProductIdPD, ratingValuePD);
-
-                })
-
-            })
-        }
-
-
-
-
-    }
-
     let eye = document.querySelectorAll(".productFullDetail");
 
     for (let i = 0; i < eye.length; i++) {
@@ -173,7 +27,6 @@ $(document).ready(function () {
             }
 
             document.getElementById("rating_value").innerText = "(0.0 Rating)";
-            $(".rating-wrap .rating ul li .fa-star").removeClass("fw");
 
             let id = eye[i].firstChild.nextSibling.value;
 
@@ -196,7 +49,6 @@ $(document).ready(function () {
                         var imagesArr = [];
 
                         let ratValprodId = document.getElementById("ratValprodId");
-                        ratValprodId.value = Product.id
 
                         let prodRatings = Product.ratings["$values"];
                         
@@ -235,23 +87,6 @@ $(document).ready(function () {
                             }
 
                         }
-
-                        $.getJSON("https://api.ipify.org?format=json", function (data) {
-
-                            let userIp2 = data.ip;
-
-
-                            for (let x = 0; x < prodRatings.length; x++) {
-                                if (prodRatings[x].userIp == userIp2) {
-                                    for (var xs = 0; xs < prodRatings[x].star; xs++) {
-
-                                        document.querySelectorAll(".rating-wrap .rating ul li .fa-star")[xs].classList.add("fw");
-
-                                    }
-                                }
-                            }
-                        })
-                        
 
                         for (var i in productImges) {
                             for (var t = 0; t < productImges[i].length; t++) {

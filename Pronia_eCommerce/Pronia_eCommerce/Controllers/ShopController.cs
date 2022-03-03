@@ -67,13 +67,27 @@ namespace Pronia_eCommerce.Controllers
             ViewBag.Page = Search.Page;
             ViewBag.ProductCount = products.Count;
             model.Search = Search;
+            model.Banner = _context.Banners.FirstOrDefault(p => p.Page == "Shop Main");
 
-            string oldData = Request.Cookies["favourites"];
-
-            if (!string.IsNullOrEmpty(oldData))
+            if (User.Identity.IsAuthenticated)
             {
-                model.Favourite = oldData.Split("-").ToList();
+                string oldData = _context.EndUsers.Find(_userManager.GetUserId(User)).UserFavourite;
+
+                if (!string.IsNullOrEmpty(oldData))
+                {
+                    model.Favourite = oldData.Split("-").ToList();
+                }
             }
+            else
+            {
+                string oldData = Request.Cookies["favourites"];
+
+                if (!string.IsNullOrEmpty(oldData))
+                {
+                    model.Favourite = oldData.Split("-").ToList();
+                }
+            }
+            
 
 
             return View(model);
@@ -107,6 +121,7 @@ namespace Pronia_eCommerce.Controllers
                                                .ThenInclude(pc=>pc.User)
                                                .FirstOrDefault(p => p.Id == Id);
                     model2.RatingStars = _context.RatingStars.Where(r => r.ProductId == Id).ToList();
+                    model2.Banner = _context.Banners.FirstOrDefault(p => p.Page == "Shop Detail");
 
                     string oldData = Request.Cookies["favourites"];
 
@@ -181,44 +196,53 @@ namespace Pronia_eCommerce.Controllers
 
         }
 
-        public IActionResult ReviewPost(string userIp, string productId, string ratingValue)
+        public IActionResult ReviewPost(string userEmail, string userName, string userSurname, string productId, string ratingValue)
         {
             VmResponse response = new();
-            if (userIp!=null)
+
+            if (User.Identity.IsAuthenticated&&userEmail=="user"&&userName=="user"&&userSurname=="user")
             {
+
                 int prid = Int16.Parse(productId);
                 int ratval = Int16.Parse(ratingValue);
-                if (_context.Products.Find(prid) !=null)
+                if (_context.Products.Find(prid) != null)
                 {
                     if (ratval >= 1 && ratval <= 5)
                     {
 
                         RatingStar ratingStars = new();
-                        var hasIp = _context.RatingStars.Where(r => r.ProductId == prid).Any(p => p.UserIp == userIp);
+
+                        var usrM = _context.EndUsers.Find(_userManager.GetUserId(User)).Email;
+                        var usrN = _context.EndUsers.Find(_userManager.GetUserId(User)).Name;
+                        var usrS = _context.EndUsers.Find(_userManager.GetUserId(User)).Surname;
+
+                        var hasIp = _context.RatingStars.Where(r => r.ProductId == prid).Any(p => (p.UserEmail == usrM) && (p.UserName == usrN) && (p.UserSurname == usrS));
                         if (hasIp)
                         {
-                            _context.RatingStars.Where(r => r.ProductId == prid && r.UserIp == userIp).FirstOrDefault().ProductId = prid;
-                            _context.RatingStars.Where(r => r.ProductId == prid && r.UserIp == userIp).FirstOrDefault().Star = ratval;
-                            _context.RatingStars.Where(r => r.ProductId == prid && r.UserIp == userIp).FirstOrDefault().UserIp = userIp;
+                            _context.RatingStars.Where(r => r.ProductId == prid && r.UserEmail == usrM && r.UserName == usrN && r.UserSurname == usrS).FirstOrDefault().ProductId = prid;
+                            _context.RatingStars.Where(r => r.ProductId == prid && r.UserEmail == usrM && r.UserName == usrN && r.UserSurname == usrS).FirstOrDefault().Star = ratval;
+                            _context.RatingStars.Where(r => r.ProductId == prid && r.UserEmail == usrM && r.UserName == usrN && r.UserSurname == usrS).FirstOrDefault().UserEmail = usrM;
 
                             _context.SaveChanges();
 
                             response.Changed = "change";
-                            response.StarsCount = _context.RatingStars.Where(r => r.ProductId == prid && r.UserIp == userIp).FirstOrDefault().Star;
-                            response.Products = _context.Products.Include(pr=>pr.Ratings).Where(r => r.Id == prid).ToList();
-                           
+                            response.StarsCount = _context.RatingStars.Where(r => r.ProductId == prid && r.UserEmail == usrM && r.UserName == usrN && r.UserSurname == usrS).FirstOrDefault().Star;
+                            response.Products = _context.Products.Include(pr => pr.Ratings).Where(r => r.Id == prid).ToList();
+
                             return Json(response);
                         }
                         else
                         {
                             ratingStars.ProductId = prid;
                             ratingStars.Star = ratval;
-                            ratingStars.UserIp = userIp;
+                            ratingStars.UserEmail = usrM;
+                            ratingStars.UserName = usrN;
+                            ratingStars.UserSurname = usrS;
                             _context.RatingStars.Add(ratingStars);
                             _context.SaveChanges();
 
                             response.Success = "ok";
-                            response.StarsCount = _context.RatingStars.Where(r => r.ProductId == prid && r.UserIp == userIp).FirstOrDefault().Star;
+                            response.StarsCount = _context.RatingStars.Where(r => r.ProductId == prid && r.UserEmail == usrM && r.UserName == usrN && r.UserSurname == usrS).FirstOrDefault().Star;
                             response.Products = _context.Products.Include(pr => pr.Ratings).Where(r => r.Id == prid).ToList();
                             return Json(response);
                         }
@@ -238,49 +262,185 @@ namespace Pronia_eCommerce.Controllers
                     response.Error = "error";
                     return Json(response);
                 }
+
             }
             else
             {
-                response.Error = "error";
-                return Json(response);
+                if (userEmail != null)
+                {
+                    int prid = Int16.Parse(productId);
+                    int ratval = Int16.Parse(ratingValue);
+                    if (_context.Products.Find(prid) != null)
+                    {
+                        if (ratval >= 1 && ratval <= 5)
+                        {
+
+                            RatingStar ratingStars = new();
+                            var hasIp = _context.RatingStars.Where(r => r.ProductId == prid).Any(p => (p.UserEmail == userEmail) && (p.UserName == userName) && (p.UserSurname == userSurname));
+                            if (hasIp)
+                            {
+                                _context.RatingStars.Where(r => r.ProductId == prid && r.UserEmail == userEmail && r.UserName == userName && r.UserSurname == userSurname).FirstOrDefault().ProductId = prid;
+                                _context.RatingStars.Where(r => r.ProductId == prid && r.UserEmail == userEmail && r.UserName == userName && r.UserSurname == userSurname).FirstOrDefault().Star = ratval;
+                                _context.RatingStars.Where(r => r.ProductId == prid && r.UserEmail == userEmail && r.UserName == userName && r.UserSurname == userSurname).FirstOrDefault().UserEmail = userEmail;
+
+                                _context.SaveChanges();
+
+                                response.Changed = "change";
+                                response.StarsCount = _context.RatingStars.Where(r => r.ProductId == prid && r.UserEmail == userEmail && r.UserName == userName && r.UserSurname == userSurname).FirstOrDefault().Star;
+                                response.Products = _context.Products.Include(pr => pr.Ratings).Where(r => r.Id == prid).ToList();
+
+                                return Json(response);
+                            }
+                            else
+                            {
+                                ratingStars.ProductId = prid;
+                                ratingStars.Star = ratval;
+                                ratingStars.UserEmail = userEmail;
+                                ratingStars.UserName = userName;
+                                ratingStars.UserSurname = userSurname;
+                                _context.RatingStars.Add(ratingStars);
+                                _context.SaveChanges();
+
+                                response.Success = "ok";
+                                response.StarsCount = _context.RatingStars.Where(r => r.ProductId == prid && r.UserEmail == userEmail && r.UserName == userName && r.UserSurname == userSurname).FirstOrDefault().Star;
+                                response.Products = _context.Products.Include(pr => pr.Ratings).Where(r => r.Id == prid).ToList();
+                                return Json(response);
+                            }
+
+
+                        }
+                        else
+                        {
+                            response.Error = "error";
+                            return Json(response);
+                        }
+
+
+                    }
+                    else
+                    {
+                        response.Error = "error";
+                        return Json(response);
+                    }
+                }
+                else
+                {
+                    response.Error = "error";
+                    return Json(response);
+                }
             }
+
+
+
+           
 
         }
 
         public IActionResult AddToWishlist(string productId)
         {
-            string oldData = Request.Cookies["favourites"];
-            string newData = null;
-            VmResponse response = new();
-            if (string.IsNullOrEmpty(oldData))
+
+            if (productId!=null)
             {
-                newData = productId;
-                response.Success = "Added";
-            }
-            else
-            {
-                List<string> favouriteList = oldData.Split("-").ToList();
-                if (favouriteList.Any(f => f == productId))
+                if (_context.Products.Find(Int32.Parse(productId)) != null)
                 {
-                    favouriteList.Remove(productId);
-                    newData = string.Join("-", favouriteList);
-                    response.Changed = "Removed";
+                    if (_context.Products.Any(p => p.Id == Int16.Parse(productId)))
+                    {
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            EndUser endUser = _context.EndUsers.Find(_userManager.GetUserId(User));
+
+                            string oldData = endUser.UserFavourite;
+                            string newData = null;
+
+                            VmResponse response = new();
+
+                            if (string.IsNullOrEmpty(oldData))
+                            {
+                                newData = productId;
+                                response.Success = "Added";
+                            }
+                            else
+                            {
+                                List<string> favouriteList = oldData.Split("-").ToList();
+                                if (favouriteList.Any(f => f == productId))
+                                {
+                                    favouriteList.Remove(productId);
+                                    newData = string.Join("-", favouriteList);
+                                    response.Changed = "Removed";
+                                }
+                                else
+                                {
+                                    newData = oldData + "-" + productId;
+                                    response.Success = "Added";
+                                }
+                            }
+
+                            endUser.UserFavourite = newData;
+                            _context.EndUsers.Update(endUser);
+                            _context.SaveChanges();
+                            return Json(response);
+                        }
+                        else
+                        {
+                            string oldData = Request.Cookies["favourites"];
+                            string newData = null;
+                            VmResponse response = new();
+                            if (string.IsNullOrEmpty(oldData))
+                            {
+                                newData = productId;
+                                response.Success = "Added";
+                            }
+                            else
+                            {
+                                List<string> favouriteList = oldData.Split("-").ToList();
+                                if (favouriteList.Any(f => f == productId))
+                                {
+                                    favouriteList.Remove(productId);
+                                    newData = string.Join("-", favouriteList);
+                                    response.Changed = "Removed";
+                                }
+                                else
+                                {
+                                    newData = oldData + "-" + productId;
+                                    response.Success = "Added";
+                                }
+                            }
+
+                            CookieOptions options = new()
+                            {
+                                Expires = DateTime.Now.AddMonths(1)
+                            };
+
+                            Response.Cookies.Append("favourites", newData, options);
+
+                            return Json(response);
+                        }
+                    }
+                    else
+                    {
+                        VmResponse response = new();
+                        response.Error = "Error";
+
+                        return Json(response);
+                    }
                 }
                 else
                 {
-                    newData = oldData + "-" + productId;
-                    response.Success = "Added";
+                    VmResponse response = new();
+                    response.Error = "Error";
+
+                    return Json(response);
                 }
             }
-
-            CookieOptions options = new()
+            else
             {
-                Expires = DateTime.Now.AddMonths(1)
-            };
+                VmResponse response = new();
+                response.Error = "Error";
 
-            Response.Cookies.Append("favourites", newData, options);
+                return Json(response);
+            }
 
-            return Json(response);
+
         }
 
         public IActionResult RemoveFromWishlist(int? Id)
@@ -316,11 +476,11 @@ namespace Pronia_eCommerce.Controllers
             return RedirectToAction("index", "Wishlist");
         }
 
-        public IActionResult RefreshRating(string userIp) {
+        public IActionResult RefreshRating(string userEmail) {
 
 
             VmResponse response = new();
-            response.StarsCounts = _context.RatingStars.Where(r =>r.UserIp == userIp).ToList();
+            response.StarsCounts = _context.RatingStars.Where(r =>r.UserEmail == userEmail).ToList();
 
 
 

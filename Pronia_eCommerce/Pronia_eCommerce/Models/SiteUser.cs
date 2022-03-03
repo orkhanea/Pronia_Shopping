@@ -38,5 +38,7 @@ namespace Pronia_eCommerce.Models
 
         [NotMapped]
         public string RoleId { get; set; }
+
+        public List<Blog> Blogs { get; set; }
     }
 }

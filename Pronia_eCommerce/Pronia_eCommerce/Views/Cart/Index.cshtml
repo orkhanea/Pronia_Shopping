@@ -1,8 +1,71 @@
 ﻿@model VmCart
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor _HttpContextAccessor
+@using Pronia_eCommerce.Controllers
+
+
+<!-- #region Breadcrump Area -->
+<section id="breadcrump">
+    <div class="breadcrumb-wrapper" style="background-image: url('/img/bg-image/@Model.Banner.BgImage');">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content">
+                        <h2 class="breadcrumb-page">Cart</h2>
+                        <ul>
+                            <li>
+                                <a asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li>@Model.Banner.Title</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- #endregion Breadcrump Area End -->
 <!-- #region Wishlist -->
 <div class="wishlist-full pt-100 pb-100">
     <div class="container">
-        <div class="row">
+        <div class="row justify-content-center">
+            @{
+                var msg = _HttpContextAccessor.HttpContext.Session.GetObject<List<string>>("QuantityError");
+
+                if (msg != null)
+                {
+                    <div class="text-center alert alert-light pb-0 col-lg-10">
+
+                        @foreach (var item in msg)
+                        {
+                            <p class="text-warning" style="font-size: 18px !important;">@item</p>
+                        }
+
+                    </div>
+                }
+
+                _HttpContextAccessor.HttpContext.Session.Remove("QuantityError");
+
+                if (TempData["Errorcart2"] != null)
+                {
+                    <div class="text-center alert alert-light pb-0 col-lg-10">
+
+                        <p class="text-warning" style="font-size: 18px !important;">@(TempData["Errorcart2"] as string)</p>
+
+                    </div>
+                    TempData["Errorcart2"] = null;
+                }
+
+                if (TempData["PaymentSuccess"]!=null)
+                {
+                    <input id="PaymentSuccessAlert" type="hidden" value="true" />
+                    TempData["PaymentSuccess"] = null;
+                }
+
+            }
+
+
+
             <div class="col-12">
                 @{
                     if (Model.Products != null)
@@ -41,75 +104,44 @@
                                                     </td>
                                                     <td class="product-name"><a href="#">@item.Name</a></td>
                                                     <td class="product-price">
-                                                        <span class="amount @("cart-product-price"+item.Id)">
-                                                            @{
-                                                                bool noPrice = false;
-                                                                foreach (var price in item.ProductSizeToProducts)
-                                                                {
-                                                                    if (price.Price != 0)
-                                                                    {
-                                                                        @price.Price
-                                                                        noPrice = false;
-                                                                        break;
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        noPrice = true;
-                                                                    }
-                                                                }
-
-                                                                if (noPrice)
-                                                                {
-                                                                    string noPriceText = "Price will be Update soon";
-                                                                    @noPriceText
-                                                                }
-                                                            }
-                                                        </span>
+                                                        <span class="amount cart-product-price">$0.00</span>
                                                     </td>
                                                     <td style="width: 230px;" id="cart-size">
-                                                        <select asp-for="@Model.ProductSizeIds" class="nice-select wide border-bottom-0 rounded-0 cart-nice-select">
+                                                        <select style="margin-left: auto; margin-right: auto;" asp-for="@Model.ProductSizeIds" class="form-select w-75 border-bottom-0 rounded-0 cart-nice-select">
 
+                                                            <option selected disabled>Choose size</option>
                                                             @foreach (var size in item.ProductSizeToProducts)
                                                             {
 
                                                                 if (size.Quantity > 0)
                                                                 {
-                                                                    <option value="@size.Id">@size.ProductSize.Size</option>
+                                                                    <option class="select-opt-prc" data-prc="@size.Price" value="@size.Id">@size.ProductSize.Size</option>
                                                                 }
                                                                 else if (size.Quantity == 0)
                                                                 {
-                                                                    <option disabled value="@size.Id">@size.ProductSize.Size</option>
+                                                                    <option class="select-opt-prc" data-prc="@size.Price" disabled value="@size.Id">@size.ProductSize.Size</option>
                                                                 }
-
 
                                                             }
                                                         </select>
-                                                        @{
-                                                            foreach (var s in item.ProductSizeToProducts)
-                                                            {
-                                                                <input class="cart-price" type="hidden" value="@s.Price" />
-                                                                <input class="cart-price-product-id" type="hidden" value="@item.Id" />
-                                                            }
-                                                        }
                                                     </td>
                                                     <td class="quantity">
                                                         <div class="cart-action" style="display: inline;">
                                                             <input asp-for="@Model.ProductCounts" class="cart-action-box @("cart-action-box"+item.Id)" value="1" type="text">
-                                                            <div class="minus quantity-btn @("minus"+item.Id)">
+                                                            <div class="cart-minus2 minus quantity-btn">
                                                                 <i class="fa fa-minus"></i>
                                                             </div>
-                                                            <div class="plus quantity-btn @("plus"+item.Id)">
+                                                            <div class="cart-plus2 plus quantity-btn">
                                                                 <i class="fa fa-plus"></i>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="product-subtotal cart-product-sub-total">
-                                                        <span class="amount @("cart-product-subtotal"+item.Id)">$23.45</span>
+                                                    <td class="product-subtotal cart-product-sub-total" style=" width: 150px;">
+                                                        <span class="amount-cart2 amount @("cart-product-subtotal"+item.Id)">$0.00</span>
                                                         <input type="hidden" value="@item.Id" />
                                                     </td>
                                                 </tr>
                                             }
-                                            <input id="cartProductCount" type="hidden" value="@Model.Products.Count" />
                                         }
                                     </tbody>
                                 </table>
@@ -117,16 +149,18 @@
                             <div class="row justify-content-end">
                                 <div class="col-md-5 ml-auto">
                                     <div class="cart-page-total">
-                                        <h2>Cart totals</h2>
+                                        <h2 class="text-end">Cart totals</h2>
                                         <ul>
-                                            <li>Subtotal <span>$79.35</span></li>
-                                            <li>Total <span>$79.35</span></li>
+                                            <li>Subtotal <span class="subTotalEnd2">$0.00</span></li>
+                                            <li>Total <span class="totalEnd2">$0.00</span></li>
                                         </ul>
-                                        <button type="submit" >Proceed to checkout</button>
+                                        <button class="btn mt-4 btn-dark" type="submit">Proceed to checkout</button>
                                     </div>
                                 </div>
                             </div>
                         </form>
+
+                        <input id="cartProductCount" type="hidden" value="@Model.Products.Count" />
                     }
                     else
                     {

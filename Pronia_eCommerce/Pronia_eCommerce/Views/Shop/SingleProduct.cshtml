@@ -1,4 +1,25 @@
 ﻿@model VmProduct
+<!-- #region Breadcrump Area -->
+<section id="breadcrump">
+    <div class="breadcrumb-wrapper" style="background-image: url('/img/bg-image/@Model.Banner.BgImage');">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content">
+                        <h2 class="breadcrumb-page">Shop</h2>
+                        <ul>
+                            <li>
+                                <a asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li>@Model.Banner.Title</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- #endregion Breadcrump Area End -->
 <!-- #region Single Product -->
 <div class="single-product-full pt-100">
     <div class="container">
@@ -72,33 +93,24 @@
                         <div class="rating">
                             <ul>
                                 <li>
-                                    <i class="fa fa-star fa-star2 @("fastar"+Model.SingleProduct.Id)">
-                                        <input type="hidden" value="1" />
-                                        <input type="hidden" value="@Model.SingleProduct.Id" />
+                                    <i data-tippy="1 Star" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="1" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"")  fa fa-star fastar @("hvr-"+Model.SingleProduct.Id)">
                                     </i>
                                 </li>
                                 <li>
-                                    <i class="fa fa-star fa-star2 @("fastar"+Model.SingleProduct.Id)">
-                                        <input type="hidden" value="2" />
-                                        <input type="hidden" value="@Model.SingleProduct.Id" />
+                                    <i data-tippy="2 Stars" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="2" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"")  fa fa-star fastar @("hvr-"+Model.SingleProduct.Id)">
                                     </i>
                                 </li>
                                 <li>
-                                    <i class="fa fa-star fa-star2 @("fastar"+Model.SingleProduct.Id)">
-                                        <input type="hidden" value="3" />
-                                        <input type="hidden" value="@Model.SingleProduct.Id" />
+                                    <i data-tippy="3 Stars" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="3" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"")  fa fa-star fastar @("hvr-"+Model.SingleProduct.Id)">
                                     </i>
                                 </li>
                                 <li>
-                                    <i class="fa fa-star fa-star2 @("fastar"+Model.SingleProduct.Id)">
-                                        <input type="hidden" value="4" />
-                                        <input type="hidden" value="@Model.SingleProduct.Id" />
+                                    <i data-tippy="4 Stars" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="4" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"")  fa fa-star fastar @("hvr-"+Model.SingleProduct.Id)">
                                     </i>
                                 </li>
                                 <li>
-                                    <i class="fa fa-star fa-star2 @("fastar"+Model.SingleProduct.Id)">
-                                        <input type="hidden" value="5" />
-                                        <input type="hidden" value="@Model.SingleProduct.Id" />
+                                    <i data-tippy="5 Stars" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="5" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"")  fa fa-star fastar @("hvr-"+Model.SingleProduct.Id)">
+
                                     </i>
                                 </li>
                             </ul>
@@ -182,11 +194,11 @@
                         @Model.SingleProduct.ShortDesc
                     </p>
                     <ul class="single-product-action">
-                       
+
                         <li class="favourite fc">
                             <a class="btn-fc" id="addToWishlist_ProductDetail" href="#">
                                 <i class="fal fa-heart @(Model.Favourite!=null? (Model.Favourite.Any(f=>f==(Model.SingleProduct.Id).ToString())?"added-to-wishlist_ProductDetail":""):"")"></i>
-                                
+
                             </a>
                         </li>
 
@@ -620,3 +632,34 @@
 </div>
 <!-- #endregion Related Products End -->
 <input id="singleProductId" type="hidden" value="@Model.SingleProduct.Id" />
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="height: 100% !important; display: flex !important; flex-direction: column !important; justify-content: center !important; margin: auto !important; ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form>
+                <div class="modal-body row">
+                    <div class="mb-3 col-lg-6">
+                        <label for="recipient-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3 col-lg-6">
+                        <label for="recipient-surname" class="col-form-label">Surname:</label>
+                        <input type="text" class="form-control" id="recipient-surname">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-email" class="col-form-label">Email:</label>
+                        <input type="email" class="form-control" id="message-email">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="mdoalrat1" type="submit" class="btn btn-primary">Send message</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

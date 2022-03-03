@@ -91,10 +91,19 @@
                                             <i class="fal fa-user-friends"></i>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="settingButton">
-                                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">My account</a></li>
-                                            <li>
-                                                <a class="dropdown-item" asp-controller="Account" asp-action="Index">Login | Register</a>
-                                            </li>
+                                            @{
+                                                if (User.Identity.IsAuthenticated)
+                                                {
+                                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">My account</a></li>
+                                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li>
+                                                        <a class="dropdown-item" asp-controller="Account" asp-action="Index">Login | Register</a>
+                                                    </li>
+                                                }
+                                            }
                                         </ul>
                                     </li>
                                     <li class="d-none d-lg-block">
@@ -131,7 +140,6 @@
                                     <li><a asp-controller="Shop" asp-action="Index">SHOP</a></li>
                                     <li><a asp-controller="Blog" asp-action="Index">BLOG</a></li>
                                     <li><a asp-controller="About" asp-action="Index">ABOUT US</a></li>
-                                    <li><a asp-controller="Account" asp-action="Profile">PAGES</a></li>
                                     <li><a asp-controller="Contact" asp-action="Index">CONTACT US</a></li>
                                 </ul>
                             </div>
@@ -167,9 +175,6 @@
                                         <li>
                                             <a asp-controller="About" asp-action="Index">About Us</a>
                                         </li>
-                                        <li class="drop-holder">
-                                            <a href="#">Pages</a>
-                                        </li>
                                         <li>
                                             <a asp-controller="Contact" asp-action="Index">Contact Us</a>
                                         </li>
@@ -190,10 +195,19 @@
                                             <i class="fal fa-user-friends"></i>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="settingButton">
-                                            <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">My account</a></li>
-                                            <li>
-                                                <a class="dropdown-item" asp-controller="Account" asp-action="Index">Login | Register</a>
-                                            </li>
+                                            @{
+                                                if (User.Identity.IsAuthenticated)
+                                                {
+                                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">My account</a></li>
+                                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li>
+                                                        <a class="dropdown-item" asp-controller="Account" asp-action="Index">Login | Register</a>
+                                                    </li>
+                                                }
+                                            }
                                         </ul>
                                     </li>
                                     <li class="d-none d-lg-block">
@@ -321,9 +335,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="modal-search">
-                            <span class="searchbox-info">Start typing and press Enter to search or ESC to close</span>
-                            <form action="#" class="hm-searchbox">
-                                <input type="text" name="Search..." value="Search..." onblur="if(this.value==''){this.value='Search...'}" onfocus="if(this.value=='Search...'){this.value=''}" autocomplete="off">
+                            <span class="searchbox-info">Start typing product name and press Enter</span>
+                            <form asp-controller="Shop" asp-action="Index" class="hm-searchbox">
+                                <input type="text" name="SearchData" value="Search..." onblur="if(this.value==''){this.value='Search...'}" onfocus="if(this.value=='Search...'){this.value=''}" autocomplete="off">
                                 <button class="search-btn" type="submit" aria-label="searchbtn">
                                     <i class="fal fa-search"></i>
                                 </button>
@@ -335,10 +349,6 @@
         </div>
     </header>
     <main class="full-main">
-        @*@if (controllerName.ToUpper() != "HOME")
-            {
-
-            }*@
         @RenderBody()
     </main>
     <footer>

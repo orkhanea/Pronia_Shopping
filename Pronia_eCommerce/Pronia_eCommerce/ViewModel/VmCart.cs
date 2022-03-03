@@ -13,6 +13,7 @@ namespace Pronia_eCommerce.ViewModel
         public List<int> ProductSizeIds { get; set; }
         public List<int> ProductCounts { get; set; }
 
+        public Banner Banner { get; set; }
 
 
     }

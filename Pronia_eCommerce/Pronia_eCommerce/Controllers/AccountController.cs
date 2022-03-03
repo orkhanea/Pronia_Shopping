@@ -50,6 +50,7 @@ namespace Pronia_eCommerce.Controllers
             model.Setting = _context.Setting.FirstOrDefault();
             model.SiteSocial = _context.SiteSocials.ToList();
             model.Countries = _context.Countries.ToList();
+            model.Banner = _context.Banners.FirstOrDefault(p => p.Page == "Login");
 
             return View(model);
         }
@@ -511,7 +512,6 @@ namespace Pronia_eCommerce.Controllers
 
             return RedirectToAction("Profile");
         }
-
 
         public IActionResult AccessDenied()
         {

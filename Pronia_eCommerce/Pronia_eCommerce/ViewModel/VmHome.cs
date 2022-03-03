@@ -12,5 +12,9 @@ namespace Pronia_eCommerce.ViewModel
         public List<CollectionL> CollectionL { get; set; }
         public List<CollectionS> CollectionS { get; set; }
         public List<Blog> LatestBlogs { get; set; }
+        public List<Product> LatestProducts { get; set; }
+        public List<Product> RatingProducts { get; set; }
+        public List<Product> Products { get; set; }
+        public List<string> Favourite { get; set; }
     }
 }

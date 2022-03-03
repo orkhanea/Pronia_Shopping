@@ -265,7 +265,7 @@ $(document).ready(function()
             });
         }
 
-    // #endregion Sliders End\\
+        // #endregion Sliders End\\
 
     // #region To Top \\
 
@@ -378,32 +378,33 @@ $(document).ready(function()
     
     // #region Product Count Select \\
 
-        if (document.querySelector(".product-detail-modal-ajax") != undefined) {
+        //if (document.querySelector(".product-detail-modal-ajax") != undefined) {
 
 
-        let inputQty = document.querySelectorAll(".cart-action-box");
-        let plusBtn = document.querySelectorAll(".cart-action .plus");
-        let minusBtn = document.querySelectorAll(".cart-action .minus");
-        let qty = 1;
-        for (let i = 0; i < plusBtn.length; i++) {
+        //    let inputQty = document.querySelectorAll(".cart-action-box");
+        //    let plusBtn = document.querySelectorAll(".cart-action .plus");
+        //    let minusBtn = document.querySelectorAll(".cart-action .minus");
+        //    let qty = 1;
+        //    for (let i = 0; i < plusBtn.length; i++) {
 
-            plusBtn[i].addEventListener("click", function () {
-            if (qty>=1&&qty<5) {
-                inputQty[i].value = qty+1;
-                qty+=1; 
-            }
-            });
-            minusBtn[i].addEventListener("click", function(){
-                if (qty>1&&qty<=5) {
-                    inputQty[i].value=qty-1;
-                    qty-=1; 
-                }
-            });
+        //        plusBtn[i].addEventListener("click", function () {
+        //        if (qty>=1&&qty<5) {
+        //            inputQty[i].value = qty+1;
+        //            qty+=1; 
+        //        }
+        //        });
 
-        };
+        //        minusBtn[i].addEventListener("click", function () {
+        //            if (qty>1&&qty<=5) {
+        //                inputQty[i].value=qty-1;
+        //                qty-=1; 
+        //            }
+        //        });
+
+        //    };
 
 
-    }
+        //}
 
     // #endregion Product Count Select End \\
 
@@ -467,67 +468,66 @@ $(document).ready(function()
 
     }
     if (document.querySelector(".cart-full-checker") != undefined) {
-        let cartSizeOpt = document.querySelectorAll("#cart-size .cart-nice-select ul li");
+        let cartSizeOpt = $(".cart-nice-select");
         let cartPrice = document.querySelectorAll(".cart-price");
         let cartProductId = document.querySelectorAll(".cart-price-product-id");
         let cartProductCount = document.getElementById("cartProductCount").value;
         let cartSubtotalPrId = document.querySelectorAll(".cart-product-sub-total input");
+
         
 
-        for (let s = 0; s < cartSizeOpt.length; s++) {
+        cartSizeOpt.change(function () {
 
-            cartSizeOpt[s].addEventListener("click", function () {
-                let productPrice = document.querySelector(`.cart-product-price${cartProductId[s].value}`);
-                productPrice.innerText = cartPrice[s].value
-                total();
-            })
+            let mn = $(this);
 
-        }
+            for (let t = 0; t < mn.children().length; t++) {
 
+                if (+$(this).val() == mn.children()[t].value) {
+                    $(this).parents("tr").children(".product-price").children(".cart-product-price")[0].textContent = "$" + mn.children()[t].attributes[1].value;
+                    $(this).parent().siblings()[5].children[0].textContent ="$"+(+$(this).parent().next()[0].children[0].children[0].value * +($(this).parents("tr").children(".product-price").children(".cart-product-price")[0].textContent.substring(1))).toFixed(2);
+                }
 
-        let total = function endtotal() {
-            for (let q = 0; q < cartProductCount; q++) {
-
-                let price2 = document.querySelector(`.cart-product-price${cartSubtotalPrId[q].value}`);
-                let cartActionBox = document.querySelector(`.cart-action-box${cartSubtotalPrId[q].value}`).value
-                let cps = document.querySelector(`.cart-product-subtotal${cartSubtotalPrId[q].value}`)
-                let endTotal = (+cartActionBox) * (+price2.innerText)
-                cps.innerText = endTotal.toFixed(2);       
             }
 
+            sbttl();
+        })
+
+        for (let l = 0; l < $(".cart-nice-select").length; l++) {
+
+            $(".cart-nice-select")[l].removeAttribute("multiple");
+
         }
 
-        total();
-        for (let m2 = 0; m2 < cartProductCount; m2++) {
-            let qty2 = 1;
-            document.querySelector(`.minus${cartSubtotalPrId[m2].value}`).addEventListener("click", function (e) {
-                e.preventDefault()
-                if (qty2 > 1 && qty2 <= 5) {
-                    document.querySelector(`.cart-action-box${cartSubtotalPrId[m2].value}`).value = qty2 - 1;
-                    qty2 -= 1;
-                }
-                total();
+        $(".cart-minus2").click(function (e) {
 
-            })
-            document.querySelector(`.plus${cartSubtotalPrId[m2].value}`).addEventListener("click", function (e) {
-                e.preventDefault()
+            e.preventDefault()
+            if ($(this).prev("input").val() > 1 && $(this).prev("input").val() <= 5) {
+                $(this).prev("input").val($(this).prev("input").val() - 1);
+            }
 
-                if (qty2 >= 1 && qty2 < 5) {
-                    document.querySelector(`.cart-action-box${cartSubtotalPrId[m2].value}`).value = qty2 + 1;
-                    qty2 += 1;
-                }
+            $(this).parents()[2].children[6].children[0].textContent ="$"+ (+$(this).prev("input").val() * +($(this).parents()[2].children[3].children[0].textContent).substring(1)).toFixed(2);
+            sbttl();
 
-                total();
-            })
-        }
+        })
+
+        $(".cart-plus2").click(function (e) {
+
+            e.preventDefault()
+            let input = $(this).prevAll()[1];
+            if (input.value >= 1 && input.value < 5) {
+                input.value = +input.value + 1;
+            }
+
+            $(this).parents()[2].children[6].children[0].textContent = "$" + (+$(this).parent()[0].children[0].value * +($(this).parents()[2].children[3].children[0].textContent).substring(1)).toFixed(2);
+            sbttl();
+
+        })
 
     }
-    
     let cartMenuFull2 = document.getElementById("cart-menu-full");
     let cartMenuContent2 = document.getElementById("cart-menu-content");
     let cartMenuList2 = document.getElementById("cart-menu-list");
     let cartTotalAmount2 = document.getElementById("cart-total-amount");
-
 
     let cartClear = function () {
 
@@ -667,93 +667,6 @@ $(document).ready(function()
         })
     }
 
-
-    let allStr = document.querySelectorAll(".rating-wrap .rating ul li .fa-star")
-    if (allStr != null) {
-        for (let astr = 0; astr < allStr.length; astr++) {
-
-            allStr[astr].addEventListener("mouseover", function () {
-
-                if (astr == 0) {
-                    for (let astr2 = 0; astr2 <= astr; astr2++) {
-                        allStr[astr2].style.fontWeight = "900";
-
-                    }
-                }
-                else if (astr == 1) {
-                    for (let astr2 = 0; astr2 <= astr; astr2++) {
-                        allStr[astr2].style.fontWeight = "900";
-
-                    }
-                }
-                else if (astr == 2) {
-                    for (let astr2 = 0; astr2 <= astr; astr2++) {
-                        allStr[astr2].style.fontWeight = "900";
-
-                    }
-                }
-                else if (astr == 3) {
-                    for (let astr2 = 0; astr2 <= astr; astr2++) {
-                        allStr[astr2].style.fontWeight = "900";
-
-                    }
-                }
-                else if (astr == 4) {
-                    for (let astr2 = 0; astr2 <= astr; astr2++) {
-                        allStr[astr2].style.fontWeight = "900";
-
-                    }
-                }
-
-            })
-
-        }
-
-        for (let astre = allStr.length - 1; astre >= 0; astre--) {
-
-            allStr[astre].addEventListener("mouseleave", function () {
-
-                if (astre == 0) {
-                    for (let astr2 = astre; astr2 >= 0; astr2--) {
-                        allStr[astr2].style.fontWeight = "100";
-
-                    }
-                }
-                else if (astre == 1) {
-                    for (let astr2 = astre; astr2 >= 0; astr2--) {
-                        allStr[astr2].style.fontWeight = "100";
-
-                    }
-                }
-                else if (astre == 2) {
-                    for (let astr2 = astre; astr2 >= 0; astr2--) {
-                        allStr[astr2].style.fontWeight = "100";
-
-                    }
-                }
-                else if (astre == 3) {
-                    for (let astr2 = astre; astr2 >= 0; astr2--) {
-                        allStr[astr2].style.fontWeight = "100";
-
-                    }
-                }
-                else if (astre == 4) {
-                    for (let astr2 = astre; astr2 >= 0; astr2--) {
-                        allStr[astr2].style.fontWeight = "100";
-
-                    }
-
-                }
-
-
-
-
-
-            })
-
-        }
-    }
-
     let StarFunc = function (AllTheStars) {
 
         let allStr = AllTheStars;
@@ -764,31 +677,31 @@ $(document).ready(function()
 
                     if (astr == 0) {
                         for (let astr2 = 0; astr2 <= astr; astr2++) {
-                            allStr[astr2].style.fontWeight = "900";
+                            allStr[astr2].children[0].style.fontWeight = "900";
 
                         }
                     }
                     else if (astr == 1) {
                         for (let astr2 = 0; astr2 <= astr; astr2++) {
-                            allStr[astr2].style.fontWeight = "900";
+                            allStr[astr2].children[0].style.fontWeight = "900";
 
                         }
                     }
                     else if (astr == 2) {
                         for (let astr2 = 0; astr2 <= astr; astr2++) {
-                            allStr[astr2].style.fontWeight = "900";
+                            allStr[astr2].children[0].style.fontWeight = "900";
 
                         }
                     }
                     else if (astr == 3) {
                         for (let astr2 = 0; astr2 <= astr; astr2++) {
-                            allStr[astr2].style.fontWeight = "900";
+                            allStr[astr2].children[0].style.fontWeight = "900";
 
                         }
                     }
                     else if (astr == 4) {
                         for (let astr2 = 0; astr2 <= astr; astr2++) {
-                            allStr[astr2].style.fontWeight = "900";
+                            allStr[astr2].children[0].style.fontWeight = "900";
 
                         }
                     }
@@ -803,31 +716,31 @@ $(document).ready(function()
 
                     if (astre == 0) {
                         for (let astr2 = astre; astr2 >= 0; astr2--) {
-                            allStr[astr2].style.fontWeight = "100";
+                            allStr[astr2].children[0].style.fontWeight = "100";
 
                         }
                     }
                     else if (astre == 1) {
                         for (let astr2 = astre; astr2 >= 0; astr2--) {
-                            allStr[astr2].style.fontWeight = "100";
+                            allStr[astr2].children[0].style.fontWeight = "100";
 
                         }
                     }
                     else if (astre == 2) {
                         for (let astr2 = astre; astr2 >= 0; astr2--) {
-                            allStr[astr2].style.fontWeight = "100";
+                            allStr[astr2].children[0].style.fontWeight = "100";
 
                         }
                     }
                     else if (astre == 3) {
                         for (let astr2 = astre; astr2 >= 0; astr2--) {
-                            allStr[astr2].style.fontWeight = "100";
+                            allStr[astr2].children[0].style.fontWeight = "100";
 
                         }
                     }
                     else if (astre == 4) {
                         for (let astr2 = astre; astr2 >= 0; astr2--) {
-                            allStr[astr2].style.fontWeight = "100";
+                            allStr[astr2].children[0].style.fontWeight = "100";
 
                         }
 
@@ -844,16 +757,16 @@ $(document).ready(function()
 
     }
 
-    let shopPId = document.querySelectorAll(".prHiddenId");
-
-    let starReviews = function (userIp, singleProductId, ratingValue) {
+    let starReviews = function (userEmail, userSurname, userName, singleProductId, ratingValue) {
 
         $.ajax({
             url: location.origin + "/Shop/ReviewPost",
             type: "get",
             dataType: "json",
             data: {
-                userIp: userIp,
+                userName: userName,
+                userSurname: userSurname,
+                userEmail: userEmail,
                 productId: String(singleProductId),
                 ratingValue: ratingValue
             },
@@ -861,7 +774,7 @@ $(document).ready(function()
                 if (response.success != null) {
 
                     swal("Good job!", `Thanks for taking the time to leave us a ${ratingValue} star rating `, "success");
-                    GetAllStars();
+                    //GetAllStars();
                     let rval2 = response.products["$values"][0].ratings["$values"];
                     for (let rs = 0; rs < rval2.length; rs++) {
                         let fiveS = 0;
@@ -902,8 +815,13 @@ $(document).ready(function()
                 }
                 else if (response.changed != null) {
 
+
+
+                    console.log(ratingValue);
+
+
                     swal("Changed!", `Thanks for taking the time to leave us a ${ratingValue} star rating `, "success");
-                    GetAllStars()
+                    //GetAllStars()
                     let rval2 = response.products["$values"][0].ratings["$values"];
                     for (let rs = 0; rs < rval2.length; rs++) {
                         let fiveS = 0;
@@ -957,161 +875,70 @@ $(document).ready(function()
 
     }
 
-    for (let spid = 0; spid < shopPId.length; spid++) {
+    var shopSI = $(`.product-full .product-item .product-content .rating-box ul li .fastar`);
 
-        let shopSI = $(`.product-full .product-item .product-content .rating-box ul li .fastar${shopPId[spid].value}`);
+    if ($(".single-product-full").length > 0) {
 
-        shopSI.mouseover(function () {
-
-            StarFunc(shopSI);
-        });
-
-
-        for (let ssi = 0; ssi < shopSI.length; ssi++) {
-
-            shopSI[ssi].addEventListener("click", function () {
-
-                console.log(shopSI[ssi].firstElementChild.value)
-                console.log(shopSI[ssi].firstElementChild.nextElementSibling.value)
-
-                $.getJSON("https://api.ipify.org?format=json", function (data) {
-
-                    let userIpPD = data.ip;
-                    let ratingValuePD = String(shopSI[ssi].firstElementChild.value);
-                    let singleProductIdPD = shopSI[ssi].firstElementChild.nextElementSibling.value;
-
-                    starReviews(userIpPD, singleProductIdPD, ratingValuePD);
-
-                })
-
-
-
-
-            })
-
-
-        }
-
+        shopSI = $(".single-product-full .product-info .rating-box1 .fastar");
     }
 
-    if ($(".fa-star2").length>0) {
+    let isEmailTrue = function isEmail(email) {
+        return /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i.test(email);
+    }
 
-        let shopSISing = document.querySelectorAll(".full-main .product-info .rating-wrap .rating ul li .fa-star2");
+    var b;
+    var a;
 
+    shopSI.click(function () {
 
-        for (let ssi = 0; ssi < shopSISing.length; ssi++) {
+        let ratingValuePD = $(this).data().rv;
+        let singleProductIdPD = $(this).data().pd;
 
-            shopSISing[ssi].addEventListener("click", function () {
+        b = ratingValuePD;
+        a = singleProductIdPD;
+       
 
-                console.log(shopSISing[ssi].firstElementChild.value)
-                console.log(shopSISing[ssi].firstElementChild.nextElementSibling.value)
+    })
 
-                $.getJSON("https://api.ipify.org?format=json", function (data) {
+    shopSI.mouseover(function () {
 
-                    let userIpPD = data.ip;
-                    let ratingValuePD = String(shopSISing[ssi].firstElementChild.value);
-                    let singleProductIdPD = shopSISing[ssi].firstElementChild.nextElementSibling.value;
-
-                    starReviews(userIpPD, singleProductIdPD, ratingValuePD);
-
-                })
-
-
-
-
-            })
-
-
-        }
+        StarFunc($(this).parentsUntil(".rating-box")[1].children);
         
+    })
 
-    }
+    $("#mdoalrat1").click(function (e) {
 
-    if ($("#modal-cls-btn2").length>0) {
+        e.preventDefault();
 
-        $("#modal-cls-btn2").click(function () {
+        var userName = $("#recipient-name").val();
+        var userSurname = $("#recipient-surname").val();
+        var userEmail = $("#message-email").val();
 
-            GetAllStars();
+        if (isEmailTrue(userEmail)) {
+
+            starReviews(userEmail, userSurname, userName, a, b);
+
+            console.log(userEmail, userSurname, userName, a, b)
+
+        }
+        else {
+
+            swal("Oops", "Please enter valid Email adress", "error");
+        }
+
+        $("#exampleModal2 .btn-close").click()
+
+    })
+
+    if ($(".user-enable").length>0) {
+
+        $(".user-enable").click(function () {
+
+            starReviews("user", "user", "user", a, b);
 
         })
 
     }
-
-    let GetAllStars = function () {
-
-
-        $.getJSON("https://api.ipify.org?format=json", function (data) {
-
-            let userIpPDF = data.ip;
-
-            $.ajax({
-                url: location.origin + "/Shop/RefreshRating",
-                type: "get",
-                dataType: "json",
-                data: {
-                    userIp: userIpPDF,
-                },
-                success: function (response) {
-
-                    
-
-                    let rSC = response.starsCounts["$values"];
-                    let proId = response.starsCounts["$values"];
-                    let proStr = response.starsCounts["$values"];
-                    
-                    if ($(".rating-box1").length>0) {
-                        for (let rb = 0; rb < rSC.length; rb++) {
-
-                            let rBoxes = $(`.rating-box-${rSC[rb].productId}`);
-                            let rBoxesI = $(`.rating-box-${rSC[rb].productId} i`);
-
-                            if ($(`.rating-box-${rSC[rb].productId}`).length>0) {
-
-
-                                for (let i = 0; i < 5; i++) {
-
-                                    rBoxesI[i].classList.remove("fw");
-
-                                }
-
-                                for (let i = 0; i < proStr[rb].star; i++) {
-
-                                    rBoxesI[i].classList.add("fw");
-
-                                }
-
-
-                            }
-
-                            
-
-                        }
-
-                    }
-
-
-                },
-                error: function (error) {
-                    console.log(error);
-                },
-                complete: function () {
-
-                }
-            });
-
-
-
-        })
-
-        
-
-
-
-    }
-
-
-    GetAllStars();
-
 
     if ($("#profileIsCreated").length>0) {
 
@@ -1125,6 +952,12 @@ $(document).ready(function()
 
     }
 
+    if ($("#PaymentSuccessAlert").length > 0) {
+
+        swal("Perfect!!", `Thank you for choosing us! Please check your Email`, "success");
+
+    }
+    
     if ($("#ResetSuccess").length > 0) {
 
         swal("Success!", `Your password has been changed successfully!`, "success");
@@ -1142,7 +975,89 @@ $(document).ready(function()
         swal("Oops!", `You dont have permission to use this account like End User!`, "error");
 
     }
+
+    let sbttl = function () {
+
+        var tl = 0;
+        let a = $(".amount-cart2");
+        for (let t = 0; t < a.length; t++) {
+
+            tl += +(a[t].textContent.substring(1))
+            a[t].textContent
+
+        }
+
+        $(".subTotalEnd2")[0].textContent = "$" + tl.toFixed(2);
+        $(".totalEnd2")[0].textContent = "$" + tl.toFixed(2);
+
+    }
     
+    if ($(".amount-cart2").length > 0) {
+
+        sbttl();
+    }
+
+    $(".btn-newsletter2").click(function (e) {
+
+        e.preventDefault();
+
+        let usrMail = $("#hgjhg").val();
+
+        if (isEmailTrue(usrMail)) {
+            console.log(usrMail)
+            $.ajax({
+                url: location.origin + "/About/Subscribe",
+                type: "get",
+                dataType: "json",
+                data: {
+                    email: usrMail
+                },
+                success: function (response) {
+
+                    console.log(response)
+
+                    if (response.success != null) {
+
+                        swal("Good Job!", `${response.success}`, "success");
+                        $("#hgjhg")[0].value = "";
+                        $("#hgjhg").attr("placeholder", "Enter Your Email")
+                    }
+                    else if (response.changed != null) {
+
+                        swal("Hmm!", `${response.changed}`, "info");
+                        $("#hgjhg")[0].value = "";
+                        $("#hgjhg").attr("placeholder", "Enter Your Email")
+
+
+                    }
+
+                    
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+                complete: function () {
+
+                }
+            });
+
+        } else {
+
+            $("#hgjhg")[0].value = "";
+            $("#hgjhg").attr("placeholder", "Enter Your Email")
+
+        }
+
+        
+
+
+
+    })
+
+
+
+
+
 
 
 });

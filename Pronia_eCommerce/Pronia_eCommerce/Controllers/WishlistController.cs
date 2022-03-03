@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pronia_eCommerce.Data;
 using Pronia_eCommerce.Models;
@@ -13,10 +14,12 @@ namespace Pronia_eCommerce.Controllers
     public class WishlistController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public WishlistController(AppDbContext context)
+        public WishlistController(AppDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -28,40 +31,87 @@ namespace Pronia_eCommerce.Controllers
                 }
             }
 
-            string oldData = Request.Cookies["favourites"];
-
-            if (!string.IsNullOrEmpty(oldData))
+            if (User.Identity.IsAuthenticated)
             {
-                var favourite = oldData.Split("-").ToList();
+                string oldData = _context.EndUsers.Find(_userManager.GetUserId(User)).UserFavourite;
 
-
-                List<Product> _restourants = new();
-                foreach (var f in favourite)
+                if (!string.IsNullOrEmpty(oldData))
                 {
-                    if (_context.Products.Find(Int32.Parse(f))!=null)
+                    var favourite = oldData.Split("-").ToList();
+
+
+                    List<Product> _restourants = new();
+                    foreach (var f in favourite)
                     {
-                        _restourants.Add(_context.Products.Include(p=>p.ProductImages).Include(p=>p.ProductSizeToProducts).ThenInclude(ps=>ps.ProductSize).FirstOrDefault(p=>p.Id== Int32.Parse(f)));
+                        if (_context.Products.Find(Int32.Parse(f)) != null)
+                        {
+                            _restourants.Add(_context.Products.Include(p => p.ProductImages).Include(p => p.ProductSizeToProducts).ThenInclude(ps => ps.ProductSize).FirstOrDefault(p => p.Id == Int32.Parse(f)));
+                        }
+
                     }
-                    
-                }
-                VmWishlist model = new();
-                model.Setting = _context.Setting.FirstOrDefault();
-                model.SiteSocial = _context.SiteSocials.ToList();
-                if (_restourants.Count>0)
-                {
-                    model.Products = _restourants;
+                    VmWishlist model = new();
+                    model.Setting = _context.Setting.FirstOrDefault();
+                    model.SiteSocial = _context.SiteSocials.ToList();
+                    model.Banner = _context.Banners.FirstOrDefault(p => p.Page == "Wishlist");
+                    if (_restourants.Count > 0)
+                    {
+                        model.Products = _restourants;
+                        return View(model);
+                    }
                     return View(model);
                 }
-                return View(model);
+                else
+                {
+                    VmWishlist model = new();
+                    model.Setting = _context.Setting.FirstOrDefault();
+                    model.SiteSocial = _context.SiteSocials.ToList();
+                    model.Banner = _context.Banners.FirstOrDefault(p => p.Page == "Wishlist");
+
+                    return View(model);
+                }
+
             }
             else
             {
-                VmWishlist model = new();
-                model.Setting = _context.Setting.FirstOrDefault();
-                model.SiteSocial = _context.SiteSocials.ToList();
+                string oldData = Request.Cookies["favourites"];
 
-                return View(model);
+                if (!string.IsNullOrEmpty(oldData))
+                {
+                    var favourite = oldData.Split("-").ToList();
+
+
+                    List<Product> _restourants = new();
+                    foreach (var f in favourite)
+                    {
+                        if (_context.Products.Find(Int32.Parse(f)) != null)
+                        {
+                            _restourants.Add(_context.Products.Include(p => p.ProductImages).Include(p => p.ProductSizeToProducts).ThenInclude(ps => ps.ProductSize).FirstOrDefault(p => p.Id == Int32.Parse(f)));
+                        }
+
+                    }
+                    VmWishlist model = new();
+                    model.Setting = _context.Setting.FirstOrDefault();
+                    model.SiteSocial = _context.SiteSocials.ToList();
+                    model.Banner = _context.Banners.FirstOrDefault(p => p.Page == "Wishlist");
+                    if (_restourants.Count > 0)
+                    {
+                        model.Products = _restourants;
+                        return View(model);
+                    }
+                    return View(model);
+                }
+                else
+                {
+                    VmWishlist model = new();
+                    model.Setting = _context.Setting.FirstOrDefault();
+                    model.SiteSocial = _context.SiteSocials.ToList();
+                    model.Banner = _context.Banners.FirstOrDefault(p => p.Page == "Wishlist");
+
+                    return View(model);
+                }
             }
+
+            
         }
     }
 }

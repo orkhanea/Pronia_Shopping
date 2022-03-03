@@ -32,5 +32,7 @@ namespace Pronia_eCommerce.ViewModel
         public int CountryId { get; set; }
 
         public VmLogin VmLogin { get; set; }
+
+        public Banner Banner { get; set; }
     }
 }

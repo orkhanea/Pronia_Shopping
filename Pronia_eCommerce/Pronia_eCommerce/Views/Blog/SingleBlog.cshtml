@@ -36,9 +36,9 @@
                                     <div class="author-date">
                                         <ul>
                                             <li class="author">
-                                                <a href="#">By: Admin</a>
+                                                <a href="#">By: @Model.BlogDetail.SiteUser.Name @Model.BlogDetail.SiteUser.Surname</a>
                                             </li>
-                                            <li class="date">@Model.BlogDetail.CreatedDate.ToString("dd MMMM yyyy")</li>
+                                            <li class="date">@Model.BlogDetail.CreatedDate.ToString("dd MMM yyyy")</li>
                                         </ul>
                                     </div>
                                     <h2 class="single-blog-title">@Model.BlogDetail.Title</h2>

@@ -2,6 +2,27 @@
     ViewData["Title"] = "Shopping Page";
 }
 @model VmProduct
+<!-- #region Breadcrump Area -->
+<section id="breadcrump">
+    <div class="breadcrumb-wrapper" style="background-image: url('/img/bg-image/@Model.Banner.BgImage');">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content">
+                        <h2 class="breadcrumb-page">Shop</h2>
+                        <ul>
+                            <li>
+                                <a asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li>@Model.Banner.Title</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- #endregion Breadcrump Area End -->
 <!-- #region Shop -->
 <section id="shop">
     <div class="shop-page-full pb-100 pt-100">
@@ -38,12 +59,12 @@
                                 <ul class="widgets-category widgets-color">
                                     @foreach (var item in Model.ProductSizes)
                                     {
-                                    <li>
-                                        <a asp-controller="Shop" asp-action="Index" asp-route-SearchSize="@item.Id" class="@(Model.Search.SearchSize==item.Id?"active":"")">
-                                            <i class="fa fa-chevron-right"></i>
-                                            @item.Size
-                                        </a>
-                                    </li>
+                                        <li>
+                                            <a asp-controller="Shop" asp-action="Index" asp-route-SearchSize="@item.Id" class="@(Model.Search.SearchSize==item.Id?"active":"")">
+                                                <i class="fa fa-chevron-right"></i>
+                                                @item.Size
+                                            </a>
+                                        </li>
                                     }
                                 </ul>
                             </div>
@@ -54,7 +75,7 @@
                                         <input id="Tester2" type="text" class="js-range-slider" name="my_range" value="" />
                                         <input id="min-value" type="hidden" asp-for="@Model.Search.minValue" />
                                         <input id="max-value" type="hidden" asp-for="@Model.Search.maxValue" />
-                                        <button id="tester3" type="submit" class="btn btn-sm btn-success filterBtn" >
+                                        <button id="tester3" type="submit" class="btn btn-sm btn-success filterBtn">
                                             Filter
                                         </button>
                                     </form>
@@ -99,16 +120,6 @@
                             <li class="product-count">
                                 <span>@Model.Products.Count</span> Product Found of <span>@ViewBag.ProductCount</span>
                             </li>
-                            <li class="product-sort">
-                                <select class="type-select nice-select">
-                                    <option selected>Sort by Default</option>
-                                    <option value="2">Sort by Popularity</option>
-                                    <option value="3">Sort by Rated</option>
-                                    <option value="True">Sort by Latest</option>
-                                    <option value="5">Sort by High Price</option>
-                                    <option value="6">Sort by Low Price</option>
-                                </select>
-                            </li>
                         </ul>
                     </div>
                     <div class="row">
@@ -116,7 +127,7 @@
                         {
                             <div class="col-md-4 col-sm-6">
                                 <div class="product-full">
-                                    <div class="product-item">
+                                    <div class="product-item countforajax">
                                         <div class="product-item-img">
                                             <a asp-controller="Shop" asp-action="SingleProduct" asp-route-Id="@item.Id">
                                                 @{
@@ -170,33 +181,23 @@
                                             <div class="rating-box rating-box1 @("rating-box-"+item.Id)">
                                                 <ul>
                                                     <li>
-                                                        <i class="fa fa-star @("fastar"+item.Id)">
-                                                            <input type="hidden" value="1" />
-                                                            <input type="hidden" value="@item.Id" />
+                                                        <i data-pd="@item.Id" data-rv="1" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"")  fa fa-star fastar @("hvr-"+item.Id)">
                                                         </i>
                                                     </li>
                                                     <li>
-                                                        <i class="fa fa-star @("fastar"+item.Id)">
-                                                            <input type="hidden" value="2" />
-                                                            <input type="hidden" value="@item.Id" />
+                                                        <i data-pd="@item.Id" data-rv="2" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"") fa fa-star fastar @("hvr-"+item.Id)">
                                                         </i>
                                                     </li>
                                                     <li>
-                                                        <i class="fa fa-star @("fastar"+item.Id)">
-                                                            <input type="hidden" value="3" />
-                                                            <input type="hidden" value="@item.Id" />
+                                                        <i data-pd="@item.Id" data-rv="3" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"") fa fa-star fastar @("hvr-"+item.Id)">
                                                         </i>
                                                     </li>
                                                     <li>
-                                                        <i class="fa fa-star @("fastar"+item.Id)">
-                                                            <input type="hidden" value="4" />
-                                                            <input type="hidden" value="@item.Id" />
+                                                        <i data-pd="@item.Id" data-rv="4" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"") fa fa-star fastar @("hvr-"+item.Id)">
                                                         </i>
                                                     </li>
                                                     <li>
-                                                        <i class="fa fa-star @("fastar"+item.Id)">
-                                                            <input type="hidden" value="5" />
-                                                            <input type="hidden" value="@item.Id" />
+                                                        <i data-pd="@item.Id" data-rv="5" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"") fa fa-star fastar @("hvr-"+item.Id)">
                                                         </i>
                                                     </li>
                                                 </ul>
@@ -205,7 +206,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <input class="prHiddenId" type="hidden" value="@item.Id"/>
                         }
 
                     </div>
@@ -215,7 +215,7 @@
                             <nav>
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item @(ViewBag.Page==1?"disabled":"")">
-                                        <a class="page-link" asp-controller="Shop" asp-action="Index" asp-route-Page="@(ViewBag.Page-1)" asp-route-minValue="@Model.Search.minValue" asp-route-maxValue="@Model.Search.maxValue"  asp-route-SearchTag="@Model.Search.SearchTag" asp-route-SearchCategory="@Model.Search.SearchCategory" asp-route-SearchData="@Model.Search.SearchData" asp-route-SearchSize="@Model.Search.SearchSize" aria-label="Prev">&laquo;</a>
+                                        <a class="page-link" asp-controller="Shop" asp-action="Index" asp-route-Page="@(ViewBag.Page-1)" asp-route-minValue="@Model.Search.minValue" asp-route-maxValue="@Model.Search.maxValue" asp-route-SearchTag="@Model.Search.SearchTag" asp-route-SearchCategory="@Model.Search.SearchCategory" asp-route-SearchData="@Model.Search.SearchData" asp-route-SearchSize="@Model.Search.SearchSize" aria-label="Prev">&laquo;</a>
                                     </li>
                                     @for (int i = 0; i < ViewBag.PageCount; i++)
                                     {
@@ -269,32 +269,8 @@
                                 <span class="new-price" id="modalPrice" style="font-size: 30px !important; color: #abd373 !important;">$23.45</span>
                             </div>
                             <div class="rating-wrap">
-                                <div class="rating">
-                                    <ul>
-                                        <li>
-                                            <i class="fa fa-star modalStarBtn"></i>
-                                            <input type="hidden" value="1" />
-                                        </li>
-                                        <li>
-                                            <i class="fa fa-star modalStarBtn"></i>
-                                            <input type="hidden" value="2" />
-                                        </li>
-                                        <li>
-                                            <i class="fa fa-star modalStarBtn"></i>
-                                            <input type="hidden" value="3" />
-                                        </li>
-                                        <li>
-                                            <i class="fa fa-star modalStarBtn"></i>
-                                            <input type="hidden" value="4" />
-                                        </li>
-                                        <li>
-                                            <i class="fa fa-star modalStarBtn"></i>
-                                            <input type="hidden" value="5" />
-                                        </li>
-                                    </ul>
-                                    <input id="ratValprodId" type="hidden" value="" />
-                                </div>
-                                <div class="review">
+                                <input id="ratValprodId" type="hidden" value="" />
+                                <div class="review" style="padding: 0 !important;">
                                     <a id="rating_value" href="#"></a>
                                 </div>
                             </div>
@@ -345,3 +321,34 @@
     </div>
 </div>
 <!-- #endregion Modal End -->
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="height: 100% !important; display: flex !important; flex-direction: column !important; justify-content: center !important; margin: auto !important; ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form>
+                <div class="modal-body row">
+                    <div class="mb-3 col-lg-6">
+                        <label for="recipient-name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3 col-lg-6">
+                        <label for="recipient-surname" class="col-form-label">Surname:</label>
+                        <input type="text" class="form-control" id="recipient-surname">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-email" class="col-form-label">Email:</label>
+                        <input type="email" class="form-control" id="message-email">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="mdoalrat1" type="submit" class="btn btn-primary">Send message</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

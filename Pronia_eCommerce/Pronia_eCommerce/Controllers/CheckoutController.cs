@@ -113,38 +113,44 @@ namespace Pronia_eCommerce.Controllers
             {
                 if (cart.ProductCounts.Count > 0 && cart.ProductIds.Count > 0 && cart.ProductSizeIds.Count > 0)
                 {
-                    VmSessionObject test = new();
-
-                    for (int i = 0; i < cart.ProductSizeIds.Count; i++)
+                    if (cart.ProductCounts.Count==cart.ProductSizeIds.Count)
                     {
-                        if (_context.ProductSizeToProducts.Find(cart.ProductSizeIds[i]).Quantity >= cart.ProductCounts[i])
+                        VmSessionObject test = new();
+                        List<string> msg2 = new();
+
+                        for (int i = 0; i < cart.ProductSizeIds.Count; i++)
                         {
-                            test.ProductSizeToProductId.Add(cart.ProductSizeIds[i]);
-                            test.ProductCount.Add(cart.ProductCounts[i]);
-                            test.ProductId.Add((cart.ProductIds[i]));
+                            if (_context.ProductSizeToProducts.Find(cart.ProductSizeIds[i]).Quantity >= cart.ProductCounts[i])
+                            {
+                                test.ProductSizeToProductId.Add(cart.ProductSizeIds[i]);
+                                test.ProductCount.Add(cart.ProductCounts[i]);
+                                test.ProductId.Add((cart.ProductIds[i]));
+                            }
+                            else
+                            {
+                                ProductSizeToProduct toProduct = _context.ProductSizeToProducts.Include(ps => ps.Product).Include(ps => ps.ProductSize).FirstOrDefault(ps => ps.Id == cart.ProductSizeIds[i]);
+                                var msg = "Sorry there are only left " + toProduct.Quantity + " unit(s) for the " + toProduct.ProductSize.Size + " size of " + toProduct.Product.Name;
+                                msg2.Add(msg);
+                                test.Messages.Add(msg);
+                            }
                         }
-                        else
+                        if (msg2.Count > 0)
                         {
-                            ProductSizeToProduct toProduct = _context.ProductSizeToProducts.Include(ps => ps.Product).Include(ps => ps.ProductSize).FirstOrDefault(ps => ps.Id == cart.ProductSizeIds[i]);
-
-                            string msg = "Sorry there are only left " + toProduct.Quantity + " unit(s) for the " + toProduct.ProductSize.Size + " size of " + toProduct.Product.Name;
-
-
-                            test.Messages.Add(msg);
+                            HttpContext.Session.SetObject("QuantityError", msg2);
+                            return RedirectToAction("Index", "Cart");
                         }
-
-
-
+                        HttpContext.Session.SetObject("testSession", test);
+                        return RedirectToAction("Indext");
                     }
-
-                    HttpContext.Session.SetObject("testSession", test);
-
-
-                    return RedirectToAction("Indext");
-
+                    else
+                    {
+                        TempData["Errorcart2"] = "Please select a size for each products!";
+                        return RedirectToAction("Index", "Cart");
+                    }
                 }
                 else
                 {
+                    TempData["Errorcart2"] = "Please pick a count for each products!";
                     return RedirectToAction("Index", "Cart");
                 }
             }

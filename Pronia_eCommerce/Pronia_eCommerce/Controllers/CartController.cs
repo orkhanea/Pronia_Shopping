@@ -63,6 +63,7 @@ namespace Pronia_eCommerce.Controllers
                     VmCart model = new();
                     model.Setting = _context.Setting.FirstOrDefault();
                     model.SiteSocial = _context.SiteSocials.ToList();
+                    model.Banner = _context.Banners.FirstOrDefault(p => p.Page == "Cart");
                     if (_products.Count > 0)
                     {
                         model.Products = _products;
@@ -75,12 +76,9 @@ namespace Pronia_eCommerce.Controllers
                     VmCart model = new();
                     model.Setting = _context.Setting.FirstOrDefault();
                     model.SiteSocial = _context.SiteSocials.ToList();
-
+                    model.Banner = _context.Banners.FirstOrDefault(p => p.Page == "Cart");
                     return View(model);
                 }
-
-
-
             }
             else
             {
@@ -103,6 +101,7 @@ namespace Pronia_eCommerce.Controllers
                     VmCart model = new();
                     model.Setting = _context.Setting.FirstOrDefault();
                     model.SiteSocial = _context.SiteSocials.ToList();
+                    model.Banner = _context.Banners.FirstOrDefault(p => p.Page == "Cart");
                     if (_products.Count > 0)
                     {
                         model.Products = _products;
@@ -115,13 +114,11 @@ namespace Pronia_eCommerce.Controllers
                     VmCart model = new();
                     model.Setting = _context.Setting.FirstOrDefault();
                     model.SiteSocial = _context.SiteSocials.ToList();
-
+                    model.Banner = _context.Banners.FirstOrDefault(p => p.Page == "Cart");
                     return View(model);
                 }
             }
-
-            
-
+   
         }
 
         public IActionResult AddToCart(string productId)
@@ -147,6 +144,7 @@ namespace Pronia_eCommerce.Controllers
 
                             string oldData = endUser.UserCart;
                             string newData = null;
+
                             VmResponse response = new();
 
                             if (string.IsNullOrEmpty(oldData))
@@ -420,7 +418,6 @@ namespace Pronia_eCommerce.Controllers
 
             
         }
-
 
     }
 }

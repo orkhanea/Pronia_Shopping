@@ -12,5 +12,7 @@ namespace Pronia_eCommerce.ViewModel
         public Counter Counters { get; set; }
         public About About { get; set; }
         public Banner Banner { get; set; }
+        public Counter Counter { get; set; }
+        public List<SiteUser> OurTeam { get; set; }
     }
 }

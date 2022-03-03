@@ -1,4 +1,25 @@
 ﻿@model VmRegister
+<!-- #region Breadcrump Area -->
+<section id="breadcrump">
+    <div class="breadcrumb-wrapper" style="background-image: url('/img/bg-image/@Model.Banner.BgImage');">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content">
+                        <h2 class="breadcrumb-page">Login & Register</h2>
+                        <ul>
+                            <li>
+                                <a asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li>@Model.Banner.Title</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- #endregion Breadcrump Area End -->
 <!-- #region Account -->
 <div class="login-register-full pt-100 pb-100">
     <div class="container">
@@ -16,7 +37,7 @@
                             }
                         }
 
-                        @{ 
+                        @{
                             if (TempData["ResetSuccess"] != null)
                             {
                                 <input id="ResetSuccess" type="hidden" value="True" />

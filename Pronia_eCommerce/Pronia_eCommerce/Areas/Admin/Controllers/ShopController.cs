@@ -33,7 +33,7 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
                                              .Include(p => p.ProductImages)
                                              .Include(p => p.ProductSizeToProducts)
                                              .ThenInclude(ps => ps.ProductSize)
-                                             .Include(p => p.Ratings).ToList();
+                                             .Include(p => p.Ratings).OrderByDescending(p=>p.CreatedDate).ToList();
 
             return View(products);
         }

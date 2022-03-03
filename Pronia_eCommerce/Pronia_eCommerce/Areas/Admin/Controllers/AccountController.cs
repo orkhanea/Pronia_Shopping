@@ -7,6 +7,7 @@ using Pronia_eCommerce.Models;
 using Pronia_eCommerce.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,7 +34,7 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
         [Authorize(Roles = "SuperAdmin")]
         public IActionResult Index()
         {
-            ViewBag.Roles = _context.Roles.ToList();
+            ViewBag.Roles = _context.Roles.Where(r=>r.Name!="User").ToList();
             return View();
         }
 
@@ -207,17 +208,123 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
             return View(model);
         }
 
+        [HttpPost]
         public IActionResult SiteUserUpdate(VmSiteUserProfile vmSiteUserProfile)
         {
             if (ModelState.IsValid)
             {
                 SiteUser model = new();
+                model = _context.SiteUsers.Find(vmSiteUserProfile.UserId);
+
+                if (vmSiteUserProfile.SiteUser.ImageFile != null)
+                {
+                    if (vmSiteUserProfile.SiteUser.ImageFile.ContentType == "image/jpeg" || vmSiteUserProfile.SiteUser.ImageFile.ContentType == "image/png")
+                    {
+                        if (vmSiteUserProfile.SiteUser.ImageFile.Length < 3000000)
+                        {
+
+
+                            if (!string.IsNullOrEmpty(vmSiteUserProfile.SiteUser.Image))
+                            {
+                                string oldImagePath = Path.Combine(_webHostEnviroment.WebRootPath, "img", "user", vmSiteUserProfile.SiteUser.Image);
+                                if (System.IO.File.Exists(oldImagePath))
+                                {
+                                    System.IO.File.Delete(oldImagePath);
+                                }
+                            }
+
+
+                            string ImageName = Guid.NewGuid() + "-" + DateTime.Now.ToString("ddMMMMyyyy") + "-" + vmSiteUserProfile.SiteUser.ImageFile.FileName;
+                            string FilePath = Path.Combine(_webHostEnviroment.WebRootPath, "img", "user", ImageName);
+
+                            using (var Stream = new FileStream(FilePath, FileMode.Create))
+                            {
+                                vmSiteUserProfile.SiteUser.ImageFile.CopyTo(Stream);
+                            }
+
+                            model.Image = ImageName;
+
+                        }
+                        else
+                        {
+                            TempData["SiteUserProfileError"] = "The size of the Image file must be less than 3 MB";
+                            return RedirectToAction("Profile");
+                        }
+                    }
+                    else
+                    {
+                        TempData["SiteUserProfileError"] = "The type of Image file can only be jpeg/jpg or png";
+                        return RedirectToAction("Profile");
+                    }
+
+                }
+
+                if (vmSiteUserProfile.SiteUser.BgImageFile != null)
+                {
+                    if (vmSiteUserProfile.SiteUser.BgImageFile.ContentType == "image/jpeg" || vmSiteUserProfile.SiteUser.BgImageFile.ContentType == "image/png")
+                    {
+                        if (vmSiteUserProfile.SiteUser.BgImageFile.Length < 3000000)
+                        {
+
+
+                            if (!string.IsNullOrEmpty(vmSiteUserProfile.SiteUser.BgImage))
+                            {
+                                string oldImagePath = Path.Combine(_webHostEnviroment.WebRootPath, "img", "userBgImage", vmSiteUserProfile.SiteUser.BgImage);
+                                if (System.IO.File.Exists(oldImagePath))
+                                {
+                                    System.IO.File.Delete(oldImagePath);
+                                }
+                            }
+
+
+                            string ImageName = Guid.NewGuid() + "-" + DateTime.Now.ToString("ddMMMMyyyy") + "-" + vmSiteUserProfile.SiteUser.BgImageFile.FileName;
+                            string FilePath = Path.Combine(_webHostEnviroment.WebRootPath, "img", "userBgImage", ImageName);
+
+                            using (var Stream = new FileStream(FilePath, FileMode.Create))
+                            {
+                                vmSiteUserProfile.SiteUser.BgImageFile.CopyTo(Stream);
+                            }
+
+                            model.BgImage = ImageName;
+
+                        }
+                        else
+                        {
+                            TempData["SiteUserProfileError"] = "The size of the Image file must be less than 3 MB";
+                            return RedirectToAction("Profile");
+                        }
+                    }
+                    else
+                    {
+                        TempData["SiteUserProfileError"] = "The type of Image file can only be jpeg/jpg or png";
+                        return RedirectToAction("Profile");
+                    }
+
+                }
+
+                model.Name = vmSiteUserProfile.SiteUser.Name;
+                model.Surname = vmSiteUserProfile.SiteUser.Surname;
+                model.PhoneNumber = vmSiteUserProfile.SiteUser.PhoneNumber;
+                model.BDate = vmSiteUserProfile.SiteUser.BDate;
+                model.UserInfo = vmSiteUserProfile.SiteUser.UserInfo;
+                model.UserInfo = vmSiteUserProfile.SiteUser.UserInfo;
+
+                _context.SiteUsers.Update(model);
+                _context.SaveChanges();
+
+                return RedirectToAction("Profile");
+
+            }
+            else
+            {
+                return RedirectToAction("Profile");
+
             }
 
 
 
 
-            return View();
+           
         }
 
     }

@@ -40,7 +40,7 @@ namespace Pronia_eCommerce.Controllers
             }
             double PageItemCount = 6;
             model.LatestBlogs = _context.Blogs.OrderByDescending(b => b.CreatedDate).Where(p => p.Image != null).Take(3).ToList();
-            List<Blog> blogs = _context.Blogs.Where(b=>(Search.SearchData != null?b.Title.Contains(Search.SearchData) :true)&&
+            List<Blog> blogs = _context.Blogs.Include(b=>b.SiteUser).Where(b=>(Search.SearchData != null?b.Title.Contains(Search.SearchData) :true)&&
                                               (Search.SearchCategory != null?b.BlogCategoryId== Search.SearchCategory : true)&&
                                               (Search.SearchTag != null?b.BlogTagToBlogs.Any(bt=>bt.BlogTagId== Search.SearchTag) :true)).OrderByDescending(p=>p.CreatedDate).ToList();
 
@@ -76,7 +76,7 @@ namespace Pronia_eCommerce.Controllers
                 if (_context.Blogs.Find(Id)!=null)
                 {
                     model2.LatestBlogs = _context.Blogs.OrderByDescending(b => b.CreatedDate).Where(p => p.Image != null).Take(3).ToList();
-                    model2.BlogDetail = _context.Blogs.Include(c => c.Comments)
+                    model2.BlogDetail = _context.Blogs.Include(b => b.SiteUser).Include(c => c.Comments)
                                                       .ThenInclude(cu=>cu.User)
                                                       .Include(c=>c.Comments).ThenInclude(cp => cp.CommentPost).Include(b=>b.BlogTagToBlogs).ThenInclude(bt=>bt.BlogTag).Include(t=>t.Category).FirstOrDefault(b=>b.Id==Id);
 

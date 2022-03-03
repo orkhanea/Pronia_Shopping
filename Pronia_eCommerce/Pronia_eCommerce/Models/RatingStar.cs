@@ -12,7 +12,10 @@ namespace Pronia_eCommerce.Models
         [Key]
         public int Id { get; set; }
         public int Star { get; set; }
-        public string UserIp { get; set; }
+        public string UserEmail { get; set; }
+        public string UserName { get; set; }
+        public string UserSurname { get; set; }
+        public string EndUserId { get; set; }
 
         [ForeignKey("Product")]
         public int ProductId { get; set; }

@@ -21,5 +21,37 @@ $(document).ready(function () {
         });
     });
 
+
+    if ($('#myChart').length > 0) {
+
+
+        let ddts = [];
+        let ddt2s = [];
+
+        let a = $(".DatasForCharts");
+        for (let i = 0; i < a.length; i++) {
+
+            ddts.push(a[i].attributes["data-date"].textContent);
+            ddt2s.push(a[i].attributes["data-data2"].textContent);
+        }
+
+        const data = {
+            labels: ddts,
+            datasets: [{
+                label: 'Sale Product Count',
+                borderColor: '#14b6ff',
+                data: ddt2s,
+            }]
+        };
+
+        var myChart = new Chart("myChart", {
+            type: "line",
+            data: data,
+            options: {}
+        });
+
+    }
+
+
 });
 

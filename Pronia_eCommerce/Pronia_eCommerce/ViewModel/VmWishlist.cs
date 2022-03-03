@@ -9,5 +9,6 @@ namespace Pronia_eCommerce.ViewModel
     public class VmWishlist : VmLayout
     {
         public List<Product> Products { get; set; }
+        public Banner Banner { get; set; }
     }
 }

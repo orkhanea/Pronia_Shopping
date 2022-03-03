@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pronia_eCommerce.Data;
@@ -19,11 +20,13 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public BlogController(AppDbContext context, IWebHostEnvironment webHostEnvironment)
+        public BlogController(AppDbContext context, IWebHostEnvironment webHostEnvironment, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -41,6 +44,7 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
                 {
                     model2.BlogDetail = _context.Blogs.Include(c => c.Comments)
                                                       .ThenInclude(cu => cu.User)
+                                                      .Include(c=>c.SiteUser)
                                                       .Include(c => c.Comments).ThenInclude(cp => cp.CommentPost).Include(b => b.BlogTagToBlogs).ThenInclude(bt => bt.BlogTag).Include(t => t.Category).FirstOrDefault(b => b.Id == Id);
                     model2.BlogCategories = _context.BlogCategories.ToList();
                     model2.BlogTags = _context.BlogTags.ToList();
@@ -92,7 +96,7 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
                             blog.Image = ImageName2;
                             blog.CreatedDate = DateTime.Now;
                             blog.VideoLink = null;
-                            //blog.CustomUserId = _userManager.GetUserId(User);
+                            blog.SiteUserId = _userManager.GetUserId(User);
                             _context.Blogs.Add(blog);
                             _context.SaveChanges();
 
