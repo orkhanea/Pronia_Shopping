@@ -11,5 +11,6 @@ namespace Pronia_eCommerce.ViewModel
         public List<Sale> Sales { get; set; }
         public List<int> Datas { get; set; }
         public List<IEnumerable<DateTime>> Dates { get; set; }
+        public List<decimal> Total { get; set; }
     }
 }

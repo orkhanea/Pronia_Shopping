@@ -64,9 +64,20 @@
                 <div class="product-info">
                     <h2 class="title">@Model.SingleProduct.Name</h2>
                     <div class="price-box">
-                        <span class="price" id="SingleProductPrice">
+                        <span class="price @(Model.SingleProduct.ProductSizeToProducts.Any(p => p.Quantity > 0) ? "" : "text-danger")" id="SingleProductPrice">
                             @{
-                                bool noPrice = false;
+
+                                if (Model.SingleProduct.ProductSizeToProducts.Any(p => p.Quantity > 0))
+                                {
+                                    @("$" + Model.SingleProduct.ProductSizeToProducts.Where(p => p.Quantity > 0).FirstOrDefault().Price)
+                                }
+                                else
+                                {
+                                    @("Out Stock")
+                                }
+
+
+                                @*bool noPrice = false;
                                 foreach (var price in Model.SingleProduct.ProductSizeToProducts)
                                 {
                                     if (price.Price != 0)
@@ -79,44 +90,45 @@
                                     {
                                         noPrice = true;
                                     }
+
                                 }
 
                                 if (noPrice)
                                 {
                                     string noPriceText = "Price will be Update soon";
                                     @noPriceText
-                                }
+                                }*@
                             }
                         </span>
                     </div>
-                    <div class="rating-wrap rating-box1 @("rating-box-"+Model.SingleProduct.Id)">
+                    <div class="rating-wrap rating-box1 @("rating-box-" + Model.SingleProduct.Id)">
                         <div class="rating">
                             <ul>
                                 <li>
-                                    <i data-tippy="1 Star" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="1" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"")  fa fa-star fastar @("hvr-"+Model.SingleProduct.Id)">
+                                    <i data-tippy="1 Star" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="1" data-bs-toggle=@(User.Identity.IsAuthenticated ? "" : "modal") data-bs-target=@(User.Identity.IsAuthenticated ? "" : "#exampleModal2") class="@(User.Identity.IsAuthenticated ? "user-enable" : "")  fa fa-star fastar @("hvr-" + Model.SingleProduct.Id)">
                                     </i>
                                 </li>
                                 <li>
-                                    <i data-tippy="2 Stars" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="2" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"")  fa fa-star fastar @("hvr-"+Model.SingleProduct.Id)">
+                                    <i data-tippy="2 Stars" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="2" data-bs-toggle=@(User.Identity.IsAuthenticated ? "" : "modal") data-bs-target=@(User.Identity.IsAuthenticated ? "" : "#exampleModal2") class="@(User.Identity.IsAuthenticated ? "user-enable" : "")  fa fa-star fastar @("hvr-" + Model.SingleProduct.Id)">
                                     </i>
                                 </li>
                                 <li>
-                                    <i data-tippy="3 Stars" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="3" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"")  fa fa-star fastar @("hvr-"+Model.SingleProduct.Id)">
+                                    <i data-tippy="3 Stars" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="3" data-bs-toggle=@(User.Identity.IsAuthenticated ? "" : "modal") data-bs-target=@(User.Identity.IsAuthenticated ? "" : "#exampleModal2") class="@(User.Identity.IsAuthenticated ? "user-enable" : "")  fa fa-star fastar @("hvr-" + Model.SingleProduct.Id)">
                                     </i>
                                 </li>
                                 <li>
-                                    <i data-tippy="4 Stars" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="4" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"")  fa fa-star fastar @("hvr-"+Model.SingleProduct.Id)">
+                                    <i data-tippy="4 Stars" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="4" data-bs-toggle=@(User.Identity.IsAuthenticated ? "" : "modal") data-bs-target=@(User.Identity.IsAuthenticated ? "" : "#exampleModal2") class="@(User.Identity.IsAuthenticated ? "user-enable" : "")  fa fa-star fastar @("hvr-" + Model.SingleProduct.Id)">
                                     </i>
                                 </li>
                                 <li>
-                                    <i data-tippy="5 Stars" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="5" data-bs-toggle=@(User.Identity.IsAuthenticated?"":"modal") data-bs-target=@(User.Identity.IsAuthenticated?"":"#exampleModal2") class="@(User.Identity.IsAuthenticated?"user-enable":"")  fa fa-star fastar @("hvr-"+Model.SingleProduct.Id)">
+                                    <i data-tippy="5 Stars" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" data-pd="@Model.SingleProduct.Id" data-rv="5" data-bs-toggle=@(User.Identity.IsAuthenticated ? "" : "modal") data-bs-target=@(User.Identity.IsAuthenticated ? "" : "#exampleModal2") class="@(User.Identity.IsAuthenticated ? "user-enable" : "")  fa fa-star fastar @("hvr-" + Model.SingleProduct.Id)">
 
                                     </i>
                                 </li>
                             </ul>
                         </div>
                         <div class="review">
-                            <a id="rating_value" href="#">
+                            <a data-id="@Model.SingleProduct.Id" id="rating_value" class="ratingdataid2" href="#">
                                 @{
                                     if (Model.RatingStars.Count > 0)
                                     {
@@ -162,7 +174,7 @@
 
                                         if (sumRsum != 0)
                                         {
-                                            @("( "+ sumRsum.ToString("F1") + " Rating )" );
+                                            @("( " + sumRsum.ToString("F1") + " Rating )" );
                                         }
                                         else
                                         {
@@ -180,14 +192,40 @@
                     <div class="selector-full pb-30" id="singleProductSelector">
                         <span class="selector-title">Size</span>
                         <select class="nice-select wide rounded-0">
-                            @foreach (var opt in Model.SingleProduct.ProductSizeToProducts)
+
+                            @if (Model.SingleProduct.ProductSizeToProducts.Any(p => p.Quantity > 0))
                             {
-                                <option class="opt-price" value="@opt.Id">@opt.ProductSize.Size</option>
+                                bool i = true;
+
+                                @foreach (var opt in Model.SingleProduct.ProductSizeToProducts)
+                                {
+                                    if (opt.Quantity > 0 && i)
+                                    {
+                                        <option selected class="opt-price" value="@opt.Id">@opt.ProductSize.Size</option>
+                                        i = false;
+                                    }
+                                    else if (opt.Quantity == 0)
+                                    {
+                                        <option disabled class="opt-price" value="@opt.Id">@opt.ProductSize.Size</option>
+                                    }
+                                    else
+                                    {
+                                        <option class="opt-price" value="@opt.Id">@opt.ProductSize.Size</option>
+                                    }
+
+
+                                }
                             }
+                            else
+                            {
+                                <option selected disabled class="opt-price">Out Stock</option>
+                            }
+
                         </select>
                         @foreach (var opt in Model.SingleProduct.ProductSizeToProducts)
                         {
                             <input type="hidden" value="@opt.Price" class="opt-price-size" />
+                            @*<input type="hidden" value="@opt.Quantity" class="opt-qty22" />*@
                         }
                     </div>
                     <p class="product-desc">
@@ -205,12 +243,6 @@
                         <li class="add-to-cart">
                             <a class="btn" id="addToCart_ProductDetail" href="#">Add to cart</a>
                             <input id="addToCart_ProductDetailId" type="hidden" value="@Model.SingleProduct.Id" />
-                        </li>
-
-                        <li class="product-compare fc">
-                            <a href="compare.html">
-                                <i class="fal fa-sync-alt"></i>
-                            </a>
                         </li>
                     </ul>
                     <ul class="service-item-wrap">
@@ -298,7 +330,7 @@
 </div>
 <!-- #endregion Single Product End -->
 <!-- #region Single Product Description -->
-<div class="product-description-full pt-100">
+<div class="product-description-full pt-100 pb-100">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -442,197 +474,6 @@
     </div>
 </div>
 <!-- #endregion Single Product Description End -->
-<!-- #region Related Products-->
-<div class="product-full pt-100 pb-100">
-    <div class="container">
-        <div class="row">
-            <div class="section-title-full">
-                <h2 class="section-title">Related Products</h2>
-                <p class="section-desc">
-                    Contrary to popular belief, Lorem Ipsum is not simply random text. It has
-                    roots in a piece of classical Latin literature
-                </p>
-            </div>
-            <div class="col-lg-12">
-                <div class="swiper-container new-product-slider" style="overflow: hidden;">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide product-item">
-                            <div class="product-item-img">
-                                <a href="single-product-variable.html">
-                                    <img class="primary-img" src="~/img/products/product-12.png" alt="Product Images">
-                                    <img class="secondary-img" src="~/img/products/product-17.png" alt="Product Images">
-                                </a>
-                                <div class="product-add-action">
-                                    <ul>
-                                        <li>
-                                            <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                <i class="fal fa-heart"></i>
-                                            </a>
-                                        </li>
-                                        <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
-                                            <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                <i class="fal fa-eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                <i class="fal fa-shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <a class="product-name" href="single-product-variable.html">American Marigold</a>
-                                <div class="price-box pb-1">
-                                    <span class="new-price">$23.45</span>
-                                </div>
-                                <div class="rating-box">
-                                    <ul>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide product-item">
-                            <div class="product-item-img">
-                                <a href="single-product-variable.html">
-                                    <img class="primary-img" src="~/img/products/product-14.png" alt="Product Images">
-                                    <img class="secondary-img" src="~/img/products/product-7.png" alt="Product Images">
-                                </a>
-                                <div class="product-add-action">
-                                    <ul>
-                                        <li>
-                                            <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                <i class="fal fa-heart"></i>
-                                            </a>
-                                        </li>
-                                        <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
-                                            <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                <i class="fal fa-eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                <i class="fal fa-shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <a class="product-name" href="single-product-variable.html">American Marigold</a>
-                                <div class="price-box pb-1">
-                                    <span class="new-price">$23.45</span>
-                                </div>
-                                <div class="rating-box">
-                                    <ul>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide product-item">
-                            <div class="product-item-img">
-                                <a href="single-product-variable.html">
-                                    <img class="primary-img" src="~/img/products/product-11.png" alt="Product Images">
-                                    <img class="secondary-img" src="~/img/products/product-6.png" alt="Product Images">
-                                </a>
-                                <div class="product-add-action">
-                                    <ul>
-                                        <li>
-                                            <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                <i class="fal fa-heart"></i>
-                                            </a>
-                                        </li>
-                                        <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
-                                            <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                <i class="fal fa-eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                <i class="fal fa-shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <a class="product-name" href="single-product-variable.html">American Marigold</a>
-                                <div class="price-box pb-1">
-                                    <span class="new-price">$23.45</span>
-                                </div>
-                                <div class="rating-box">
-                                    <ul>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="swiper-slide product-item">
-                            <div class="product-item-img">
-                                <a href="single-product-variable.html">
-                                    <img class="primary-img" src="~/img/products/product-5.png" alt="Product Images">
-                                    <img class="secondary-img" src="~/img/products/product-15.png" alt="Product Images">
-                                </a>
-                                <div class="product-add-action">
-                                    <ul>
-                                        <li>
-                                            <a href="wishlist.html" data-tippy="Add to wishlist" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                <i class="fal fa-heart"></i>
-                                            </a>
-                                        </li>
-                                        <li class="quuickview-btn" data-bs-toggle="modal" data-bs-target="#quickModal">
-                                            <a href="#" data-tippy="Quickview" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                <i class="fal fa-eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="cart.html" data-tippy="Add to cart" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder">
-                                                <i class="fal fa-shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-content">
-                                <a class="product-name" href="single-product-variable.html">American Marigold</a>
-                                <div class="price-box pb-1">
-                                    <span class="new-price">$23.45</span>
-                                </div>
-                                <div class="rating-box">
-                                    <ul>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- #endregion Related Products End -->
-<input id="singleProductId" type="hidden" value="@Model.SingleProduct.Id" />
-
 <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="height: 100% !important; display: flex !important; flex-direction: column !important; justify-content: center !important; margin: auto !important; ">
         <div class="modal-content">
@@ -663,3 +504,4 @@
         </div>
     </div>
 </div>
+<input id="singleProductId" type="hidden" value="@Model.SingleProduct.Id" />

@@ -44,6 +44,10 @@ namespace Pronia_eCommerce.Controllers
                 {
                     return RedirectToAction("Logout", "Account");
                 }
+                else
+                {
+                    return RedirectToAction("Profile","Account");
+                }
             }
 
             VmRegister model = new();
@@ -71,6 +75,12 @@ namespace Pronia_eCommerce.Controllers
                 else if (combinationExistsEmail)
                 {
                     TempData["RegisterExistError"] = "The specified email is already registered!";
+                    return RedirectToAction("Index");
+                }
+
+                if (model.Password!=model.ConfirmPassword)
+                {
+                    TempData["RegisterExistError"] = "Confirm Password and Password doesn't match!";
                     return RedirectToAction("Index");
                 }
 
@@ -141,6 +151,7 @@ namespace Pronia_eCommerce.Controllers
                     _context.EndUsers.Find(_userManager.GetUserId(User)).ResetPasswordCode = "";
                     _context.SaveChanges();
                     model.Countries = _context.Countries.ToList();
+                    model.Banner = _context.Banners.FirstOrDefault(b => b.Page == "Account");
                     return View(model);
                 }
                 else
@@ -387,7 +398,7 @@ namespace Pronia_eCommerce.Controllers
                         ViewBag.Message = "Reset password link has been sent to your email id.";
 
                     }
-
+                    TempData["MailSended"] = "We sent email to you for reset your password. Please check your email!";
                     return RedirectToAction("Index");
                 }
                 else

@@ -69,8 +69,8 @@
                                                 <div class="latest-blog-content">
                                                     <div class="name-date">
                                                         <ul>
-                                                            <li class="author">By: Admin</li>
-                                                            <li class="date">@item.CreatedDate.ToString("dd MMMM yyyy")</li>
+                                                            <li class="author">By: @item.SiteUser.Name @item.SiteUser.Surname</li>
+                                                            <li class="date">@item.CreatedDate.ToString("dd MMM yyyy")</li>
                                                         </ul>
                                                     </div>
                                                     <h2 class="title">
@@ -128,14 +128,14 @@
                             <div class="widgets-area">
                                 <div class="widgets-item pt-0">
                                     <h2 class="widgets-title mb-4">Categories</h2>
-                                    <ul class="widgets-category">
+                                    <ul id="blgcatscroll" class="widgets-category" style="height: 250px; overflow: auto;">
                                         @{
                                             foreach (var item in Model.BlogCategories)
                                             {
                                                 <li>
                                                     <a asp-route-SearchCategory="@item.Id" asp-controller="Blog" asp-action="Index" class="@(Model.Search.SearchCategory==item.Id?"active":"")">
                                                         <i class="fa fa-chevron-right"></i>
-                                                        @item.CategoryName <span>(65)</span>
+                                                        @item.CategoryName
                                                     </a>
                                                 </li>
                                             }
@@ -188,13 +188,13 @@
                             <div class="collection-area pt-40">
                                 <div class="collection-item collection-item-hover">
                                     <div class="collection-img">
-                                        <img src="~/img/collection/@Model.CollectionS.Image" alt="Banner Image">
+                                        <img style="object-fit: cover;" src="~/img/collection/@Model.CollectionS.Image" alt="Banner Image">
                                     </div>
                                     <div class="collection-content collection-content-center">
                                         <span class="collection">@Model.CollectionS.SubTitle</span>
                                         <h3 class="title">@Model.CollectionS.Title</h3>
                                         <div class="btn-wrapper">
-                                            <a class="btn btn-custom" href="#">
+                                            <a class="btn btn-custom" asp-controller="Shop" asp-action="Index" asp-route-SearchCategory="@Model.CollectionS.ProductCatId">
                                                 Shop
                                                 Now
                                             </a>

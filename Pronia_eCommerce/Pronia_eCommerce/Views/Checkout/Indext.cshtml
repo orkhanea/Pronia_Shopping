@@ -1,4 +1,25 @@
 ﻿@model VmCheckout
+<!-- #region Breadcrump Area -->
+<section id="breadcrump">
+    <div class="breadcrumb-wrapper" style="background-image: url('/img/bg-image/bg-img-4.jpg');">
+        <div class="container h-100">
+            <div class="row h-100">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-content">
+                        <h2 class="breadcrumb-page">Checkout</h2>
+                        <ul>
+                            <li>
+                                <a asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li>Checkout</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- #endregion Breadcrump Area End -->
 <!-- #region Checkout -->
 <div class="checkout-full pt-100 pb-100">
     <div class="container">
@@ -130,8 +151,8 @@
                                         </div>
                                     </div>
                                     <div class="payment-btn text-end">
-                                            <a class="btn btn-success w-50" style="background-color: #87d05e; border-color: #87d05e;" asp-controller="Bank" asp-action="Index">Place order</a>
-                                     </div>
+                                        <a class="btn btn-success w-50" style="background-color: #87d05e; border-color: #87d05e;" asp-controller="Bank" asp-action="Index">Place order</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

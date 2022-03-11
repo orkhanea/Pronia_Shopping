@@ -13,7 +13,20 @@
         string oldData = _context.EndUsers.Find(_userManager.GetUserId(User)).UserCart;
         if (!string.IsNullOrEmpty(oldData))
         {
-            favourites = oldData.Split("-").Length;
+            int a = 0;
+
+            foreach (var item in oldData.Split("-").ToList())
+            {
+                if (_context.Products.Find(int.Parse(item)) != null)
+                {
+                    if (_context.Products.Find(int.Parse(item)).Archived == false)
+                    {
+                        a++;
+                    }
+                }
+            }
+
+            favourites = a;
         }
     }
     else
@@ -21,7 +34,21 @@
         string oldData = _httpContextAccessor.HttpContext.Request.Cookies["cart"];
         if (!string.IsNullOrEmpty(oldData))
         {
-            favourites = oldData.Split("-").Length;
+            int a = 0;
+            List<Product> prdt = new();
+
+            foreach (var item in oldData.Split("-").ToList())
+            {
+                if (_context.Products.Find(int.Parse(item))!=null)
+                {
+                    if (_context.Products.Find(int.Parse(item)).Archived == false)
+                    {
+                        a++;
+                    }
+                }
+            }
+
+            favourites = a;
         }
     }
 
@@ -43,11 +70,9 @@
 <head>
 
     <meta charset="UTF-8">
-
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @*<link rel="shortcut icon" href="#">*@
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" rel="stylesheet">
@@ -61,10 +86,49 @@
           rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
     <link rel="stylesheet" href="~/css/style.css">
-    <title>Pronia</title>
+    <title>Pronia eCommerce</title>
+    <link rel="icon" href="~/img/favicon/favicon.ico" type="image/x-icon">
 </head>
 
-<body>
+<body class="no-scroll-y">
+
+    <!-- Preloader -->
+    <section>
+        <div id="preloader">
+            <div id="ctn-preloader" class="ctn-preloader">
+                <div class="animation-preloader">
+                    <div class="spinner"></div>
+                    <div class="txt-loading">
+                        <span data-text-preloader="P" class="letters-loading">
+                            P
+                        </span>
+
+                        <span data-text-preloader="R" class="letters-loading">
+                            R
+                        </span>
+
+                        <span data-text-preloader="O" class="letters-loading">
+                            O
+                        </span>
+
+                        <span data-text-preloader="N" class="letters-loading">
+                            N
+                        </span>
+
+                        <span data-text-preloader="I" class="letters-loading">
+                            I
+                        </span>
+
+                        <span data-text-preloader="A" class="letters-loading">
+                            A
+                        </span>
+                    </div>
+                </div>
+                <div class="loader-section section-left"></div>
+                <div class="loader-section section-right"></div>
+            </div>
+        </div>
+    </section>
 
     <header class="full-header" id="ddd">
         <div class="header-1">
@@ -355,7 +419,7 @@
         <div class="footer-wrapper" style="background-image: url(/img/bg-image/@Model.Setting.FooterBgImage);">
             <div class="footer-main pt-100 pb-60">
                 <div class="container">
-                    <div class="row">
+                    <div class="row justify-content-lg-between">
                         <div class="col-lg-3">
                             <div class="footer-item">
                                 <div class="footer-logo">
@@ -419,32 +483,7 @@
                                         <a asp-controller="Wishlist" asp-action="Index">My Wishlist</a>
                                     </li>
                                     <li>
-                                        <a href="#">Track My Order</a>
-                                    </li>
-                                    <li>
-                                        <a asp-controller="Faq" asp-action="Index">Help</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-2 col-md-4 pt-40">
-                            <div class="footer-item">
-                                <h3 class="footer-item-title">Our Service</h3>
-                                <ul class="footer-item-list">
-                                    <li>
-                                        <a href="#">Payment Methods</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Money Guarantee!</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Returns</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Shipping</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Privacy Policy</a>
+                                        <a asp-controller="Blog" asp-action="Index">Blogs</a>
                                     </li>
                                 </ul>
                             </div>

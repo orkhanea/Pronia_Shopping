@@ -22,9 +22,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Pronia eCommerce Admin Panel</title>
+    <title>Pronia Admin</title>
     <!--favicon-->
-    <link rel="icon" href="~/Areas/assets/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="~/img/favicon/favicon.ico" type="image/x-icon">
     <!-- simplebar CSS-->
     <link href="~/Areas/assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
     <!-- Bootstrap core CSS-->
@@ -52,7 +52,7 @@
         <!--Start sidebar-wrapper-->
         <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
             <div class="brand-logo">
-                <a href="index.html">
+                <a asp-area="Admin" asp-controller="Home" asp-action="Index">
                     <img src="~/img/logo/f00a7205-1331-466d-b67b-2123c8739f80-17February2022-logo-1.png" style=" width: 80px;" alt="logo icon">
                 </a>
             </div>
@@ -85,6 +85,8 @@
                                 <li class="nav-item"> <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact Us</a></li>
                                 <li class="nav-item"> <a class="nav-link" asp-controller="Faq" asp-action="Index">FAQ</a></li>
                                 <li class="nav-item"> <a class="nav-link" asp-controller="Brand" asp-action="Index">Brand</a></li>
+                                <li class="nav-item"> <a class="nav-link" asp-controller="Testimonial" asp-action="Index">Testimonial</a></li>
+                                <li class="nav-item"> <a class="nav-link" asp-controller="HomeSlider" asp-action="Index">Home Slider</a></li>
                             </ul>
                         </div>
                     </li>
@@ -116,6 +118,7 @@
                                 <li class="nav-item"> <a class="nav-link" asp-controller="Shop" asp-action="Index">Shop</a></li>
                                 <li class="nav-item"> <a class="nav-link" asp-controller="ProductTag" asp-action="Index">Product Tags</a></li>
                                 <li class="nav-item"> <a class="nav-link" asp-controller="ProductCategory" asp-action="Index">Product Categories</a></li>
+                                <li class="nav-item"> <a class="nav-link" asp-controller="Collection" asp-action="Index">Collections</a></li>
                             </ul>
                         </div>
                     </li>
@@ -134,7 +137,9 @@
                         </a>
                         <div class="collapse" id="sales">
                             <ul class="nav flex-column sub-menu pl-4">
-                                <li class="nav-item"> <a class="nav-link" asp-controller="Sale" asp-action="Index">Sales</a></li>
+                                <li class="nav-item"> <a class="nav-link" asp-controller="Sale" asp-action="Index">New Sales</a></li>
+                                <li class="nav-item"> <a class="nav-link" asp-controller="Sale" asp-action="Index2">Sales</a></li>
+                                <li class="nav-item"> <a class="nav-link" asp-controller="Sale" asp-action="ArchiveIndex">Archived Sales</a></li>
                             </ul>
                         </div>
                     </li>
@@ -144,6 +149,12 @@
                     <li>
                         <a asp-area="Admin" asp-controller="Account" asp-action="Index">
                             <i class="fad fa-user"></i> <span>Registration</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area="Admin" asp-controller="Account" asp-action="Roles">
+                            <i class="fad fa-user-tag"></i> <span>Roles</span>
                         </a>
                     </li>
                 }
@@ -310,7 +321,8 @@
         </div>
         <!--end color switcher-->
 
-    </div><!--End wrapper-->
+    </div>
+    <!--End wrapper-->
     <!-- Bootstrap core JavaScript-->
     <script src="~/Areas/assets/js/jquery.min.js"></script>
     <script src="~/Areas/assets/js/popper.min.js"></script>

@@ -15,5 +15,9 @@ namespace Pronia_eCommerce.Models
         public string CategoryName { get; set; }
 
         public List<Product> Products { get; set; }
+
+        public List<CollectionL> CollectionL { get; set; }
+
+        public List<CollectionS> CollectionS { get; set; }
     }
 }

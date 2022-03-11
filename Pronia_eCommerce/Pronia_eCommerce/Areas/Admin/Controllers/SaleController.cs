@@ -37,6 +37,38 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
             return View(sales);
         }
 
+        public IActionResult Index2()
+        {
+            List<Sale> sales = _context.Sales.Include(si => si.SaleItems)
+                                             .ThenInclude(ps => ps.ProductSizeToProduct)
+                                             .ThenInclude(p => p.Product)
+                                             .ThenInclude(p => p.ProductImages)
+                                             .Include(si => si.SaleItems)
+                                             .ThenInclude(si => si.ProductSizeToProduct)
+                                             .ThenInclude(s => s.ProductSize)
+                                             .Include(si => si.UnregisteredCustomer)
+                                             .Include(si => si.EndUser).OrderByDescending(s => s.SaleDate).Where(s => s.isHide == false).ToList();
+
+
+            return View(sales);
+        }
+
+        public IActionResult ArchiveIndex()
+        {
+            List<Sale> sales = _context.Sales.Include(si => si.SaleItems)
+                                             .ThenInclude(ps => ps.ProductSizeToProduct)
+                                             .ThenInclude(p => p.Product)
+                                             .ThenInclude(p => p.ProductImages)
+                                             .Include(si => si.SaleItems)
+                                             .ThenInclude(si => si.ProductSizeToProduct)
+                                             .ThenInclude(s => s.ProductSize)
+                                             .Include(si => si.UnregisteredCustomer)
+                                             .Include(si => si.EndUser).OrderByDescending(s => s.SaleDate).Where(s=>s.isHide==true).ToList();
+
+
+            return View(sales);
+        }
+
         public IActionResult SaleDetail(int? Id)
         {
             if (Id !=null)
@@ -83,8 +115,33 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
 
         }
 
+        public IActionResult UrchiveSale(int? Id)
+        {
+            if (Id!=null)
+            {
+                if (_context.Sales.Find(Id)!=null)
+                {
+                    _context.Sales.Find(Id).isHide = true;
+                    _context.SaveChanges();
+                    return RedirectToAction("Index2");
+                }
+                else
+                {
+                    TempData["SaleError"] = "Something went wrong. Please try it again!";
+                    return RedirectToAction("Index2");
+                }
+            }
+            else
+            {
+                TempData["SaleError"] = "Something went wrong. Please try it again!";
+                return RedirectToAction("Index2");
+            }
 
 
+
+
+           
+        }
 
     }
 }

@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-</div><!--End Row-->
+</div>
 
 <div class="row">
     <div class="col-12 col-lg-12">
@@ -71,7 +71,7 @@
                             {
                                 <tr>
                                     <td>@s.InvoiceNo</td>
-                                    <td>@s.SaleDate</td>
+                                    <td>@s.SaleDate.ToString("d MMM yyyy")</td>
                                     <td>
                                         @{
                                             decimal totalPr = 0;
@@ -96,7 +96,7 @@
             </div>
         </div>
     </div>
-</div><!--End Row-->
+</div>
 <!--End Dashboard Content-->
 <!--start overlay-->
 <div class="overlay toggle-menu"></div>
@@ -105,6 +105,6 @@
 @{ 
     for (int i = 0; i < Model.Dates.Count; i++)
     {
-        <input data-date="@(Model.Dates[i].FirstOrDefault().Date.ToString("d MMM yyy"))" data-data2="@Model.Datas[i]" class="DatasForCharts" type="hidden"  />
+        <input data-date="@(Model.Dates[i].FirstOrDefault().Date.ToString("d MMM yyy"))" data-data2="@Model.Datas[i]" data-total="@Model.Total[i]" class="DatasForCharts" type="hidden"  />
     }
 }

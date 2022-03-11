@@ -1,95 +1,116 @@
 ﻿@model VmOrder
+    <!-- #region Breadcrump Area -->
+    <section id="breadcrump">
+        <div class="breadcrumb-wrapper" style="background-image: url('/img/bg-image/bg-img-4.jpg');">
+            <div class="container h-100">
+                <div class="row h-100">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-content">
+                            <h2 class="breadcrumb-page">Order</h2>
+                            <ul>
+                                <li>
+                                    <a asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                                <li>Order Details</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- #endregion Breadcrump Area End -->
 
-<div class="container-fluid">
-    <div class="row justify-content-center">
-    <div class="col-lg-10 grid-margin stretch-card">
-        <div class="card" style="border: none !important;">
-            <div class="card-body">
-                <h4 class="card-title text-center" style=" font-size: 35px !important; color: #525252; margin-top: 20px;">Order Details</h4>
-                <a class="btn btn-light mb-3 px-5" asp-controller="Account" asp-action="Profile">Back To Profile</a>
-                <div class="table-responsive">
-                    <table class="table table-bordered text-center">
-                        <thead>
-                            <tr>
-                                <th class="tableTrCustom">
-                                    #
-                                </th>
-                                <th class="tableTrCustom">
-                                    Product Image
-                                </th>
-                                <th class="tableTrCustom">
-                                    Product Name
-                                </th>
-                                <th class="tableTrCustom">
-                                    SKU
-                                </th>
-                                <th class="tableTrCustom">
-                                    Order Date
-                                </th>
-                                <th class="tableTrCustom">
-                                    Quantity
-                                </th>
-                                <th class="tableTrCustom">
-                                    Price
-                                </th>
-                                <th class="tableTrCustom">
-                                    Total
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
-                                int counter = 0;
-                                foreach (var item in Model.Sale.SaleItems)
-                                {
-                                    counter++;
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 grid-margin stretch-card">
+                <div class="card" style="border: none !important;">
+                    <div class="card-body">
+                        <h4 class="card-title text-center" style=" font-size: 35px !important; color: #525252; margin-top: 20px;">Order Details</h4>
+                        <a class="btn btn-light mb-3 px-5" asp-controller="Account" asp-action="Profile">Back To Profile</a>
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center">
+                                <thead>
                                     <tr>
-                                        <td style="width: 5% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
-                                            @counter
-                                        </td>
-                                        <td style="width: 25% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
-                                            <div style="display: inline-block; width: 200px !important; height: 150px !important; ">
-                                                <div class="owl-carousel-admin owl-theme owl-loaded" style="width: 100% !important; height: 100% !important; overflow: hidden !important; display: inline-block !important; ">
-                                                    <div class="owl-stage-outer w-100 h-100">
-                                                        <div class="owl-stage d-flex h-100">
+                                        <th class="tableTrCustom">
+                                            #
+                                        </th>
+                                        <th class="tableTrCustom">
+                                            Product Image
+                                        </th>
+                                        <th class="tableTrCustom">
+                                            Product Name
+                                        </th>
+                                        <th class="tableTrCustom">
+                                            SKU
+                                        </th>
+                                        <th class="tableTrCustom">
+                                            Order Date
+                                        </th>
+                                        <th class="tableTrCustom">
+                                            Quantity
+                                        </th>
+                                        <th class="tableTrCustom">
+                                            Price
+                                        </th>
+                                        <th class="tableTrCustom">
+                                            Total
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int counter = 0;
+                                        foreach (var item in Model.Sale.SaleItems)
+                                        {
+                                            counter++;
+                                            <tr>
+                                                <td style="width: 5% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                                    @counter
+                                                </td>
+                                                <td style="width: 25% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                                    <div style="display: inline-block; width: 200px !important; height: 150px !important; ">
+                                                        <div class="owl-carousel-admin owl-theme owl-loaded" style="width: 100% !important; height: 100% !important; overflow: hidden !important; display: inline-block !important; ">
+                                                            <div class="owl-stage-outer w-100 h-100">
+                                                                <div class="owl-stage d-flex h-100">
 
-                                                            @foreach (var imgs in item.ProductSizeToProduct.Product.ProductImages)
-                                                            {
-                                                                <div class="owl-item"><img style="width: 100% !important; height: 100% !important; object-position: center center; object-fit: contain !important;" src="~/img/products/@imgs.Image" alt="Product Image" /></div>
+                                                                    @foreach (var imgs in item.ProductSizeToProduct.Product.ProductImages)
+                                                                    {
+                                                                        <div class="owl-item"><img style="width: 100% !important; height: 100% !important; object-position: center center; object-fit: contain !important;" src="~/img/products/@imgs.Image" alt="Product Image" /></div>
 
-                                                            }
+                                                                    }
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="width: 30% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important;">
-                                            @item.ProductSizeToProduct.Product.Name
-                                        </td>
-                                        <td style="width: 15% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
-                                            @item.ProductSizeToProduct.Product.SKU
-                                        </td>
-                                        <td style="width: 15% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
-                                            @Model.Sale.SaleDate.ToString("d MMM yyyy")
-                                        </td>
-                                        <td style="width: 15% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
-                                            @item.Quantity
-                                        </td>
-                                        <td style="width: 10% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
-                                            $@item.Price
-                                        </td>
-                                        <td style="width: 10% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
-                                            $@(item.Price*item.Quantity)
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
+                                                </td>
+                                                <td style="width: 30% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important;">
+                                                    @item.ProductSizeToProduct.Product.Name
+                                                </td>
+                                                <td style="width: 15% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                                    @item.ProductSizeToProduct.Product.SKU
+                                                </td>
+                                                <td style="width: 15% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                                    @Model.Sale.SaleDate.ToString("d MMM yyyy")
+                                                </td>
+                                                <td style="width: 15% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                                    @item.Quantity
+                                                </td>
+                                                <td style="width: 10% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                                    $@item.Price
+                                                </td>
+                                                <td style="width: 10% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important; font-weight: 500 !important; ">
+                                                    $@(item.Price*item.Quantity)
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-</div>
 

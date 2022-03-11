@@ -16,7 +16,7 @@
                         <span style="font-size: 24px !important;" class="">@Model.Name</span>
                         <span class="alert p-2 mx-3">
                             @{
-                                if (Model.Ratings.Count>0)
+                                if (Model.Ratings.Count > 0)
                                 {
                                     var rval2 = Model.Ratings;
                                     var fiveS = 0;
@@ -66,6 +66,10 @@
                                     {
                                         @("0.0"); <i class="fa fa-star" style="color: goldenrod !important;"></i>
                                     }
+                                }
+                                else
+                                {
+                                    @("0.0"); <i class="fa fa-star" style="color: goldenrod !important;"></i>
                                 }
                             }
                         </span>

@@ -85,7 +85,7 @@ namespace Pronia_eCommerce.Controllers
                 }
                 else
                 {
-                    if (!rstarsNR.Any(e => (e.UserEmail.ToLower() == str.UserEmail.ToLower()) && (e.UserName.ToLower() == str.UserName.ToLower()) && (e.UserSurname.ToLower() == str.UserSurname.ToLower())))
+                    if (!rstarsNR.Any(e => (e.UserEmail.ToLower() == str.UserEmail.ToLower())))
                     {
                         rstarsNR.Add(str);
 

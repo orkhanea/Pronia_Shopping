@@ -24,5 +24,9 @@ namespace Pronia_eCommerce.Models
 
         [NotMapped]
         public IFormFile ImageFile { get; set; }
+
+        [ForeignKey("ProductCat")]
+        public int? ProductCatId { get; set; }
+        public ProductCat ProductCat { get; set; }
     }
 }

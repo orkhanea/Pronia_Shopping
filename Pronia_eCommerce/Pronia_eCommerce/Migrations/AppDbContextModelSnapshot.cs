@@ -419,6 +419,9 @@ namespace Pronia_eCommerce.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int?>("ProductCatId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SubTitle")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
@@ -428,6 +431,8 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("nvarchar(35)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductCatId");
 
                     b.ToTable("CollectionL");
                 });
@@ -443,6 +448,9 @@ namespace Pronia_eCommerce.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<int?>("ProductCatId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SubTitle")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
@@ -452,6 +460,8 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("nvarchar(35)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductCatId");
 
                     b.ToTable("CollectionS");
                 });
@@ -643,18 +653,22 @@ namespace Pronia_eCommerce.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<byte>("Discount")
-                        .HasColumnType("tinyint");
+                    b.Property<string>("Header")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Image")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("SubTitle")
+                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
@@ -742,6 +756,9 @@ namespace Pronia_eCommerce.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Archived")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -986,6 +1003,9 @@ namespace Pronia_eCommerce.Migrations
                     b.Property<bool>("hideToClien")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("isHide")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("isReaded")
                         .HasColumnType("bit");
 
@@ -1116,6 +1136,42 @@ namespace Pronia_eCommerce.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subscribes");
+                });
+
+            modelBuilder.Entity("Pronia_eCommerce.Models.Testimonial", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Image")
+                        .HasMaxLength(210)
+                        .HasColumnType("nvarchar(210)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(108)
+                        .HasColumnType("nvarchar(108)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Testimonials");
                 });
 
             modelBuilder.Entity("Pronia_eCommerce.Models.UnregisteredCustomer", b =>
@@ -1355,6 +1411,24 @@ namespace Pronia_eCommerce.Migrations
                     b.Navigation("BlogTag");
                 });
 
+            modelBuilder.Entity("Pronia_eCommerce.Models.CollectionL", b =>
+                {
+                    b.HasOne("Pronia_eCommerce.Models.ProductCat", "ProductCat")
+                        .WithMany("CollectionL")
+                        .HasForeignKey("ProductCatId");
+
+                    b.Navigation("ProductCat");
+                });
+
+            modelBuilder.Entity("Pronia_eCommerce.Models.CollectionS", b =>
+                {
+                    b.HasOne("Pronia_eCommerce.Models.ProductCat", "ProductCat")
+                        .WithMany("CollectionS")
+                        .HasForeignKey("ProductCatId");
+
+                    b.Navigation("ProductCat");
+                });
+
             modelBuilder.Entity("Pronia_eCommerce.Models.Comment", b =>
                 {
                     b.HasOne("Pronia_eCommerce.Models.Blog", "Blog")
@@ -1577,6 +1651,10 @@ namespace Pronia_eCommerce.Migrations
 
             modelBuilder.Entity("Pronia_eCommerce.Models.ProductCat", b =>
                 {
+                    b.Navigation("CollectionL");
+
+                    b.Navigation("CollectionS");
+
                     b.Navigation("Products");
                 });
 

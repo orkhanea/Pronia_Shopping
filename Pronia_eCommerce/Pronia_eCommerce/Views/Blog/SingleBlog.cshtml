@@ -305,7 +305,7 @@
                                             <li>
                                                 <a asp-route-SearchCategory="@item.Id" asp-controller="Blog" asp-action="Index">
                                                     <i class="fa fa-chevron-right"></i>
-                                                    @item.CategoryName <span>(65)</span>
+                                                    @item.CategoryName
                                                 </a>
                                             </li>
                                         }
@@ -358,13 +358,13 @@
                         <div class="collection-area pt-40">
                             <div class="collection-item collection-item-hover">
                                 <div class="collection-img">
-                                    <img src="~/img/collection/@Model.CollectionS.Image" alt="Banner Image">
+                                    <img style="object-fit: cover !important;" src="~/img/collection/@Model.CollectionS.Image" alt="Banner Image">
                                 </div>
                                 <div class="collection-content collection-content-center">
                                     <span class="collection">@Model.CollectionS.SubTitle</span>
                                     <h3 class="title">@Model.CollectionS.Title</h3>
                                     <div class="btn-wrapper">
-                                        <a class="btn btn-custom" href="#">
+                                        <a class="btn btn-custom" asp-controller="SHop" asp-action="Index" asp-route-SearchCategory="@Model.CollectionS.ProductCatId">
                                             Shop
                                             Now
                                         </a>

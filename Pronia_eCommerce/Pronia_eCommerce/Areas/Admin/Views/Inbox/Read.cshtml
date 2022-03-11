@@ -10,6 +10,12 @@
         <div class="col-lg-7 pt-5 pb-2" style="text-align: center; font-size: 25px; color: white; font-weight: 600;">
             Message
         </div>
+        @if (TempData["EmailError"] != null)
+        {
+            <p style="font-size: 20px !important;" class="alert text-center p-2 col-lg-6 text-warning">@TempData["EmailError"]</p>
+
+            TempData["EmailError"] = null;
+        }
         <div class="col-lg-7">
             <div class="card text-center">
                 <div class="card-header alert alert-light py-2">
@@ -71,6 +77,7 @@
                         </div>
                         <div class="mb-3 text-right">
                             <input asp-for="@Model.EmailAddress" type="hidden" value="@Model.message.Email" />
+                            <input asp-for="MsgId" type="hidden" value="@Model.message.Id" />
                             <button class="btn btn-sm btn-light w-25" type="submit">Send</button>
                         </div>
                     </form>

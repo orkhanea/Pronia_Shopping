@@ -46,6 +46,22 @@ namespace Pronia_eCommerce.Controllers
 
             int pageCount = (int)Math.Ceiling(Convert.ToDecimal(blogs.Count / PageItemCount));
 
+
+
+            var BlgTasdaadasdsdags = _context.BlogTagToBlogs.ToList().GroupBy(d => d.BlogTagId).OrderByDescending(d=>d.Select(w=>w.BlogId).Count());
+
+            List<int> w = new();
+            List<BlogTag> blogtagsssss = new();
+            foreach (var item in BlgTasdaadasdsdags)
+            {
+                w.Add(item.Key);
+            }
+
+            foreach (var item in w.Take(5))
+            {
+                blogtagsssss.Add(_context.BlogTags.Find(item));
+            }
+
             model.Blogs = blogs.Skip(((int)Search.Page - 1) * (int)PageItemCount).Take((int)PageItemCount).ToList();
             ViewBag.PageCount = pageCount;
             ViewBag.Page = Search.Page;
@@ -53,7 +69,7 @@ namespace Pronia_eCommerce.Controllers
             model.Setting = _context.Setting.FirstOrDefault();
             model.SiteSocial = _context.SiteSocials.ToList();
             model.BlogCategories = _context.BlogCategories.ToList();
-            model.BlogTags = _context.BlogTags.ToList();
+            model.BlogTags = blogtagsssss;
             model.CollectionS = _context.CollectionS.FirstOrDefault();
             model.Banner = _context.Banners.FirstOrDefault(b => b.Title.ToLower() == "all blogs");
 

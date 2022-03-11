@@ -186,12 +186,12 @@ namespace Pronia_eCommerce.Controllers
 
 
 
-
+                                var mssg = $"<h2>Your purchase complete successfully.<h2/><br/><h4>Total: ${total}<h4/>";
 
                                 MailMessage newInvoice = new MailMessage("proniaecommerce@gmail.com", unregisteredCustomer.Email);
                                 newInvoice.Subject = "Pronia Shopping";
 
-                                newInvoice.Body = @"<h2>Your purchase complete successfully.<h2/><br/><h4>Total: $<h4/>" + total;
+                                newInvoice.Body = mssg;
                                 newInvoice.IsBodyHtml = true;
                                 SmtpClient smtp = new SmtpClient();
                                 smtp.Host = "smtp.gmail.com";

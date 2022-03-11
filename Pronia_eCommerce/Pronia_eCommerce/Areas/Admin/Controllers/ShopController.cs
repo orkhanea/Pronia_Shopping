@@ -33,7 +33,19 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
                                              .Include(p => p.ProductImages)
                                              .Include(p => p.ProductSizeToProducts)
                                              .ThenInclude(ps => ps.ProductSize)
-                                             .Include(p => p.Ratings).OrderByDescending(p=>p.CreatedDate).ToList();
+                                             .Include(p => p.Ratings).OrderByDescending(p=>p.CreatedDate).Where(p=>p.Archived==false).ToList();
+
+            return View(products);
+        }
+
+        [Authorize(Roles = "SuperAdmin")]
+        public IActionResult ArchiveIndex()
+        {
+            List<Product> products = _context.Products
+                                                         .Include(p => p.ProductImages)
+                                                         .Include(p => p.ProductSizeToProducts)
+                                                         .ThenInclude(ps => ps.ProductSize)
+                                                         .Include(p => p.Ratings).OrderByDescending(p => p.CreatedDate).Where(p => p.Archived == true).ToList();
 
             return View(products);
         }
@@ -89,6 +101,24 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
             {
                 if (vmCreateProduct.productSizeToProduct.Any(ps => ps.Quantity > 0) && vmCreateProduct.productSizeToProduct.Any(ps => ps.Price > 0))
                 {
+                    if (vmCreateProduct.product.ProductCatId==0)
+                    {
+                        ViewBag.ProdTags = _context.ProductTags.ToList();
+                        ViewBag.prodCat = _context.ProductCats.ToList();
+                        vmCreateProduct.sizes = _context.ProductSizes.ToList();
+                        TempData["ProductError"] = "Please choose a category";
+                        return View(vmCreateProduct);
+                    }
+
+                    if (vmCreateProduct.product.ProductTagToProductId==null)
+                    {
+                        ViewBag.ProdTags = _context.ProductTags.ToList();
+                        ViewBag.prodCat = _context.ProductCats.ToList();
+                        vmCreateProduct.sizes = _context.ProductSizes.ToList();
+                        TempData["ProductError"] = "Please choose at least one tag";
+                        return View(vmCreateProduct);
+                    }
+
                     if (vmCreateProduct.productImage != null)
                     {
                         foreach (var testimg in vmCreateProduct.productImage)
@@ -290,7 +320,7 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
                                 }
                             }
 
-                            foreach (var oldimg in vmCreateProduct.product.ProductImages)
+                            foreach (var oldimg in _context.ProductImages.Where(i => i.ProductId == vmCreateProduct.product.Id).ToList())
                             {
                                 if (!string.IsNullOrEmpty(oldimg.Image))
                                 {
@@ -413,6 +443,7 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
             }
         }
 
+        [Authorize(Roles = "SuperAdmin")]
         public IActionResult Delete(int? Id)
         {
             if (Id!=null)
@@ -420,35 +451,8 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
                 Product product = _context.Products.Find(Id);
                 if (product!=null)
                 {
-
-                    List<ProductImage> productImage = _context.ProductImages.Where(pi=>pi.ProductId==Id).ToList();
-
-                    foreach (var img in productImage)
-                    {
-                        if (!string.IsNullOrEmpty(img.Image))
-                        {
-                            string oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, "img", "products", img.Image);
-                            if (System.IO.File.Exists(oldImagePath))
-                            {
-                                System.IO.File.Delete(oldImagePath);
-                            }
-                        }
-                    }
-
-                    List<ProductComment> comments = _context.ProductComments.Include(c => c.CommentPost).Where(c => c.ProductId == Id).ToList();
-                    List<CommentPost> commentPosts = comments.Select(c => c.CommentPost).ToList();
-
-                    foreach (var cp in commentPosts)
-                    {
-                        _context.CommentPosts.Remove(cp);
-                    }
-
-                    foreach (var c in comments)
-                    {
-                        _context.ProductComments.Remove(c);
-                    }
-
-                    _context.Products.Remove(product);
+                    product.Archived = true;
+                    _context.Products.Update(product);
                     _context.SaveChanges();
                     return RedirectToAction("Index");
 
@@ -464,6 +468,34 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
             {
                 TempData["ProductError"] = "Id must not be null";
                 return RedirectToAction("Index");
+            }
+        }
+
+        [Authorize(Roles = "SuperAdmin")]
+        public IActionResult UnArchive(int? Id)
+        {
+            if (Id != null)
+            {
+                Product product = _context.Products.Find(Id);
+                if (product != null)
+                {
+                    product.Archived = false;
+                    _context.Products.Update(product);
+                    _context.SaveChanges();
+                    return RedirectToAction("ArchiveIndex");
+
+
+                }
+                else
+                {
+                    TempData["ArchivedProductError"] = "Such an id does not exist";
+                    return RedirectToAction("ArchiveIndex");
+                }
+            }
+            else
+            {
+                TempData["ArchivedProductError"] = "Id must not be null";
+                return RedirectToAction("ArchiveIndex");
             }
         }
     }

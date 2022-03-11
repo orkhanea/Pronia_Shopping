@@ -19,5 +19,6 @@ namespace Pronia_eCommerce.ViewModel
         public CommentPost CommentPost { get; set; }
         public List<RatingStar> RatingStars { get; set; }
         public List<string> Favourite { get; set; }
+        public CollectionS collectionS { get; set; }
     }
 }

@@ -14,4 +14,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\collection\" />
+    <Folder Include="wwwroot\img\testimonial\" />
+  </ItemGroup>
+
 </Project>

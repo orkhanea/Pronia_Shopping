@@ -18,13 +18,15 @@
                     </div>
                     <div style="padding-right: 20px !important; padding-left: 20px !important; width: 100% !important; height: 350px !important;">
                         @{
-                            if (Model.BlogDetail.Image != null && Model.BlogDetail.VideoLink==null)
+                            if (Model.BlogDetail.Image != null && Model.BlogDetail.VideoLink == null)
                             {
                                 <img style="width: 100% !important; height: 100% !important; object-fit: cover !important;" class="card-img-top" src="~/img/blog/@Model.BlogDetail.Image" alt="Image">
                             }
                             else if (Model.BlogDetail.Image == null && Model.BlogDetail.VideoLink != null)
                             {
-
+                                <div class="ratio ratio-16x9" style="height: 100%;">
+                                    <iframe src="@Model.BlogDetail.VideoLink" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
                             }
                         }
 

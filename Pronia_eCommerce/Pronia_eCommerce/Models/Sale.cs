@@ -30,5 +30,7 @@ namespace Pronia_eCommerce.Models
         public bool hideToClien { get; set; }
 
         public bool isReaded { get; set; }
+
+        public bool isHide { get; set; }
     }
 }

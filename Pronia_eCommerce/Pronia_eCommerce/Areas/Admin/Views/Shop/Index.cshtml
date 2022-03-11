@@ -6,7 +6,13 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title text-center" style="font-size: 30px !important;">Products</h4>
-                <a class="btn btn-light mb-3 px-5" asp-area="Admin" asp-controller="Shop" asp-action="Create">Add New Product</a>
+                <div style=" display: flex; justify-content: space-between;">
+                    <a class="btn btn-light mb-3 px-5" asp-area="Admin" asp-controller="Shop" asp-action="Create">Add New Product</a>
+                    @if (User.IsInRole("SuperAdmin"))
+                    {
+                        <a class="btn btn-light mb-3 px-5 ml-3" asp-area="Admin" asp-controller="Shop" asp-action="ArchiveIndex">Archived Products</a>
+                    }
+                </div>
                 @{
                     if (TempData["ProductError"] != null)
                     {
@@ -149,14 +155,21 @@
                                                         @("0.0"); <i class="fa fa-star" style="color: goldenrod !important;"></i>
                                                     }
                                                 }
+                                                else
+                                                {
+                                                    @("0.0"); <i class="fa fa-star" style="color: goldenrod !important;"></i>
+                                                }
                                             }
                                         </td>
                                         <td style="width: 5% !important; padding-right: 10px !important; padding-left: 10px !important; vertical-align: middle !important;">
                                             <a data-tippy="Detail" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="btn-sm btn btn-outline-info w-100" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Shop" asp-action="ProductDetail"><i class="fal fa-info-square"></i></a>
                                             <br />
                                             <a data-tippy="Update" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="my-2 btn-sm btn btn-outline-success w-100" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Shop" asp-action="Update"><i class="fal fa-edit"></i></a>
-                                            <br />
-                                            <a data-tippy="Delete" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="btn-sm btn btn-outline-danger w-100" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Shop" asp-action="Delete" onclick="return confirm('Are you sure?')"><i class="fal fa-trash-alt"></i></a>
+                                            @if (User.IsInRole("SuperAdmin"))
+                                            {
+                                                <br />
+                                                <a data-tippy="Archive" data-tippy-inertia="true" data-tippy-animation="shift-away" data-tippy-delay="50" data-tippy-arrow="true" data-tippy-theme="sharpborder" class="btn-sm btn btn-outline-danger w-100" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Shop" asp-action="Delete" onclick="return confirm('Are you sure?')"><i class="fal fa-archive"></i></a>
+                                            }
                                         </td>
                                     </tr>
                                 }

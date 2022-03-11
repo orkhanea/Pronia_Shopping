@@ -2,30 +2,34 @@
     ViewData["Title"] = "Home Page";
 }
 @model VmHome
+
 <!-- #region Home Page Slider -->
 <section id="main-slider">
     <div class="slider-area">
         <div class="swiper-container main-slider swiper-arrow with-bg_white">
             <div class="swiper-wrapper">
-                <div class="swiper-slide animation-style-01">
-                    <div class="slide-inner style-1 bg-height" data-bg-image="img/slider/bg-1-slider.png" style="background-image: url('img/slider/bg-1-slider.png');">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-lg-6 order-2 order-lg-1 align-self-center">
-                                    <div class="slide-content text-black">
-                                        <span class="offer">65% Off</span>
-                                        <h2 class="title">New Plant</h2>
-                                        <p class="short-desc">Pronia, With 100% Natural, Organic & Plant Shop.</p>
-                                        <div class="btn-wrap">
-                                            <a class="btn" href="shop.html">Discover Now</a>
+                @foreach (var item in Model.HomeSliders)
+                {
+                    <div class="swiper-slide animation-style-01">
+                        <div class="slide-inner style-1 bg-height" data-bg-image="img/slider/bg-1-slider.png" style="background-image: url('img/slider/bg-1-slider.png');">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-6 order-2 order-lg-1 align-self-center">
+                                        <div class="slide-content text-black">
+                                            <span class="offer">@item.Header</span>
+                                            <h2 class="title">@item.Title</h2>
+                                            <p class="short-desc">@item.SubTitle</p>
+                                            <div class="btn-wrap">
+                                                <a class="btn" asp-controller="Shop" asp-action="Index">Discover Now</a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6 col-md-8 offset-md-2 offset-lg-0 order-1 order-lg-2">
-                                    <div class="inner-img">
-                                        <div class="scene fill">
-                                            <div class="expand-width" data-depth="0.2">
-                                                <img src="~/img/products/product-1.png" alt="Inner Image">
+                                    <div class="col-lg-6 col-md-8 offset-md-2 offset-lg-0 order-1 order-lg-2">
+                                        <div class="inner-img">
+                                            <div class="scene fill">
+                                                <div class="expand-width" data-depth="0.2">
+                                                    <img src="~/img/slider/@item.Image" alt="Inner Image">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -33,34 +37,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="swiper-slide animation-style-01">
-                    <div class="slide-inner style-1 bg-height" data-bg-image="img/slider/bg-1-slider.png" style="background-image: url('img/slider/bg-1-slider.png');">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-lg-6 order-2 order-lg-1 align-self-center">
-                                    <div class="slide-content text-black">
-                                        <span class="offer">65% Off</span>
-                                        <h2 class="title">New Plant</h2>
-                                        <p class="short-desc">Pronia, With 100% Natural, Organic & Plant Shop.</p>
-                                        <div class="btn-wrap">
-                                            <a class="btn" href="shop.html">Discover Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-8 offset-md-2 offset-lg-0 order-1 order-lg-2">
-                                    <div class="inner-img">
-                                        <div class="scene fill">
-                                            <div class="expand-width" data-depth="0.2">
-                                                <img src="~/img/products/product-2.png" alt="Inner Image">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
+
             </div>
 
             <div class="swiper-pagination d-md-none"></div>
@@ -198,12 +176,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="product-content">
-                                                    <a class="product-name" href="single-product-variable.html">
+                                                    <a class="product-name" asp-controller="Shop" asp-action="SingleProduct" asp-route-Id="@item.Id">
                                                         @item.Name
                                                     </a>
                                                     <div class="price-box pb-1">
                                                         <span class="new-price" style="@(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? "": "font-size: 15px !important; color: #da4949 !important;")">
-                                                            @(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? item.ProductSizeToProducts.FirstOrDefault(pp => pp.Quantity > 0).Price: "OUT OF STOCK")
+                                                            @(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? "$" + item.ProductSizeToProducts.FirstOrDefault(pp => pp.Quantity > 0).Price: "OUT OF STOCK")
                                                         </span>
                                                     </div>
                                                     <div class="rating-box rating-box1 @("rating-box-"+item.Id)">
@@ -229,6 +207,67 @@
                                                                 </i>
                                                             </li>
                                                         </ul>
+                                                        <div class="review" style=" margin-left: 15px;">
+                                                            <a data-id="@item.Id" id="rating_value" class="ratingdataid2" href="#" style="color: #525252; font-size: 14px;">
+                                                                @{
+                                                                    if (item.Ratings.Count > 0)
+                                                                    {
+                                                                        var rval2 = item.Ratings;
+                                                                        var fiveS = 0;
+                                                                        var fourS = 0;
+                                                                        var threeS = 0;
+                                                                        var twoS = 0;
+                                                                        var oneS = 0;
+                                                                        for (var rs = 0; rs < rval2.Count; rs++)
+                                                                        {
+
+
+                                                                            for (var str = 0; str < rval2.Count; str++)
+                                                                            {
+                                                                                if (rval2[str].Star == 5)
+                                                                                {
+                                                                                    fiveS++;
+                                                                                }
+                                                                                else if (rval2[str].Star == 4)
+                                                                                {
+                                                                                    fourS++;
+                                                                                }
+                                                                                else if (rval2[str].Star == 3)
+                                                                                {
+                                                                                    threeS++;
+                                                                                }
+                                                                                else if (rval2[str].Star == 2)
+                                                                                {
+                                                                                    twoS++;
+                                                                                }
+                                                                                else if (rval2[str].Star == 1)
+                                                                                {
+                                                                                    oneS++;
+                                                                                }
+                                                                            }
+
+                                                                        }
+
+                                                                        decimal sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                                                                        decimal rSum = fiveS + fourS + threeS + twoS + oneS;
+                                                                        var sumRsum = Math.Round((sum / rSum), 1, MidpointRounding.ToEven);
+
+                                                                        if (sumRsum != 0)
+                                                                        {
+                                                                            @("( " + sumRsum.ToString("F1") + " )" );
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @("( 0.0)");
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @("( 0.0)");
+                                                                    }
+                                                                }
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -293,12 +332,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="product-content">
-                                                    <a class="product-name" href="single-product-variable.html">
+                                                    <a class="product-name" asp-controller="Shop" asp-action="SingleProduct" asp-route-Id="@item.Id">
                                                         @item.Name
                                                     </a>
                                                     <div class="price-box pb-1">
                                                         <span class="new-price" style="@(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? "": "font-size: 15px !important; color: #da4949 !important;")">
-                                                            @(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? item.ProductSizeToProducts.FirstOrDefault(pp => pp.Quantity > 0).Price: "OUT OF STOCK")
+                                                            @(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? "$" + item.ProductSizeToProducts.FirstOrDefault(pp => pp.Quantity > 0).Price: "OUT OF STOCK")
                                                         </span>
                                                     </div>
                                                     <div class="rating-box rating-box1 @("rating-box-"+item.Id)">
@@ -324,6 +363,67 @@
                                                                 </i>
                                                             </li>
                                                         </ul>
+                                                        <div class="review" style=" margin-left: 15px;">
+                                                            <a data-id="@item.Id" id="rating_value" class="ratingdataid2" href="#" style="color: #525252; font-size: 14px;">
+                                                                @{
+                                                                    if (item.Ratings.Count > 0)
+                                                                    {
+                                                                        var rval2 = item.Ratings;
+                                                                        var fiveS = 0;
+                                                                        var fourS = 0;
+                                                                        var threeS = 0;
+                                                                        var twoS = 0;
+                                                                        var oneS = 0;
+                                                                        for (var rs = 0; rs < rval2.Count; rs++)
+                                                                        {
+
+
+                                                                            for (var str = 0; str < rval2.Count; str++)
+                                                                            {
+                                                                                if (rval2[str].Star == 5)
+                                                                                {
+                                                                                    fiveS++;
+                                                                                }
+                                                                                else if (rval2[str].Star == 4)
+                                                                                {
+                                                                                    fourS++;
+                                                                                }
+                                                                                else if (rval2[str].Star == 3)
+                                                                                {
+                                                                                    threeS++;
+                                                                                }
+                                                                                else if (rval2[str].Star == 2)
+                                                                                {
+                                                                                    twoS++;
+                                                                                }
+                                                                                else if (rval2[str].Star == 1)
+                                                                                {
+                                                                                    oneS++;
+                                                                                }
+                                                                            }
+
+                                                                        }
+
+                                                                        decimal sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                                                                        decimal rSum = fiveS + fourS + threeS + twoS + oneS;
+                                                                        var sumRsum = Math.Round((sum / rSum), 1, MidpointRounding.ToEven);
+
+                                                                        if (sumRsum != 0)
+                                                                        {
+                                                                            @("( " + sumRsum.ToString("F1") + " )" );
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @("( 0.0)");
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @("( 0.0)");
+                                                                    }
+                                                                }
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -388,12 +488,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="product-content">
-                                                    <a class="product-name" href="single-product-variable.html">
+                                                    <a class="product-name" asp-controller="Shop" asp-action="SingleProduct" asp-route-Id="@item.Id">
                                                         @item.Name
                                                     </a>
                                                     <div class="price-box pb-1">
                                                         <span class="new-price" style="@(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? "": "font-size: 15px !important; color: #da4949 !important;")">
-                                                            @(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? item.ProductSizeToProducts.FirstOrDefault(pp => pp.Quantity > 0).Price: "OUT OF STOCK")
+                                                            @(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? "$" + item.ProductSizeToProducts.FirstOrDefault(pp => pp.Quantity > 0).Price: "OUT OF STOCK")
                                                         </span>
                                                     </div>
                                                     <div class="rating-box rating-box1 @("rating-box-"+item.Id)">
@@ -419,6 +519,67 @@
                                                                 </i>
                                                             </li>
                                                         </ul>
+                                                        <div class="review" style=" margin-left: 15px;">
+                                                            <a data-id="@item.Id" id="rating_value" class="ratingdataid2" href="#" style="color: #525252; font-size: 14px;">
+                                                                @{
+                                                                    if (item.Ratings.Count > 0)
+                                                                    {
+                                                                        var rval2 = item.Ratings;
+                                                                        var fiveS = 0;
+                                                                        var fourS = 0;
+                                                                        var threeS = 0;
+                                                                        var twoS = 0;
+                                                                        var oneS = 0;
+                                                                        for (var rs = 0; rs < rval2.Count; rs++)
+                                                                        {
+
+
+                                                                            for (var str = 0; str < rval2.Count; str++)
+                                                                            {
+                                                                                if (rval2[str].Star == 5)
+                                                                                {
+                                                                                    fiveS++;
+                                                                                }
+                                                                                else if (rval2[str].Star == 4)
+                                                                                {
+                                                                                    fourS++;
+                                                                                }
+                                                                                else if (rval2[str].Star == 3)
+                                                                                {
+                                                                                    threeS++;
+                                                                                }
+                                                                                else if (rval2[str].Star == 2)
+                                                                                {
+                                                                                    twoS++;
+                                                                                }
+                                                                                else if (rval2[str].Star == 1)
+                                                                                {
+                                                                                    oneS++;
+                                                                                }
+                                                                            }
+
+                                                                        }
+
+                                                                        decimal sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                                                                        decimal rSum = fiveS + fourS + threeS + twoS + oneS;
+                                                                        var sumRsum = Math.Round((sum / rSum), 1, MidpointRounding.ToEven);
+
+                                                                        if (sumRsum != 0)
+                                                                        {
+                                                                            @("( " + sumRsum.ToString("F1") + " )" );
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @("( 0.0)");
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        @("( 0.0)");
+                                                                    }
+                                                                }
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -455,7 +616,7 @@
                                     <span class="collection">@item.SubTitle</span>
                                     <h3 class="title title-1">@item.Title</h3>
                                     <div class="btn-wrapper">
-                                        <a class="btn btn-custom " asp-controller="Shop" asp-action="Index">
+                                        <a class="btn btn-custom " asp-controller="Shop" asp-action="Index" asp-route-SearchCategory="@item.ProductCatId">
                                             Shop
                                             Now
                                         </a>
@@ -480,7 +641,7 @@
                                     <span class="collection">@item.SubTitle</span>
                                     <h3 class="title">@item.Title</h3>
                                     <div class="btn-wrapper">
-                                        <a class="btn btn-custom" asp-controller="Shop" asp-action="Index">
+                                        <a class="btn btn-custom" asp-controller="Shop" asp-action="Index" asp-route-SearchCategory="@item.ProductCatId">
                                             Shop
                                             Now
                                         </a>
@@ -593,12 +754,12 @@
                                         </div>
                                     </div>
                                     <div class="product-content">
-                                        <a class="product-name" href="single-product-variable.html">
+                                        <a class="product-name" asp-controller="Shop" asp-action="SingleProduct" asp-route-Id="@item.Id">
                                             @item.Name
                                         </a>
                                         <div class="price-box pb-1">
                                             <span class="new-price" style="@(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? "": "font-size: 15px !important; color: #da4949 !important;")">
-                                                @(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? item.ProductSizeToProducts.FirstOrDefault(pp => pp.Quantity > 0).Price: "OUT OF STOCK")
+                                                @(item.ProductSizeToProducts.FirstOrDefault(pp=>pp.Quantity>0)!=null? "$" + item.ProductSizeToProducts.FirstOrDefault(pp => pp.Quantity > 0).Price: "OUT OF STOCK")
                                             </span>
                                         </div>
                                         <div class="rating-box rating-box1 @("rating-box-"+item.Id)">
@@ -624,6 +785,67 @@
                                                     </i>
                                                 </li>
                                             </ul>
+                                            <div class="review" style=" margin-left: 15px;">
+                                                <a data-id="@item.Id" id="rating_value" class="ratingdataid2" href="#" style="color: #525252; font-size: 14px;">
+                                                    @{
+                                                        if (item.Ratings.Count > 0)
+                                                        {
+                                                            var rval2 = item.Ratings;
+                                                            var fiveS = 0;
+                                                            var fourS = 0;
+                                                            var threeS = 0;
+                                                            var twoS = 0;
+                                                            var oneS = 0;
+                                                            for (var rs = 0; rs < rval2.Count; rs++)
+                                                            {
+
+
+                                                                for (var str = 0; str < rval2.Count; str++)
+                                                                {
+                                                                    if (rval2[str].Star == 5)
+                                                                    {
+                                                                        fiveS++;
+                                                                    }
+                                                                    else if (rval2[str].Star == 4)
+                                                                    {
+                                                                        fourS++;
+                                                                    }
+                                                                    else if (rval2[str].Star == 3)
+                                                                    {
+                                                                        threeS++;
+                                                                    }
+                                                                    else if (rval2[str].Star == 2)
+                                                                    {
+                                                                        twoS++;
+                                                                    }
+                                                                    else if (rval2[str].Star == 1)
+                                                                    {
+                                                                        oneS++;
+                                                                    }
+                                                                }
+
+                                                            }
+
+                                                            decimal sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                                                            decimal rSum = fiveS + fourS + threeS + twoS + oneS;
+                                                            var sumRsum = Math.Round((sum / rSum), 1, MidpointRounding.ToEven);
+
+                                                            if (sumRsum != 0)
+                                                            {
+                                                                @("( " + sumRsum.ToString("F1") + " )" );
+                                                            }
+                                                            else
+                                                            {
+                                                                @("( 0.0)");
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            @("( 0.0)");
+                                                        }
+                                                    }
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -653,60 +875,25 @@
             <div class="container custom-space">
                 <div class="swiper-container testimonial-slider with-bg">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide testimonial-item">
-                            <div class="client-detail mb-3">
-                                <div class="client-img-wrapper">
-                                    <div class="client-img">
-                                        <img src="~/img/user/user-1.png" alt="User Image">
+                        @foreach (var item in Model.Testimonials)
+                        {
+                            <div class="swiper-slide testimonial-item" style="height: 358px;">
+                                <div class="client-detail mb-3">
+                                    <div class="client-img-wrapper">
+                                        <div class="client-img" style="width: 77px; height: 77px; border-radius: 50%; overflow: hidden;">
+                                            <img src="~/img/testimonial/@item.Image" alt="User Image">
+                                        </div>
+                                    </div>
+                                    <div class="client-name-position text-charcoal">
+                                        <h4 class="client-name mb-1">@item.Name @item.Surname </h4>
+                                        <span class="client-position">@item.Status</span>
                                     </div>
                                 </div>
-                                <div class="client-name-position text-charcoal">
-                                    <h4 class="client-name mb-1">Phoenix Baker</h4>
-                                    <span class="client-position">Client</span>
-                                </div>
+                                <p class="client-text mb-6">
+                                    @item.Message
+                                </p>
                             </div>
-                            <p class="client-text mb-6">
-                                Lorem ipsum dolor sit amet, conse adipisic elit, sed do eiusmod
-                                tempo
-                                incididunt ut labore et dolore. magna
-                            </p>
-                        </div>
-                        <div class="swiper-slide testimonial-item">
-                            <div class="client-detail mb-3">
-                                <div class="client-img-wrapper">
-                                    <div class="client-img">
-                                        <img src="~/img/user/user-2.png" alt="User Image">
-                                    </div>
-                                </div>
-                                <div class="client-name-position text-charcoal">
-                                    <h4 class="client-name mb-1">Phoenix Baker</h4>
-                                    <span class="client-position">Client</span>
-                                </div>
-                            </div>
-                            <p class="client-text mb-6">
-                                Lorem ipsum dolor sit amet, conse adipisic elit, sed do eiusmod
-                                tempo
-                                incididunt ut labore et dolore. magna
-                            </p>
-                        </div>
-                        <div class="swiper-slide testimonial-item">
-                            <div class="client-detail mb-3">
-                                <div class="client-img-wrapper">
-                                    <div class="client-img">
-                                        <img src="~/img/user/user-3.png" alt="User Image">
-                                    </div>
-                                </div>
-                                <div class="client-name-position text-charcoal">
-                                    <h4 class="client-name mb-1">Phoenix Baker</h4>
-                                    <span class="client-position">Client</span>
-                                </div>
-                            </div>
-                            <p class="client-text mb-6">
-                                Lorem ipsum dolor sit amet, conse adipisic elit, sed do eiusmod
-                                tempo
-                                incididunt ut labore et dolore. magna
-                            </p>
-                        </div>
+                        }
                     </div>
                     <div class="swiper-pagination without-absolute"></div>
                 </div>
@@ -833,12 +1020,12 @@
                         <div class="product-info">
                             <h2 class="title" id="product-name">American Marigold</h2>
                             <div class="price" style="padding-bottom: 15px !important;">
-                                <span class="new-price" id="modalPrice" style="font-size: 30px !important; color: #abd373 !important;">$23.45</span>
+                                <span class="new-price" id="modalPrice" style="font-size: 30px !important; color: #abd373 !important;">$23.45 <span id="asd_dsa" style="font-size:14px;" class="text-danger"></span></span>
                             </div>
                             <div class="rating-wrap">
                                 <input id="ratValprodId" type="hidden" value="" />
                                 <div class="review" style="padding: 0 !important;">
-                                    <a id="rating_value" href="#"></a>
+                                    <a id="rating_value22" href="#"></a>
                                 </div>
                             </div>
                             <div class="selector-full pb-30" id="selector-size">

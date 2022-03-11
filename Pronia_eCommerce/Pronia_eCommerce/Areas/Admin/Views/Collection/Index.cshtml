@@ -1,0 +1,146 @@
+﻿@model VmCollection
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card mb-5">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title text-center" style="font-size: 30px !important;">Collection Large</h4>
+                @{
+                    if (TempData["CollectionError"] != null)
+                    {
+                        <p style="font-size: 20px !important; padding: 15px !important;" class="alert text-center text-warning">@TempData["CollectionError"]</p>
+
+                        TempData["CollectionError"] = null;
+                    }
+                }
+                @{
+                    if (Model.CollectionL.Count < 2)
+                    {
+                        <a class="btn btn-light mb-3 px-5" asp-area="Admin" asp-controller="Collection" asp-action="CreateL">Create New</a>
+                    }
+                }
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th class="tableTrCustom">
+                                    Image
+                                </th>
+                                <th class="tableTrCustom">
+                                    Title
+                                </th>
+                                <th class="tableTrCustom">
+                                    Sub-Title
+                                </th>
+                                <th class="tableTrCustom">
+                                    Product Category
+                                </th>
+                                <th class="tableTrCustom">
+                                    Edit
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var cl in Model.CollectionL)
+                                {
+                                    <tr>
+                                        <td class="py-1" style="vertical-align: middle !important; width: 300px !important; height: 100px !important;">
+                                            <img style="border-radius: unset !important; width: 100% !important; height: 100% !important; object-fit: contain !important;" src="~/img/collection/@cl.Image" alt="image" />
+                                        </td>
+                                        <td style="vertical-align: middle !important; width: 250px !important; font-size: 18px !important; font-weight: 500 !important;">
+                                            @cl.Title
+                                        </td>
+                                        <td style="vertical-align: middle !important; font-size: 18px !important; font-weight: 500 !important;">
+                                            @cl.SubTitle
+                                        </td>
+                                        <td style="vertical-align: middle !important; font-size: 18px !important; font-weight: 500 !important;">
+                                            @cl.ProductCat.CategoryName
+                                        </td>
+                                        <td style="vertical-align: middle !important; ">
+                                            <a class="mb-2 btn-sm btn btn-outline-success" asp-route-id="@cl.Id" asp-area="Admin" asp-controller="Collection" asp-action="UpdateL">Update</a>
+                                            <br>
+                                            <a class="btn-sm btn btn-outline-danger" asp-route-id="@cl.Id" asp-area="Admin" asp-controller="Collection" asp-action="DeleteL" onclick="return confirm('Are you sure?')">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title text-center" style="font-size: 30px !important;">Collection Small</h4>
+                @{
+                    if (TempData["CollectionError"] != null)
+                    {
+                        <p style="font-size: 20px !important; padding: 15px !important;" class="alert text-center text-warning">@TempData["CollectionError"]</p>
+
+                        TempData["CollectionError"] = null;
+                    }
+                }
+                @{
+                    if (Model.CollectionS.Count < 2)
+                    {
+                        <a class="btn btn-light mb-3 px-5" asp-area="Admin" asp-controller="Collection" asp-action="CreateS">Create New</a>
+                    }
+                }
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th class="tableTrCustom">
+                                    Image
+                                </th>
+                                <th class="tableTrCustom">
+                                    Title
+                                </th>
+                                <th class="tableTrCustom">
+                                    Sub-Title
+                                </th>
+                                <th class="tableTrCustom">
+                                    Product Category
+                                </th>
+                                <th class="tableTrCustom">
+                                    Edit
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+
+                                foreach (var cs in Model.CollectionS)
+                                {
+                                    <tr>
+                                        <td class="py-1" style="vertical-align: middle !important; width: 300px !important; height: 100px !important;">
+                                            <img style="border-radius: unset !important; width: 100% !important; height: 100% !important; object-fit: contain !important;" src="~/img/collection/@cs.Image" alt="image" />
+                                        </td>
+                                        <td style="vertical-align: middle !important; width: 250px !important; font-size: 18px !important; font-weight: 500 !important;">
+                                            @cs.Title
+                                        </td>
+                                        <td style="vertical-align: middle !important; font-size: 18px !important; font-weight: 500 !important;">
+                                            @cs.SubTitle
+                                        </td>
+                                        <td style="vertical-align: middle !important; font-size: 18px !important; font-weight: 500 !important;">
+                                            @cs.ProductCat.CategoryName
+                                        </td>
+                                        <td style="vertical-align: middle !important; ">
+                                            <a class="mb-2 btn-sm btn btn-outline-success" asp-route-id="@cs.Id" asp-area="Admin" asp-controller="Collection" asp-action="UpdateS">Update</a>
+                                            <br>
+                                            <a class="btn-sm btn btn-outline-danger" asp-route-id="@cs.Id" asp-area="Admin" asp-controller="Collection" asp-action="DeleteS" onclick="return confirm('Are you sure?')">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

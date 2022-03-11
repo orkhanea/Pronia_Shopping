@@ -79,9 +79,18 @@
                         </div>
                     </div>
                     <div class="mb-3 col-lg-8" style="display: flex; flex-direction: column; justify-content: space-between;">
-                        <div class="alert alert-dark py-5 px-5 mt-4">
+                        <div id="asdddsa" class="alert alert-dark py-5 px-5 mt-4">
                             <label for="1234a" class="w-100 btn btn-outline-white">Choose Product Images *</label>
                             <input type="file" id="1234a" asp-for="productImage" multiple class="d-none form-control w-50">
+                            @{ 
+                                if (Model.product.ProductImages != null)
+                                {
+                                    foreach (var img in Model.product.ProductImages)
+                                    {
+                                        <img style=" width: 150px; height: auto; margin: 20px;" src="~/img/products/@img.Image" alt="Alternate Text" />
+                                    }
+                                }
+                            }
                         </div>
                         <div class="form-group text-right" style="margin-left: auto !important; margin-right: 15px !important; margin-top: 20px !important; ">
 

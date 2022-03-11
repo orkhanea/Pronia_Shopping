@@ -27,6 +27,8 @@ namespace Pronia_eCommerce.Models
 
         public DateTime CreatedDate { get; set; }
 
+        public bool Archived { get; set; }
+
         public List<Comment> Comment { get; set; }
 
         [ForeignKey("ProductCat")]
@@ -41,6 +43,9 @@ namespace Pronia_eCommerce.Models
         public List<ProductImage> ProductImages { get; set; }
         public List<ProductSizeToProduct> ProductSizeToProducts { get; set; }
         public List<RatingStar> Ratings { get; set; }
+
+        [NotMapped]
+        public Decimal Ratingval { get; set; }
 
 
     }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Pronia_eCommerce.Data;
 using Pronia_eCommerce.Models;
 using Pronia_eCommerce.ViewModel;
@@ -97,7 +98,7 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
         [Authorize(Roles = "SuperAdmin")]
         public IActionResult Roles()
         {
-            List<IdentityRole> roles = _context.Roles.ToList();
+            List<IdentityRole> roles = _context.Roles.Where(r=>r.Name!="User").ToList();
 
             return View(roles);
         }
@@ -113,11 +114,15 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _roleManager.CreateAsync(model);
-                return RedirectToAction("Index");
+                if (model.Name!=null)
+                {
+                    await _roleManager.CreateAsync(model);
+                    return RedirectToAction("Index");
+                }
+                
             }
 
-            ModelState.AddModelError("", "Upps..");
+            ModelState.AddModelError("", "Please fill in the fields marked with an asterisk (*)");
             return View(model);
         }
 
@@ -128,7 +133,8 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
             {
                 if (User.IsInRole("User"))
                 {
-                    return RedirectToAction("Index", "Home", new { area = "" });
+                    TempData["UserAccessDenied"] = "To access, you must first log out of your current account!";
+                    return RedirectToAction("Profile", "Account", new { area = "" });
                 }
                 else
                 {

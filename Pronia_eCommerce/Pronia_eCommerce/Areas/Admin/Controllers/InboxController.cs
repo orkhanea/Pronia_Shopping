@@ -73,7 +73,8 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(vmSendEmail);
+            TempData["EmailError"] = "Message can not be empty!";
+            return RedirectToAction("Read", new { Id = vmSendEmail.MsgId});
         }
 
         public IActionResult DelMes(int? Id)

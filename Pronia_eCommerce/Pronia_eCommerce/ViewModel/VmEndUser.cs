@@ -11,6 +11,7 @@ namespace Pronia_eCommerce.ViewModel
     {
         public EndUser EndUser { get; set; }
         public List<Country> Countries { get; set; }
+        public Banner Banner { get; set; }
 
     }
 }

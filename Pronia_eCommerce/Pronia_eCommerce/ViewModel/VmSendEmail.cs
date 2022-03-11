@@ -16,5 +16,7 @@ namespace Pronia_eCommerce.ViewModel
 
         [Required]
         public string EmailAddress { get; set; }
+
+        public int MsgId { get; set; }
     }
 }

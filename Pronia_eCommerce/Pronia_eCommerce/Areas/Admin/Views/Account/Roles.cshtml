@@ -1,11 +1,14 @@
 ﻿@model List<IdentityRole>
 
-<div class="row">
-    <div class="col-lg-12 grid-margin stretch-card">
+<div class="row justify-content-center">
+    <div class="col-lg-6 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title text-center" style="font-size: 35px !important; font-weight: 600 !important; color: #3b579d !important; ">Roles</h4>
-                <a class="btn btn-primary mb-3 px-5" asp-area="Admin" asp-controller="Account" asp-action="RoleCreate">Create New Role</a>
+                <h4 class="card-title text-center" style="font-size: 30px !important; font-weight: 600 !important;">Roles</h4>
+                @if (Model.Count < 3)
+                {
+                    <a class="btn btn-light mb-3 px-5" asp-area="Admin" asp-controller="Account" asp-action="RoleCreate">Create New Role</a>
+                }
                 @{
                     if (TempData["SocialError"] != null)
                     {
@@ -43,8 +46,14 @@
                                             @item.Name
                                         </td>
                                         <td>
-                                            <a class="mb-2 w-100 btn-sm btn btn-success" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Account" asp-action="RoleUpdate">Update</a>
-                                            <br>
+                                            @if (item.Name != "Moderator" && item.Name != "SuperAdmin" && item.Name != "Admin")
+                                            {
+                                                <a class="mb-2 btn-sm btn btn-outline-success" asp-route-id="@item.Id" asp-area="Admin" asp-controller="Account" asp-action="RoleUpdate">Update</a>
+                                            }
+                                            else
+                                            {
+                                                <span>You can't Remove, Update this role</span>
+                                            }
                                         </td>
                                     </tr>
                                 }

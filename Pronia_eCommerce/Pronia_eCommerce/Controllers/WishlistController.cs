@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pronia_eCommerce.Data;
@@ -21,8 +22,10 @@ namespace Pronia_eCommerce.Controllers
             _context = context;
             _userManager = userManager;
         }
+
         public IActionResult Index()
         {
+
             if (User.Identity.IsAuthenticated)
             {
                 if (!User.IsInRole("User"))
@@ -31,8 +34,11 @@ namespace Pronia_eCommerce.Controllers
                 }
             }
 
+            RemoveArchived();
+
             if (User.Identity.IsAuthenticated)
             {
+                RemoveArchivedUser();
                 string oldData = _context.EndUsers.Find(_userManager.GetUserId(User)).UserFavourite;
 
                 if (!string.IsNullOrEmpty(oldData))
@@ -43,7 +49,7 @@ namespace Pronia_eCommerce.Controllers
                     List<Product> _restourants = new();
                     foreach (var f in favourite)
                     {
-                        if (_context.Products.Find(Int32.Parse(f)) != null)
+                        if (_context.Products.Find(Int32.Parse(f)) != null && _context.Products.Find(Int32.Parse(f)).Archived==false)
                         {
                             _restourants.Add(_context.Products.Include(p => p.ProductImages).Include(p => p.ProductSizeToProducts).ThenInclude(ps => ps.ProductSize).FirstOrDefault(p => p.Id == Int32.Parse(f)));
                         }
@@ -83,7 +89,7 @@ namespace Pronia_eCommerce.Controllers
                     List<Product> _restourants = new();
                     foreach (var f in favourite)
                     {
-                        if (_context.Products.Find(Int32.Parse(f)) != null)
+                        if (_context.Products.Find(Int32.Parse(f)) != null && _context.Products.Find(Int32.Parse(f)).Archived==false)
                         {
                             _restourants.Add(_context.Products.Include(p => p.ProductImages).Include(p => p.ProductSizeToProducts).ThenInclude(ps => ps.ProductSize).FirstOrDefault(p => p.Id == Int32.Parse(f)));
                         }
@@ -112,6 +118,68 @@ namespace Pronia_eCommerce.Controllers
             }
 
             
+        }
+
+        public void RemoveArchived()
+        {
+            string oldData = Request.Cookies["favourites"];
+            string newData = null;
+
+            if (!string.IsNullOrEmpty(oldData))
+            {
+                List<string> favouriteList = oldData.Split("-").ToList();
+
+                foreach (var prd in favouriteList.ToList())
+                {
+                    if (_context.Products.Find(int.Parse(prd))!=null)
+                    {
+                        if (_context.Products.Find(int.Parse(prd)).Archived==true)
+                        {
+                            favouriteList.Remove(prd);
+                            newData = string.Join("-", favouriteList);
+
+                            CookieOptions options = new()
+                            {
+                                Expires = DateTime.Now.AddMonths(1)
+                            };
+
+                            Response.Cookies.Append("favourites", newData, options);
+
+                        }
+                    }
+                }
+                
+            }
+
+        }
+
+        public void RemoveArchivedUser()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("User"))
+                {
+                    string oldData = _context.EndUsers.Find(_userManager.GetUserId(User)).UserFavourite;
+                    string newData = null;
+
+                    if (!string.IsNullOrEmpty(oldData))
+                    {
+                        var favourite = oldData.Split("-").ToList();
+
+                        foreach (var f in favourite.ToList())
+                        {
+                            if (_context.Products.Find(Int32.Parse(f)) != null && _context.Products.Find(Int32.Parse(f)).Archived == true)
+                            {
+                                favourite.Remove(f);
+                                newData = string.Join("-", favourite);
+
+                                _context.EndUsers.Find(_userManager.GetUserId(User)).UserFavourite = newData;
+                                _context.SaveChanges();
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

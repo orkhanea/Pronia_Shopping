@@ -35,9 +35,12 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
 
             var Datassss = _context.SaleItems.Include(s => s.Sale).ToList().GroupBy(d => d.Sale.SaleDate.Date);
 
+            var prc = _context.Sales.Include(s=>s.SaleItems).ToList().GroupBy(d => d.SaleDate.Date);
+
             var nnn = Datassss.Select(w => w.Select(s => s.Quantity)).ToList();
 
             List<int> count = new();
+            List<decimal> total = new();
 
             foreach (var item in nnn)
             {
@@ -51,8 +54,24 @@ namespace Pronia_eCommerce.Areas.Admin.Controllers
                 
             }
 
-            vmAdminHome.Dates = Datassss.Select(e => e.Select(r => r.Sale.SaleDate.Date)).Take(10).ToList();
+            foreach (var item in prc)
+            {
+                decimal x = 0;
+                foreach (var item2 in item)
+                {
+                   
+                    foreach (var item3 in item2.SaleItems)
+                    {
+                        x += item3.Price*item3.Quantity;
+                    }
+                    
+                }
+                total.Add(x);
+            }
+
+            vmAdminHome.Dates = Datassss.Select(e => e.Select(r => r.Sale.SaleDate.Date)).ToList();
             vmAdminHome.Datas = count;
+            vmAdminHome.Total = total;
 
             return View(vmAdminHome);
         }

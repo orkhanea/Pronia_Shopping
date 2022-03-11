@@ -217,3 +217,17 @@ C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce
 C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Inbox\Index.cshtml.g.cs
 C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Inbox\Read.cshtml.g.cs
 C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Account\Profile.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Testimonial\Create.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Testimonial\Index.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Testimonial\Update.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Collection\Index.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Collection\CreateL.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Collection\CreateS.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Collection\UpdateL.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Collection\UpdateS.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\HomeSlider\Index.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\HomeSlider\Create.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\HomeSlider\Update.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Shop\ArchiveIndex.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Sale\ArchiveIndex.cshtml.g.cs
+C:\Users\ASUS\Desktop\Pronia_eCommerce_Project\Pronia_eCommerce\Pronia_eCommerce\obj\Debug\net5.0\Razor\Areas\Admin\Views\Sale\Index2.cshtml.g.cs

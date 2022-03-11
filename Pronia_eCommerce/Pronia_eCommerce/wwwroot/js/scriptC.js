@@ -1,3 +1,4 @@
+
 $(document).ready(function()
 {
 
@@ -463,7 +464,10 @@ $(document).ready(function()
 
         priceOpt[k].addEventListener("click", function () {
 
-            prSize.innerText = priceSizeOpt[k].value
+            if (!priceOpt[k].classList.contains("disabled")) {
+
+                prSize.innerText = "$" + priceSizeOpt[k].value
+            }
         })
 
     }
@@ -774,95 +778,21 @@ $(document).ready(function()
                 if (response.success != null) {
 
                     swal("Good job!", `Thanks for taking the time to leave us a ${ratingValue} star rating `, "success");
-                    //GetAllStars();
-                    let rval2 = response.products["$values"][0].ratings["$values"];
-                    for (let rs = 0; rs < rval2.length; rs++) {
-                        let fiveS = 0;
-                        let fourS = 0;
-                        let threeS = 0;
-                        let twoS = 0;
-                        let oneS = 0;
 
-                        for (let str = 0; str < rval2.length; str++) {
-                            if (rval2[str].star == 5) {
-                                fiveS++;
-                            }
-                            else if (rval2[str].star == 4) {
-                                fourS++;
-                            }
-                            else if (rval2[str].star == 3) {
-                                threeS++;
-                            }
-                            else if (rval2[str].star == 2) {
-                                twoS++;
-                            }
-                            else if (rval2[str].star == 1) {
-                                oneS++;
-                            }
-                        }
-
-                        let sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
-                        let rSum = fiveS + fourS + threeS + twoS + oneS;
-                        let sumRsum = sum / rSum;
-
-                        if (sumRsum != 0) {
-
-                            document.getElementById("rating_value").innerText = `(${sumRsum.toFixed(1)} Rating)`;
-                        }
-
-                    }
+                    strttlfunc(+singleProductId)
 
                 }
                 else if (response.changed != null) {
 
-
-
-                    console.log(ratingValue);
-
-
                     swal("Changed!", `Thanks for taking the time to leave us a ${ratingValue} star rating `, "success");
-                    //GetAllStars()
-                    let rval2 = response.products["$values"][0].ratings["$values"];
-                    for (let rs = 0; rs < rval2.length; rs++) {
-                        let fiveS = 0;
-                        let fourS = 0;
-                        let threeS = 0;
-                        let twoS = 0;
-                        let oneS = 0;
 
-                        for (let str = 0; str < rval2.length; str++) {
-                            if (rval2[str].star == 5) {
-                                fiveS++;
-                            }
-                            else if (rval2[str].star == 4) {
-                                fourS++;
-                            }
-                            else if (rval2[str].star == 3) {
-                                threeS++;
-                            }
-                            else if (rval2[str].star == 2) {
-                                twoS++;
-                            }
-                            else if (rval2[str].star == 1) {
-                                oneS++;
-                            }
-                        }
-
-                        let sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
-                        let rSum = fiveS + fourS + threeS + twoS + oneS;
-                        let sumRsum = sum / rSum;
-
-                        if (sumRsum != 0) {
-
-                            document.getElementById("rating_value").innerText = `(${sumRsum.toFixed(1)} Rating)`;
-                        }
-
-                    }
+                    strttlfunc(+singleProductId)
 
                 }
                 else if (response.error != null) {
 
                     swal("Oops", "Something went wrong", "error");
+                    strttlfunc(+singleProductId)
                 }
             },
             error: function (error) {
@@ -918,7 +848,7 @@ $(document).ready(function()
 
             starReviews(userEmail, userSurname, userName, a, b);
 
-            console.log(userEmail, userSurname, userName, a, b)
+            
 
         }
         else {
@@ -1054,10 +984,139 @@ $(document).ready(function()
 
     })
 
+    if ($("#emlscssend").length>0) {
 
+        swal({
+            title: "Success!",
+            text: `We sent reset link to you. Check your email!`,
+            icon: "success",
+            button: "Close"
+        });
 
+    }
 
+    let strttlfunc = function (Id) {
 
+        let dtd = $(".ratingdataid2");
 
+        if (Number.isInteger(Id)) {
+            $.ajax({
+                url: location.origin + "/Shop/GetRatingValue",
+                type: "get",
+                dataType: "json",
+                data: {
+                    id: Id
+                },
+                success: function (r) {
+                    if (r["$values"].length>0) {
+
+                        let fiveS = 0;
+                        let fourS = 0;
+                        let threeS = 0;
+                        let twoS = 0;
+                        let oneS = 0;
+                        let rval2 = r["$values"];
+
+                        for (var i = 0; i < rval2.length; i++) {
+
+                            for (let str = 0; str < rval2.length; str++) {
+                                if (rval2[str].star == 5) {
+                                    fiveS++;
+                                }
+                                else if (rval2[str].star == 4) {
+                                    fourS++;
+                                }
+                                else if (rval2[str].star == 3) {
+                                    threeS++;
+                                }
+                                else if (rval2[str].star == 2) {
+                                    twoS++;
+                                }
+                                else if (rval2[str].star == 1) {
+                                    oneS++;
+                                }
+                            }
+
+                        }
+
+                            let sum = (fiveS * 5) + (fourS * 4) + (threeS * 3) + (twoS * 2) + (oneS * 1);
+                            let rSum = fiveS + fourS + threeS + twoS + oneS;
+                            let sumRsum = sum / rSum;
+
+                            if (sumRsum != 0) {
+
+                                for (var i = 0; i < dtd.length; i++) {
+
+                                    if (dtd[i].attributes[0].value == Id) {
+                                        dtd[i].textContent = `(${sumRsum.toFixed(1)})`;
+                                    }
+
+                                }
+                            }
+
+                    }
+                    else if (r.length == 0) {
+
+                        swal("Oops", "Something went wrong", "error");
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+    }
+
+    if ($("#UserAccessDenied").length>0) {
+
+        swal("Info", `To access, you must first log out of your current account!`, "info");
+
+    }
+
+    // #region Remove Archived Product
+
+    $.ajax({
+        url: location.origin + "/Cart/RemoveArchivedFromCart",
+        type: "get",
+        dataType: "json",
+        data: {},
+        success: function () {
+            console.log("Hello")
+        },
+        error: function (error) {
+        }
+    });
+
+    $.ajax({
+        url: location.origin + "/Cart/RemoveUserArchivedFromCart",
+        type: "get",
+        dataType: "json",
+        data: {},
+        success: function () {
+            console.log("Hello")
+        },
+        error: function (error) {
+        }
+    });
+
+    // #endregion Remove Archived Product
+
+    $(document).ready(function () {
+
+        setTimeout(function () {
+            $('#ctn-preloader').addClass('loaded');
+            // Una vez haya terminado el preloader aparezca el scroll
+            $('body').removeClass('no-scroll-y');
+
+            if ($('#ctn-preloader').hasClass('loaded')) {
+                // Es para que una vez que se haya ido el preloader se elimine toda la seccion preloader
+                $('#preloader').delay(1000).queue(function () {
+                    $(this).remove();
+                });
+            }
+        }, 3000);
+
+    });
 
 });

@@ -16,5 +16,7 @@ namespace Pronia_eCommerce.ViewModel
         public List<Product> RatingProducts { get; set; }
         public List<Product> Products { get; set; }
         public List<string> Favourite { get; set; }
+        public List<Testimonial> Testimonials { get; set; }
+        public List<HomeSlider> HomeSliders { get; set; }
     }
 }
